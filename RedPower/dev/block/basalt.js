@@ -113,9 +113,9 @@ function genBasalt(x, y, z){
 
 
 var basaltChance = __config__.getNumber("world_gen.basalt")
-Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
-	if(Math.random() < basaltChance){
-		var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 4, 12);
+World.addGenerationCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random){
+	if(random.nextInt(100) < basaltChance){
+		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 4, 12);
 		genBasalt(coords.x, coords.y, coords.z);
 	}
-});
+}, "rp-basalt");

@@ -141,76 +141,87 @@ Item.addCreativeGroup("ores", Translation.translate("Ores"), [
 
 
 var OreGeneration = {
-	oreGenCopper: __config__.getBool("ore_gen.copper"),
-	oreGenTin: __config__.getBool("ore_gen.tin"),
-	oreGenSilver: __config__.getBool("ore_gen.silver"),
-	oreGenTungsten: __config__.getBool("ore_gen.tungsten"),
-	oreGenNikolite: __config__.getBool("ore_gen.nikolite"),
-	oreGenRuby: __config__.getBool("ore_gen.gems"),
-	oreGenSapphire: __config__.getBool("ore_gen.gems"),
-	oreGenGreenSapphire: __config__.getBool("ore_gen.gems"),
+	config: {
+		oreGenCoppler: __config__.getBool("ore_gen.copper"),
+		oreGenTin: __config__.getBool("ore_gen.tin"),
+		oreGenSilver: __config__.getBool("ore_gen.silver"),
+		oreGenTungsten: __config__.getBool("ore_gen.tungsten"),
+		oreGenNikolite: __config__.getBool("ore_gen.nikolite"),
+		oreGenRuby: __config__.getBool("ore_gen.gems"),
+		oreGenSapphire: __config__.getBool("ore_gen.gems"),
+		oreGenGreenSapphire: __config__.getBool("ore_gen.gems")
+	},
+	
+	randomCoords: function(random, chunkX, chunkZ, minHeight, maxHeight){
+		minHeight = minHeight || 0;
+		maxHeight = maxHeight || 128;
+		var x = chunkX*16 + random.nextInt(16);
+		var z = chunkZ*16 + random.nextInt(16);
+		var y = random.nextInt(maxHeight - minHeight + 1) - minHeight;
+		return {x: x, y: y, z: z};
+	}
 }
 
 Callback.addCallback("PostLoaded", function(){
-	for(var flag in OreGeneration){
-		if(OreGeneration[flag]){
-			OreGeneration[flag] = !Flags.addFlag(flag);
+	for(var flag in OreGeneration.config){
+		if(OreGeneration.config[flag]){
+			OreGeneration.config[flag] = !Flags.addFlag(flag);
 		}
 	}
 });
 
-Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
-	if(OreGeneration.oreGenCopper){
+Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random){
+	if(OreGeneration.config.oreGenCopper){
 		for(var i = 0; i < 12; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 10, 70);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 10, 70);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenTin){
+	if(OreGeneration.config.oreGenTin){
 		for(var i = 0; i < 10; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 64);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 64);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenSilver){
+	if(OreGeneration.config.oreGenSilver){
 		for(var i = 0; i < 4; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 32);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 32);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenTungsten){
-		var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 16);
-		GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5);
+	if(OreGeneration.config.oreGenTungsten){
+		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 16);
+		GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5, false, random.nextInt());
 	}
 	
-	if(OreGeneration.oreGenNikolite){
+	if(OreGeneration.config.oreGenNikolite){
 		for(var i = 0; i < 8; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 20);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 20);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenRuby){
+	if(OreGeneration.config.oreGenRuby){
 		for(var i = 0; i < 8; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 48);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenSapphire){
+	if(OreGeneration.config.oreGenSapphire){
 		for(var i = 0; i < 8; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 48);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.oreGenGreenSapphire){
+	if(OreGeneration.config.oreGenGreenSapphire){
 		for(var i = 0; i < 8; i++){
-			var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 1, 48);
-			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6);
+			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false, random.nextInt());
 		}
 	}
 });
