@@ -5,7 +5,8 @@ Block.createSpecialType({
 	explosionres: 30,
 	lightopacity: 15,
 	renderlayer: 2,
-	translucency: 0
+	translucency: 0,
+	sound: "stone"
 }, "stone");
 
 IDRegistry.genBlockID("marble");

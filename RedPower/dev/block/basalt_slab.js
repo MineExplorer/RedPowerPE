@@ -11,7 +11,8 @@ Block.createBlock("basaltSlab", [
 	destroytime: 1.5,
 	explosionres: 100,
 	renderlayer: 2,
-	translucency: 0
+	translucency: 0,
+	sound: "stone"
 });
 ToolAPI.registerBlockMaterial(BlockID.basaltSlab, "stone", 1, true);
 Block.registerDropFunction("basaltSlab", function(coords, blockID, blockData, level){

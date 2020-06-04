@@ -9,7 +9,8 @@ Block.createBlock("marbleSlab", [
 	destroytime: 1.5,
 	explosionres: 30,
 	renderlayer: 2,
-	translucency: 0
+	translucency: 0,
+	sound: "stone"
 });
 ToolAPI.registerBlockMaterial(BlockID.marbleSlab, "stone", 1, true);
 Block.registerDropFunction("marbleSlab", function(coords, blockID, blockData, level){
