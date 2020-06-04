@@ -125,7 +125,7 @@ MachineRegistry.registerPrototype(BlockID.rpBatBox, {
 			extra.putInt("energy", this.data.energy);
 		}
 		var blockData = Math.floor(this.data.energy / 3000);
-		nativeDropItem(coords.x, coords.y, coords.z, 0, BlockID.rpBatBox, 1, blockData, extra);
+		World.drop(coords.x, coords.y, coords.z, BlockID.rpBatBox, 1, blockData, extra);
 	}
 });
 

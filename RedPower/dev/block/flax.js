@@ -9,7 +9,7 @@ Block.createBlock("flax", [
 	{name: "Flax", texture: [["flax", 3]], inCreative: false},
 	{name: "Flax", texture: [["flax", 4]], inCreative: false},
 	{name: "Flax", texture: [["flax", 5]], inCreative: false},
-], {base: 59, destroytime: 0, rendertype: 6});
+], {base: 59, destroytime: 0, rendertype: 6, sound: "grass"});
 TileRenderer.setEmptyCollisionShape(BlockID.flax);
 Block.setShape(BlockID.flax, 0, 0, 0, 1, 1/8, 1, 0);
 Block.setShape(BlockID.flax, 0, 0, 0, 1, 3/8, 1, 1);
@@ -23,7 +23,7 @@ Block.registerDropFunction("flax", function(coords, blockID, blockData, level){
 	if(blockData < 4){
 		return [[ItemID.flaxSeeds, 1, 0]];
 	}
-	return [[ItemID.flaxSeeds, random(1, 3), 0], [287, random(1, 3), 0]];
+	return [[ItemID.flaxSeeds, randomInt(1, 3), 0], [287, randomInt(1, 3), 0]];
 });
 
 Callback.addCallback("DestroyBlock", function(coords, block, player){
@@ -91,7 +91,7 @@ Block.setRandomTickCallback(BlockID.flax, function(x, y, z){
 // bone use
 Callback.addCallback("ItemUse", function(coords, item, block){
 	if(item.id == 351 && item.data == 15 && block.id == BlockID.flax && block.data < 4){
-		block.data += random(2, 3);
+		block.data += randomInt(2, 3);
 		if(block.data < 4){
 			World.setBlock(coords.x, coords.y, coords.z, block.id, block.data);
 		}
