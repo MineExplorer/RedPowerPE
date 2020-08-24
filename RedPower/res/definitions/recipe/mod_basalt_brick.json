@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"XX",
+		"XX"
+	],
+	"key": {
+		"X": {
+			"item": "minecraft:block_rp_basalt"
+		}
+	},
+	"result": {
+		"item": "minecraft:block_basalt_brick",
+		"count": 4
+	},
+	"tags": [
+		"crafting_table"
+	]
+}

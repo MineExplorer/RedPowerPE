@@ -3,7 +3,7 @@ Item.createItem("canvas", "Canvas", {name: "canvas", meta: 0});
 
 IDRegistry.genItemID("canvasBag");
 Item.createItem("canvasBag", "Canvas Bag", {name: "canvas_bag", meta: 0}, {stack: 1});
-Item.registerIconOverrideFunction(ItemID.canvasBag, function(item, name){
+Item.registerIconOverrideFunction(ItemID.canvasBag, function(item, name) {
 	return {name: "canvas_bag", meta: item.data};
 });
 BackpackRegistry.register(ItemID.canvasBag, {
@@ -13,7 +13,7 @@ BackpackRegistry.register(ItemID.canvasBag, {
 	slotsCenter: true,
 	useExtraData: true
 });
-for(let i = 1; i < 16; i++){
+for (let i = 1; i < 16; i++) {
 	Item.addToCreative(ItemID.canvasBag, 1, i);
 }
 Item.addCreativeGroup("canvasBag", Translation.translate("Canvas Bag"), [ItemID.canvasBag]);
@@ -30,7 +30,7 @@ Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 0}, [
 	"aaa"
 ], ['a', ItemID.canvas, 0]);
 
-for(let i = 1; i <= 10; i++){
+for (let i = 1; i <= 10; i++) {
 	Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: i}, [
 		"aaa",
 		"axa",

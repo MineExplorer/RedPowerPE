@@ -9,7 +9,7 @@ Block.createBlock("blueWire", [
 	{name: "Blue Alloy Wire", texture: [["blue_wire", 0]], inCreative: true}
 ], "cable");
 
-Callback.addCallback("PreLoaded", function(){
+Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: BlockID.blueWire, count: 12, data: 0}, [
 		"aaa",
 		"xxx",

@@ -47,7 +47,7 @@ Item.addCreativeGroup("gem", Translation.translate("Gems"), [
 	ItemID.gemGreenSapphire
 ]);
 
-Callback.addCallback("PreLoaded", function(){
+Callback.addCallback("PreLoaded", function() {
 	Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
 	Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
 	Recipes.addFurnace(BlockID.oreSilver, ItemID.ingotSilver, 0);

@@ -252,8 +252,8 @@ var BackpackRegistry = {
     }
 };
 
-Callback.addCallback("LevelLoaded", function(){
-	for(let id in BackpackRegistry.prototypes){
+Callback.addCallback("LevelLoaded", function() {
+	for (let id in BackpackRegistry.prototypes) {
 		let prototype = BackpackRegistry.prototypes[id];
 		let header = prototype.gui.getWindow("header");
 		header.contentProvider.drawing[1].text = Translation.translate(prototype.title || "Backpack");

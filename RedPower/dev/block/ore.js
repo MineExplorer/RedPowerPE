@@ -46,15 +46,15 @@ Block.createBlock("oreNikolite", [
 	{name: "Nikolite Ore", texture: [["ore_nikolite", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreNikolite, "stone", 3, true);
-Block.registerDropFunction("oreNikolite", function(coords, blockID, blockData, level, enchant){
-	if(level > 2){
-		if(enchant.silk){
+Block.registerDropFunction("oreNikolite", function(coords, blockID, blockData, level, enchant) {
+	if (level > 2) {
+		if (enchant.silk) {
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 2, 5, enchant.experience);
 		var drop = [];
 		var count = randomInt(4, 5) + randomInt(0, enchant.fortune);
-		for (var i = 0; i < count; i++){
+		for (var i = 0; i < count; i++) {
 			drop.push([ItemID.nikolite, 1, 0]);
 		}
 		return drop;
@@ -68,15 +68,15 @@ Block.createBlock("oreRuby", [
 	{name: "Ruby Ore", texture: [["ore_ruby", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreRuby, "stone", 3, true);
-Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level, enchant){
-	if(level > 2){
-		if(enchant.silk){
+Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level, enchant) {
+	if (level > 2) {
+		if (enchant.silk) {
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
 		var drop = [];
 		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++){
+		for (var i = 0; i < count; i++) {
 			drop.push([ItemID.gemRuby, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -90,15 +90,15 @@ Block.createBlock("oreSapphire", [
 	{name: "Sapphire Ore", texture: [["ore_sapphire", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreSapphire, "stone", 3, true);
-Block.registerDropFunction("oreSapphire", function(coords, blockID, blockData, level, enchant){
-	if(level > 2){
-		if(enchant.silk){
+Block.registerDropFunction("oreSapphire", function(coords, blockID, blockData, level, enchant) {
+	if (level > 2) {
+		if (enchant.silk) {
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
 		var drop = [];
 		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++){
+		for (var i = 0; i < count; i++) {
 			drop.push([ItemID.gemSapphire, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -112,15 +112,15 @@ Block.createBlock("oreGreenSapphire", [
 	{name: "Sapphire Ore", texture: [["ore_green_sapphire", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreGreenSapphire, "stone", 3, true);
-Block.registerDropFunction("oreGreenSapphire", function(coords, blockID, blockData, level, enchant){
-	if(level > 2){
-		if(enchant.silk){
+Block.registerDropFunction("oreGreenSapphire", function(coords, blockID, blockData, level, enchant) {
+	if (level > 2) {
+		if (enchant.silk) {
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
 		var drop = [];
 		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++){
+		for (var i = 0; i < count; i++) {
 			drop.push([ItemID.gemGreenSapphire, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -153,7 +153,7 @@ var OreGeneration = {
 		oreGenGreenSapphire: __config__.getBool("ore_gen.gems")
 	},
 	
-	randomCoords: function(random, chunkX, chunkZ, minHeight, maxHeight){
+	randomCoords: function(random, chunkX, chunkZ, minHeight, maxHeight) {
 		minHeight = minHeight || 0;
 		maxHeight = maxHeight || 128;
 		var x = chunkX*16 + random.nextInt(16);
@@ -163,64 +163,64 @@ var OreGeneration = {
 	}
 }
 
-Callback.addCallback("PostLoaded", function(){
-	for(var flag in OreGeneration.config){
-		if(OreGeneration.config[flag]){
+Callback.addCallback("PostLoaded", function() {
+	for (var flag in OreGeneration.config) {
+		if (OreGeneration.config[flag]) {
 			OreGeneration.config[flag] = !Flags.addFlag(flag);
 		}
 	}
 });
 
-Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random){
-	if(OreGeneration.config.oreGenCopper){
-		for(var i = 0; i < 12; i++){
+Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random) {
+	if (OreGeneration.config.oreGenCopper) {
+		for (var i = 0; i < 12; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 10, 70);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenTin){
-		for(var i = 0; i < 10; i++){
+	if (OreGeneration.config.oreGenTin) {
+		for (var i = 0; i < 10; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 64);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenSilver){
-		for(var i = 0; i < 4; i++){
+	if (OreGeneration.config.oreGenSilver) {
+		for (var i = 0; i < 4; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 32);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenTungsten){
+	if (OreGeneration.config.oreGenTungsten) {
 		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 16);
 		GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5, false, random.nextInt());
 	}
 	
-	if(OreGeneration.config.oreGenNikolite){
-		for(var i = 0; i < 8; i++){
+	if (OreGeneration.config.oreGenNikolite) {
+		for (var i = 0; i < 8; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 20);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenRuby){
-		for(var i = 0; i < 8; i++){
+	if (OreGeneration.config.oreGenRuby) {
+		for (var i = 0; i < 8; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenSapphire){
-		for(var i = 0; i < 8; i++){
+	if (OreGeneration.config.oreGenSapphire) {
+		for (var i = 0; i < 8; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false, random.nextInt());
 		}
 	}
 	
-	if(OreGeneration.config.oreGenGreenSapphire){
-		for(var i = 0; i < 8; i++){
+	if (OreGeneration.config.oreGenGreenSapphire) {
+		for (var i = 0; i < 8; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false, random.nextInt());
 		}

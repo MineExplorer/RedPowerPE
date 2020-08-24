@@ -1,4 +1,4 @@
-ModAPI.addAPICallback("RecipeViewer", function(api){
+ModAPI.addAPICallback("RecipeViewer", function(api) {
 	let RecipeViewer = api.Core;
 	const Bitmap = android.graphics.Bitmap;
 	const Canvas = android.graphics.Canvas;
@@ -21,13 +21,13 @@ ModAPI.addAPICallback("RecipeViewer", function(api){
 				output0: {type: "slot", x: 652, y: 210, size: 120},
 			}
 		},
-		getList: function(id, data, isUsage){
+		getList: function(id, data, isUsage) {
 			let list = [];
-			if(isUsage){
-				for(let i in SmelterRecipes.recipeData){
+			if (isUsage) {
+				for (let i in SmelterRecipes.recipeData) {
 					let recipe = SmelterRecipes.recipeData[i];
-					for(let j in recipe.input){
-						if(recipe.input[j].id == id){
+					for (let j in recipe.input) {
+						if (recipe.input[j].id == id) {
 							list.push({
 								input: recipe.input,
 								output: [recipe.result]
@@ -37,9 +37,9 @@ ModAPI.addAPICallback("RecipeViewer", function(api){
 				}
 			}
 			else {
-				for(let i in SmelterRecipes.recipeData){
+				for (let i in SmelterRecipes.recipeData) {
 					let recipe = SmelterRecipes.recipeData[i];
-					if(recipe.result.id == id){
+					if (recipe.result.id == id) {
 						list.push({
 							input: recipe.input,
 							output: [recipe.result]

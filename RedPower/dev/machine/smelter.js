@@ -1,22 +1,22 @@
-IDRegistry.genBlockID("rpSmelter");
-Block.createBlock("rpSmelter", [
+IDRegistry.genBlockID("rp_smelter");
+Block.createBlock("rp_smelter", [
 	{name: "Smelter", texture: [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rpSmelter, "stone", 1);
-Block.setDestroyLevel(BlockID.rpSmelter, 1);
+ToolAPI.registerBlockMaterial(BlockID.rp_smelter, "stone", 1);
+Block.setDestroyLevel(BlockID.rp_smelter, 1);
 
-TileRenderer.setStandartModel(BlockID.rpSmelter, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], true);
-TileRenderer.registerRotationModel(BlockID.rpSmelter, 0, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rpSmelter, 4, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 1], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
+TileRenderer.setStandartModel(BlockID.rp_smelter, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], true);
+TileRenderer.registerRotationModel(BlockID.rp_smelter, 0, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.rp_smelter, 4, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 1], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
 
-Recipes.addShaped({id: BlockID.rpSmelter, count: 1, data: 0}, [
+Recipes.addShaped({id: BlockID.rp_smelter, count: 1, data: 0}, [
 	"xxx",
 	"x x",
 	"xxx"
 ], ['x', 45, -1]);
 
 
-Callback.addCallback("PreLoaded", function(){
+Callback.addCallback("PreLoaded", function() {
 	// rp items
 	SmelterRecipes.addRecipe({id: ItemID.ingotRed, count: 1}, [{id: 265, count: 1}, {id: 331, count: 4}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotRed, count: 1}, [{id: ItemID.ingotCopper, count: 1}, {id: 331, count: 4}]);
@@ -65,7 +65,7 @@ Callback.addCallback("PreLoaded", function(){
 });
 
 // mod compatibility
-ModAPI.addAPICallback("ICore", function(api){
+ModAPI.addAPICallback("ICore", function(api) {
 	SmelterRecipes.addRecipe({id: ItemID.ingotBronze, count: 2}, [{id: ItemID.bronzeSword, count: 1}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotBronze, count: 1}, [{id: ItemID.bronzeShovel, count: 1}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotBronze, count: 3}, [{id: ItemID.bronzePickaxe, count: 1}]);
@@ -99,19 +99,19 @@ var guiSmelter = new UI.StandartWindow({
 		"slotSource2": {type: "slot", x: 562, y: 112},
 		"slotSource3": {type: "slot", x: 502, y: 172},
 		"slotSource4": {type: "slot", x: 562, y: 172},
-		"slotFuel": {type: "slot", x: 410, y: 200, isValid: function(id, count, data){
+		"slotFuel": {type: "slot", x: 410, y: 200, isValid: function(id, count, data) {
 			return Recipes.getFuelBurnDuration(id, data) > 0;
 		}},
 		"slotResult": {type: "slot", x: 720, y: 142},
 	}
 });
 
-Callback.addCallback("LevelLoaded", function(){
+Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiSmelter, "Smelter");
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rpSmelter, {
+MachineRegistry.registerPrototype(BlockID.rp_smelter, {
 	defaultValues: {
 		progress: 0,
 		burn: 0,
@@ -119,38 +119,38 @@ MachineRegistry.registerPrototype(BlockID.rpSmelter, {
 		isActive: false
 	},
 	
-	getGuiScreen: function(){
+	getGuiScreen: function() {
 		return guiSmelter;
 	},
 	
-	getTransportSlots: function(){
+	getTransportSlots: function() {
 		return {input: ["slotSource1", "slotSource2", "slotSource3", "slotSource4", "slotFuel"], output: ["slotResult"]};
 	},
 	
-	tick: function(){
+	tick: function() {
 		StorageInterface.checkHoppers(this);
 		
 		var sourceItems = {};
-		for(var i = 1; i <= 4; i++){
+		for (var i = 1; i <= 4; i++) {
 			var slot = this.container.getSlot("slotSource" + i);
-			if(slot.id > 0 && slot.data==0){
+			if (slot.id > 0 && slot.data==0) {
 				sourceItems[slot.id] = sourceItems[slot.id] || 0;
 				sourceItems[slot.id] += slot.count;
 			}
 		}
 		
-		if(this.data.burn > 0){
+		if (this.data.burn > 0) {
 			this.data.burn--;
 		}
 		
 		var recipe = SmelterRecipes.getRecipe(sourceItems);
-		if(recipe){
+		if (recipe) {
 			var resultSlot = this.container.getSlot("slotResult");
-			if(resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0){
-				if(this.data.burn == 0){
+			if (resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0) {
+				if (this.data.burn == 0) {
 					this.data.burn = this.data.burnMax = this.getFuel("slotFuel");
 				}
-				if(this.data.burn > 0 && this.data.progress++ >= 200){
+				if (this.data.burn > 0 && this.data.progress++ >= 200) {
 					SmelterRecipes.performRecipe(recipe, this.container);
 					this.data.progress = 0;
 				}
@@ -160,7 +160,7 @@ MachineRegistry.registerPrototype(BlockID.rpSmelter, {
 		}
 		
 		this.setActive(this.data.burn > 0);
-		if(this.data.burn == 0){
+		if (this.data.burn == 0) {
 			this.data.progress = 0;
 		}
 		
@@ -168,12 +168,12 @@ MachineRegistry.registerPrototype(BlockID.rpSmelter, {
 		this.container.setScale("progressScale", this.data.progress / 200);
 	},
 	
-	getFuel: function(slotName){
+	getFuel: function(slotName) {
 		var fuelSlot = this.container.getSlot(slotName);
-		if(fuelSlot.id > 0){
+		if (fuelSlot.id > 0) {
 			var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
-			if(burn){
-				if(LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)){
+			if (burn) {
+				if (LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)) {
 					var empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
 					fuelSlot.id = empty.id;
 					fuelSlot.data = empty.data;
@@ -188,15 +188,15 @@ MachineRegistry.registerPrototype(BlockID.rpSmelter, {
 	},
 }, true);
 
-TileRenderer.setRotationPlaceFunction(BlockID.rpSmelter);
+TileRenderer.setRotationPlaceFunction(BlockID.rp_smelter);
 
-StorageInterface.createInterface(BlockID.rpSmelter, {
+StorageInterface.createInterface(BlockID.rp_smelter, {
 	slots: {
-		"slotFuel": {input: true, isValid: function(item, side){return side > 1}},
-		"slotSource1": {input: true, isValid: function(item, side){return side == 1}},
-		"slotSource2": {input: true, isValid: function(item, side){return side == 1}},
-		"slotSource3": {input: true, isValid: function(item, side){return side == 1}},
-		"slotSource4": {input: true, isValid: function(item, side){return side == 1}},
+		"slotFuel": {input: true, isValid: function(item, side) {return side > 1}},
+		"slotSource1": {input: true, isValid: function(item, side) {return side == 1}},
+		"slotSource2": {input: true, isValid: function(item, side) {return side == 1}},
+		"slotSource3": {input: true, isValid: function(item, side) {return side == 1}},
+		"slotSource4": {input: true, isValid: function(item, side) {return side == 1}},
 		"slotResult": {output: true}
 	}
 });

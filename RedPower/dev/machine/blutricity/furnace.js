@@ -1,16 +1,16 @@
-IDRegistry.genBlockID("bFurnace");
-Block.createBlock("bFurnace", [
-	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["rp_bfurnace_top", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_front", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_side", 0]], inCreative: true}
+IDRegistry.genBlockID("rp_furnace");
+Block.createBlock("rp_furnace", [
+	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.bFurnace, "stone", 1);
-Block.setDestroyLevel(BlockID.bFurnace, 1);
+ToolAPI.registerBlockMaterial(BlockID.rp_furnace, "stone", 1);
+Block.setDestroyLevel(BlockID.rp_furnace, 1);
 
-TileRenderer.setStandartModel(BlockID.bFurnace, [["rp_machine_bottom", 0], ["rp_bfurnace_top", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_front", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.bFurnace, 0, [["rp_machine_bottom", 0], ["rp_bfurnace_top", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_front", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.bFurnace, 4, [["rp_machine_bottom", 0], ["rp_bfurnace_top", 0], ["rp_bfurnace_side", 0], ["rp_bfurnace_front", 1], ["rp_bfurnace_side", 0], ["rp_bfurnace_side", 0]]);
+TileRenderer.setStandartModel(BlockID.rp_furnace, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.rp_furnace, 0, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.rp_furnace, 4, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 1], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
 
-Callback.addCallback("PreLoaded", function(){
-	Recipes.addShaped({id: BlockID.bFurnace, count: 1, data: 0}, [
+Callback.addCallback("PreLoaded", function() {
+	Recipes.addShaped({id: BlockID.rp_furnace, count: 1, data: 0}, [
 		"xxx",
 		"x x",
 		"aba"
@@ -44,43 +44,43 @@ var guiBFurnace = new UI.StandartWindow({
 	}
 });
 
-Callback.addCallback("LevelLoaded", function(){
+Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiBFurnace, "Blulectric Furnace");
 });
 
 
-MachineRegistry.registerPrototype(BlockID.bFurnace, {
+MachineRegistry.registerPrototype(BlockID.rp_furnace, {
 	defaultValues: {
 		progress: 0,
 		isActive: false
 	},
 	
-	getGuiScreen: function(){
+	getGuiScreen: function() {
 		return guiBFurnace;
 	},
 	
-	getTransportSlots: function(){
+	getTransportSlots: function() {
 		return {input: ["slotSource"], output: ["slotResult"]};
 	},
 	
-	getEnergyStorage: function(){
+	getEnergyStorage: function() {
 		return 800;
 	},
 	
-	tick: function(){
+	tick: function() {
 		StorageInterface.checkHoppers(this);
 		
 		var sourceSlot = this.container.getSlot("slotSource");
 		var resultSlot = this.container.getSlot("slotResult");
 		var newActive = false;
 		var result = Recipes.getFurnaceRecipeResult(sourceSlot.id, "iron");
-		if(result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)){
-			if(this.data.energy >= 2){
+		if (result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)) {
+			if (this.data.energy >= 2) {
 				this.data.energy -= 2;
 				this.data.progress++;
 				newActive = true;
 			}
-			if(this.data.progress >= 100){
+			if (this.data.progress >= 100) {
 				sourceSlot.count--;
 				resultSlot.id = result.id;
 				resultSlot.data = result.data;
@@ -105,9 +105,9 @@ MachineRegistry.registerPrototype(BlockID.bFurnace, {
 	energyTick: MachineRegistry.basicEnergyReceiveFunc
 });
 
-TileRenderer.setRotationPlaceFunction(BlockID.bFurnace);
+TileRenderer.setRotationPlaceFunction(BlockID.rp_furnace);
 
-StorageInterface.createInterface(BlockID.bFurnace, {
+StorageInterface.createInterface(BlockID.rp_furnace, {
 	slots: {
 		"slotSource": {input: true},
 		"slotResult": {output: true}

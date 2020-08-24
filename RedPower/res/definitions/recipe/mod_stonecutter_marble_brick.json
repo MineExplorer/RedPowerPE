@@ -1,0 +1,16 @@
+{
+	"ingredients": [
+		{
+			"item": "minecraft:block_marble"
+		}
+	],
+	"result": {
+		"item": "minecraft:block_marble_brick",
+		"data": 0
+	},
+	"type": "crafting_shapeless",
+	"tags": [
+		"stonecutter"
+	],
+	"priority": 0
+}

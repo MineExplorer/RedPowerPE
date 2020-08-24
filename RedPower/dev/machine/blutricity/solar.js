@@ -1,13 +1,13 @@
-IDRegistry.genBlockID("rpSolar");
-Block.createBlock("rpSolar", [
+IDRegistry.genBlockID("rp_solar");
+Block.createBlock("rp_solar", [
 	{name: "Solar Panel", texture: [["rp_machine_bottom", 0], ["rp_solar", 0], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1]], inCreative: true}
-], {renderlayer: 2});
-ToolAPI.registerBlockMaterial(BlockID.rpSolar, "stone", 1);
-Block.setDestroyLevel("rpSolar", 1);
-Block.setBlockShape(BlockID.rpSolar, {x: 0, y: 0, z: 0}, {x: 1, y: 0.25, z: 1});
+], "stone_slab");
+ToolAPI.registerBlockMaterial(BlockID.rp_solar, "stone", 1);
+Block.setDestroyLevel("rp_solar", 1);
+Block.setBlockShape(BlockID.rp_solar, {x: 0, y: 0, z: 0}, {x: 1, y: 0.25, z: 1}, 0);
 
-Callback.addCallback("PreLoaded", function(){
-	Recipes.addShaped({id: BlockID.rpSolar, count: 1, data: 0}, [
+Callback.addCallback("PreLoaded", function() {
+	Recipes.addShaped({id: BlockID.rp_solar, count: 1, data: 0}, [
 		"ooo",
 		"oxo",
 		"ooo"
@@ -15,13 +15,13 @@ Callback.addCallback("PreLoaded", function(){
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rpSolar, {
+MachineRegistry.registerPrototype(BlockID.rp_solar, {
 	isGenerator: function() {
 		return true;
 	},
 	
-	energyTick: function(type, src){
-		if(World.getBlockID(this.x, this.y + 1, this.z) != BlockID.luminator && World.getLightLevel(this.x, this.y + 1, this.z) == 15){
+	energyTick: function(type, src) {
+		if (World.getBlockID(this.x, this.y + 1, this.z) != BlockID.luminator && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
 			src.add(1);
 		}
 	}

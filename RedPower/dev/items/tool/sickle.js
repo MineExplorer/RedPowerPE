@@ -33,35 +33,35 @@ ToolType.sickle = {
 	damage: 1,
 	baseDamage: 0,
 	blockTypes: ["fibre"],
-	calcDestroyTime: function(item, coords, block, params, destroyTime, enchant){
+	calcDestroyTime: function(item, coords, block, params, destroyTime, enchant) {
 		var material = ToolAPI.getBlockMaterialName(block.id);
-		if(material == "fibre" || material == "plant" || block.id == 30){
+		if (material == "fibre" || material == "plant" || block.id == 30) {
 			return 0;
 		}
 		return destroyTime;
 	},
-	destroyBlock: function(coords, side, item, block){
+	destroyBlock: function(coords, side, item, block) {
 		var x = coords.x, y = coords.y, z = coords.z;
 		var material = ToolAPI.getBlockMaterialName(block.id);
-		if(material == "plant" && plants.indexOf(block.id) == -1){
-			for(var xx = x - 1; xx <= x + 1; xx++){
-				for(var yy = y - 1; yy <= y + 1; yy++){
-					for(var zz = z - 1; zz <= z + 1; zz++){
+		if (material == "plant" && plants.indexOf(block.id) == -1) {
+			for (var xx = x - 1; xx <= x + 1; xx++) {
+				for (var yy = y - 1; yy <= y + 1; yy++) {
+					for (var zz = z - 1; zz <= z + 1; zz++) {
 						block = World.getBlock(xx, yy, zz);
 						var material = ToolAPI.getBlockMaterialName(block.id);
-						if(material == "plant"){
+						if (material == "plant") {
 							World.destroyBlock(xx, yy, zz, true);
 						}
 					}
 				}
 			}
-		} else if(plants.indexOf(block.id) != -1){
-			for(var xx = x - 2; xx <= x + 2; xx++){
-				for(var zz = z - 2; zz <= z + 2; zz++){
+		} else if (plants.indexOf(block.id) != -1) {
+			for (var xx = x - 2; xx <= x + 2; xx++) {
+				for (var zz = z - 2; zz <= z + 2; zz++) {
 					block = World.getBlock(xx, y, zz);
-					if(plants.indexOf(block.id) != -1){
+					if (plants.indexOf(block.id) != -1) {
 						World.destroyBlock(xx, y, zz, true);
-						if(Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))){
+						if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
 							World.drop(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
 						}
 					}

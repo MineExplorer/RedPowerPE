@@ -1,8 +1,8 @@
 var IntegrationAPI = {
-	registerPlant: function(id){
+	registerPlant: function(id) {
 		plants.push(id);
 	},
-	registerSeeds: function(item, block){
+	registerSeeds: function(item, block) {
 		seeds[item] = block;
 	}
 }

@@ -19,7 +19,7 @@ block/cable.js
 machine/smelter.js
 machine/blutricity/solar.js
 machine/blutricity/thermopile.js
-machine/blutricity/bfurnace.js
+machine/blutricity/furnace.js
 machine/blutricity/bsmelter.js
 machine/blutricity/batbox.js
 

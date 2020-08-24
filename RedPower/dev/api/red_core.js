@@ -3,7 +3,7 @@ ModAPI.registerAPI("RedCore", {
 	SmelterRecipes: SmelterRecipes,
 	World: OreGeneration,
 	Integration: IntegrationAPI,
-	requireGlobal: function(command){
+	requireGlobal: function(command) {
 		return eval(command);
 	}
 });

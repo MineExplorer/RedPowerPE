@@ -1,0 +1,21 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"X",
+		"#"
+	],
+	"key": {
+		"X": {
+			"item": "minecraft:item_ingot_silver"
+		},
+		"#": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "minecraft:item_athame"
+	},
+	"tags": [
+		"crafting_table"
+	]
+}

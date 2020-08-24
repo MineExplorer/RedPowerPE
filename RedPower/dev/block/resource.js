@@ -75,7 +75,7 @@ Item.addCreativeGroup("blockResource", Translation.translate("Mineral Blocks"), 
 	BlockID.blockGreenSapphire
 ]);
 
-Callback.addCallback("PostLoaded", function(){
+Callback.addCallback("PostLoaded", function() {
 	Recipes.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
@@ -125,4 +125,92 @@ Callback.addCallback("PostLoaded", function(){
 	Recipes.addShapeless({id: ItemID.gemSapphire, count: 9, data: 0}, [{id: BlockID.blockSapphire, data: 0}]);
 	Recipes.addShapeless({id: ItemID.gemGreenSapphire, count: 9, data: 0}, [{id: BlockID.blockGreenSapphire, data: 0}]);
 	Recipes.addShapeless({id: ItemID.gemRuby, count: 9, data: 0}, [{id: BlockID.blockRuby, data: 0}]);
+	
+	VanillaRecipe.addCraftingRecipe("ingot_copper", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockCopper" }
+	  ],
+	  "result": {
+	    "item": "item:ingotCopper",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("ingot_tin", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockTin" }
+	  ],
+	  "result": {
+	    "item": "item:ingotTin",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("ingot_bronze", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockBronze" }
+	  ],
+	  "result": {
+	    "item": "item:ingotBronze",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("ingot_silver", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockSilver" }
+	  ],
+	  "result": {
+	    "item": "item:ingotSilver",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("nikolite", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockNikolite" }
+	  ],
+	  "result": {
+	    "item": "item:nikolite",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("gem_ruby", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockRuby" }
+	  ],
+	  "result": {
+	    "item": "item:gemRuby",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("gem_sapphire", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockSapphire" }
+	  ],
+	  "result": {
+	    "item": "item:gemSapphire",
+	    "count": 9
+	  }
+	});
+	
+	VanillaRecipe.addCraftingRecipe("gem_green_sapphire", {
+	  "type": "shapeless",
+	  "ingredients": [
+	    { "item": "block:blockGreenSapphire" }
+	  ],
+	  "result": {
+	    "item": "item:gemGreenSapphire",
+	    "count": 9
+	  }
+	});
 });

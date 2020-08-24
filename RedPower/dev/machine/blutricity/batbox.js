@@ -1,5 +1,5 @@
-IDRegistry.genBlockID("rpBatBox");
-Block.createBlock("rpBatBox", [
+IDRegistry.genBlockID("rp_batbox");
+Block.createBlock("rp_batbox", [
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0]], inCreative: true},
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 1], ["rp_batbox_side", 1], ["rp_batbox_side", 1], ["rp_batbox_side", 1]], inCreative: false},
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 2], ["rp_batbox_side", 2], ["rp_batbox_side", 2], ["rp_batbox_side", 2]], inCreative: false},
@@ -10,18 +10,18 @@ Block.createBlock("rpBatBox", [
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 7], ["rp_batbox_side", 7], ["rp_batbox_side", 7], ["rp_batbox_side", 7]], inCreative: false},
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 8], ["rp_batbox_side", 8], ["rp_batbox_side", 8], ["rp_batbox_side", 8]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rpBatBox, "stone", 1);
-Block.registerDropFunction("rpBatBox", function(coords, blockID, blockData, level){
+ToolAPI.registerBlockMaterial(BlockID.rp_batbox, "stone", 1);
+Block.registerDropFunction("rp_batbox", function(coords, blockID, blockData, level) {
 	return [];
 });
 
-TileRenderer.setStandartModel(BlockID.rpBatBox, [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0]]);
-for(var i = 1; i <= 8; i++){
-	TileRenderer.registerRenderModel(BlockID.rpBatBox, i, [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", i], ["rp_batbox_side", i], ["rp_batbox_side", i], ["rp_batbox_side", i]]);
+TileRenderer.setStandartModel(BlockID.rp_batbox, [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0]]);
+for (var i = 1; i <= 8; i++) {
+	TileRenderer.registerRenderModel(BlockID.rp_batbox, i, [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", i], ["rp_batbox_side", i], ["rp_batbox_side", i], ["rp_batbox_side", i]]);
 }
 
-Callback.addCallback("PreLoaded", function(){
-	Recipes.addShaped({id: BlockID.rpBatBox, count: 1, data: 0}, [
+Callback.addCallback("PreLoaded", function() {
+	Recipes.addShaped({id: BlockID.rp_batbox, count: 1, data: 0}, [
 		"xpx",
 		"xax",
 		"aba"
@@ -49,99 +49,99 @@ var guiBatBox = new UI.StandartWindow({
 	elements: {
 		"batteryIcon": {type: "image", x: 530 + 6*GUI_SCALE, y: 75 - 7*GUI_SCALE, bitmap: "battery_icon_off", scale: GUI_SCALE},
 		"btScale": {type: "scale", x: 530 + GUI_SCALE, y: 75 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "bstorage_scale", scale: GUI_SCALE},
-		"slot1": {type: "slot", x: 650, y: 80, isValid: function(id){return ChargeItemRegistry.isValidItem(id, "Bu", 0);}},
-		"slot2": {type: "slot", x: 650, y: 172, isValid: function(id){return ChargeItemRegistry.isValidStorage(id, "Bu", 0);}},
+		"slot1": {type: "slot", x: 650, y: 80, isValid: function(id) {return ChargeItemRegistry.isValidItem(id, "Bu", 0);}},
+		"slot2": {type: "slot", x: 650, y: 172, isValid: function(id) {return ChargeItemRegistry.isValidStorage(id, "Bu", 0);}},
 	}
 });
 
-Callback.addCallback("LevelLoaded", function(){
+Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rpBatBox, {
+MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 	defaultValues: {
 		data: 0
 	},
 		
-	getGuiScreen: function(){
+	getGuiScreen: function() {
 		return guiBatBox;
 	},
 	
-	init: function(){
+	init: function() {
 		var meta = Math.floor(this.data.energy/3000);
-		if(meta){
+		if (meta) {
 			this.data.meta = meta;
-			TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rpBatBox, meta);
+			TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rp_batbox, meta);
 		}
 	},
 	
-	tick: function(){
+	tick: function() {
 		var energyStorage = this.getEnergyStorage();
 		
 		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slot2"), "Bu", energyStorage - this.data.energy, 1);
 		this.data.energy -= ChargeItemRegistry.addEnergyTo(this.container.getSlot("slot1"), "Bu", this.data.energy, 1);
 		
 		var meta = Math.floor(this.data.energy/3000);
-		if(meta != this.data.meta){
+		if (meta != this.data.meta) {
 			this.data.meta = meta;
-			if(meta){
-				TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rpBatBox, meta);
+			if (meta) {
+				TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rp_batbox, meta);
 			}
-			else{
+			else {
 				BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 				var content = this.container.getGuiContent();
-				if(content){
+				if (content) {
 					
 				}
 			}
 		}
 		var content = this.container.getGuiContent();
-		if(content){
-			if(this.data.energy == 24000){
+		if (content) {
+			if (this.data.energy == 24000) {
 				content.elements.batteryIcon.bitmap = "battery_icon_on";
 			}
-			else{
+			else {
 				content.elements.batteryIcon.bitmap = "battery_icon_off";
 			}
 		}
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 	},
 	
-	getEnergyStorage: function(){
+	getEnergyStorage: function() {
 		return 24000;
 	},
 	
-	energyTick: function(type, src){
+	energyTick: function(type, src) {
 		var TRANSFER = 25;
 		this.data.energy += src.storage(Math.min(TRANSFER*4, this.getEnergyStorage() - this.data.energy), Math.min(TRANSFER, this.data.energy));
 	},
 	
-	destroyBlock: function(coords, player){
+	destroyBlock: function(coords, player) {
 		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		var extra;
-		if(this.data.energy > 0){
+		if (this.data.energy > 0) {
 			extra = new ItemExtraData();
 			extra.putInt("energy", this.data.energy);
 		}
 		var blockData = Math.floor(this.data.energy / 3000);
-		World.drop(coords.x, coords.y, coords.z, BlockID.rpBatBox, 1, blockData, extra);
+		World.drop(coords.x, coords.y, coords.z, BlockID.rp_batbox, 1, blockData, extra);
 	}
 });
 
 
-Block.registerPlaceFunction("rpBatBox", function(coords, item, block){
+Block.registerPlaceFunction("rp_batbox", function(coords, item, block) {
 	var x = coords.relative.x
 	var y = coords.relative.y
 	var z = coords.relative.z
 	block = World.getBlockID(x, y, z)
-	if(GenerationUtils.isTransparentBlock(block)){
+	if (GenerationUtils.isTransparentBlock(block)) {
 		World.setBlock(x, y, z, item.id, 0);
 		var tile = World.addTileEntity(x, y, z);
-		if(item.extra){
+		if (item.extra) {
 			tile.data.energy = item.extra.getInt("energy") + 16;
 		}
-		else if(item.data == 8){
+		else if (item.data == 8) {
 			tile.data.energy = 24016;
 		}
 	}
