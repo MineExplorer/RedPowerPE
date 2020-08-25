@@ -28,7 +28,7 @@ Block.registerDropFunction("flax", function(coords, blockID, blockData, level) {
 	if (blockData < 4) {
 		return [[ItemID.flaxSeeds, 1, 0]];
 	}
-	return [[ItemID.flaxSeeds, random(1, 3), 0], [287, random(1, 3), 0]];
+	return [[ItemID.flaxSeeds, randomInt(1, 3), 0], [287, randomInt(1, 3), 0]];
 });
 
 Callback.addCallback("DestroyBlock", function(coords, block, player) {

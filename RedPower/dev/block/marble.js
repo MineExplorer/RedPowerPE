@@ -69,4 +69,4 @@ World.addGenerationCallback("GenerateChunk", function(chunkX, chunkZ, random) {
 			genMarble(coords.x, coords.y, coords.z, random);
 		}
 	}
-}, "rp-rp_marble");
+}, "rp-marble");
