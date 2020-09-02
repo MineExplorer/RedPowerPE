@@ -9,7 +9,7 @@ ModAPI.addAPICallback("RecipeViewer", function(api) {
 
 	RecipeViewer.registerRecipeType("rp_smelter", {
 		contents: {
-			icon: BlockID.rpSmelter,
+			icon: BlockID.rp_smelter,
 			drawing: [
 				{type: "bitmap", x: 500, y: 222, bitmap: "furnace_bar_scale", scale: 6},
 			],
