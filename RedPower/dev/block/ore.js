@@ -158,8 +158,8 @@ var OreGeneration = {
 		maxHeight = maxHeight || 128;
 		var x = chunkX*16 + random.nextInt(16);
 		var z = chunkZ*16 + random.nextInt(16);
-		var y = random.nextInt(maxHeight - minHeight + 1) - minHeight;
-		return {x: x, y: y, z: z};
+		var y = random.nextInt(maxHeight - minHeight + 1) + minHeight;
+		return Vector(x, y, z);
 	}
 }
 

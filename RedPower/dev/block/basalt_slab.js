@@ -77,7 +77,7 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_cobble_slab", {
 VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_slab", {
   ingredients: [
     {
-      item: "block:basalt_brick",
+      item: "block:basaltBrick",
       data: 0
     }
   ],

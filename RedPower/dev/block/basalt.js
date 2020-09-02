@@ -121,18 +121,18 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_chiseled_basalt_brick", {
 });
 
 
-function genBasalt(x, y, z) {
-	randY = 1 + Math.random()
-	randR = Math.random()*3.3
-	r = 6.7 + Math.ceil(randR)
+function genBasalt(random, x, y, z) {
+	randY = 1 + random.nextFloat();
+	randR = 7 + random.nextFloat()*3;
+	r = Math.ceil(randR)
 	h = r/Math.sqrt(randY)
 	for (var xx = -r; xx <= r; xx++) {
 		for (var yy = -h; yy <= h; yy++) {
 			for (var zz = -r; zz <= r; zz++) {
-				if (Math.sqrt(xx*xx + yy*yy*randY + zz*zz) < 6.7 + randR + Math.random()/2) {
+				if (Math.sqrt(xx*xx + yy*yy*randY + zz*zz) < randR + random.nextFloat()/2) {
 					id = World.getBlockID(x+xx, y+yy, z+zz)
-					if (id==1 || id==3 || id==13 || id==16) {
-					World.setBlock(x+xx, y+yy, z+zz, BlockID.rp_basalt);}
+					if (id==1 || id==3 || id==13 || id==16)
+						World.setBlock(x+xx, y+yy, z+zz, BlockID.rp_basalt);
 				}
 			}
 		}
@@ -144,6 +144,6 @@ var basaltChance = __config__.getNumber("world_gen.basalt")
 World.addGenerationCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random) {
 	if (random.nextInt(100) < basaltChance) {
 		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 4, 12);
-		genBasalt(coords.x, coords.y, coords.z);
+		genBasalt(random, coords.x, coords.y, coords.z);
 	}
 }, "rp-basalt");

@@ -18,5 +18,9 @@ function randomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function Vector(x, y, z) {
+	return {x: x, y: y, z: z};
+}
+
 // blutricity
 var BT = EnergyTypeRegistry.assureEnergyType("Bu", 2);
