@@ -30,40 +30,10 @@ Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 0}, [
 	"aaa"
 ], ['a', ItemID.canvas, 0]);
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i < 16; i++) {
 	Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: i}, [
 		"aaa",
 		"axa",
 		"aaa"
-	], ['x', 351, 15 - i, 'a', ItemID.canvas, 0]);
+	], ['x', 351, COLOR_INDEX_TO_DYE_DATA[i], 'a', ItemID.canvas, 0]);
 }
-
-Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 11}, [
-	"aaa",
-	"axa",
-	"aaa"
-], ['x', 351, 18, 'a', ItemID.canvas, 0]);
-
-Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 12}, [
-	"aaa",
-	"axa",
-	"aaa"
-], ['x', 351, 17, 'a', ItemID.canvas, 0]);
-
-Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 13}, [
-	"aaa",
-	"axa",
-	"aaa"
-], ['x', 351, 2, 'a', ItemID.canvas, 0]);
-
-Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 14}, [
-	"aaa",
-	"axa",
-	"aaa"
-], ['x', 351, 1, 'a', ItemID.canvas, 0]);
-
-Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 15}, [
-	"aaa",
-	"axa",
-	"aaa"
-], ['x', 351, 16, 'a', ItemID.canvas, 0]);

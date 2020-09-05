@@ -9,11 +9,6 @@ ToolAPI.registerSword(ItemID.athame, {level: 0, durability: 50, damage: 3}, {
 	}
 });
 
-Recipes.addShaped({id: ItemID.athame, count: 1, data: 0}, [
-	"a",
-	"b"
-], ['a', ItemID.ingotSilver, 0, 'b', 280, 0]);
-
 VanillaRecipe.addCraftingRecipe("athame", {
   type: "shaped",
   pattern: [
@@ -27,4 +22,4 @@ VanillaRecipe.addCraftingRecipe("athame", {
   result: { 
     item: "item:athame"
   }
-});
+}, true);

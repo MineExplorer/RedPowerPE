@@ -1,6 +1,17 @@
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 LIBRARY({
     name: "VanillaRecipe",
-    version: 1,
+    version: 2,
     shared: false,
     api: "CoreEngine"
 });
@@ -10,6 +21,7 @@ var VanillaRecipe;
     var resource_path;
     function setResourcePath(path) {
         resource_path = path + "/definitions/recipe/";
+        FileTools.mkdir(resource_path);
         resetRecipes();
     }
     VanillaRecipe.setResourcePath = setResourcePath;
@@ -75,7 +87,44 @@ var VanillaRecipe;
         FileTools.WriteJSON(getFilePath(name), obj, true);
     }
     VanillaRecipe.generateJSONRecipe = generateJSONRecipe;
-    function addCraftingRecipe(name, obj) {
+    function addWorkbenchRecipeFromJSON(obj) {
+        var e_1, _a;
+        var result = {
+            id: getNumericID(obj.result.item),
+            count: obj.result.count || 1,
+            data: obj.result.data || 0
+        };
+        if (obj.key) {
+            var ingredients = [];
+            for (var key in obj.key) {
+                ingredients.push(key);
+                var item = obj.key[key];
+                ingredients.push(getNumericID(item.item), item.data || -1);
+            }
+            Recipes.addShaped(result, obj.pattern, ingredients);
+        }
+        else {
+            var ingredients = [];
+            try {
+                for (var _b = __values(obj.ingredients), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var item = _c.value;
+                    ingredients.push({ id: getNumericID(item.item), data: item.data || 0 });
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+            Recipes.addShapeless(result, ingredients);
+        }
+    }
+    VanillaRecipe.addWorkbenchRecipeFromJSON = addWorkbenchRecipeFromJSON;
+    function addCraftingRecipe(name, obj, addRecipeToWorkbench) {
+        if (addRecipeToWorkbench)
+            addWorkbenchRecipeFromJSON(obj);
         obj.type = "crafting_" + obj.type;
         if (!obj.tags)
             obj.tags = ["crafting_table"];

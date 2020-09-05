@@ -66,12 +66,6 @@ Item.addCreativeGroup("basalt", Translation.translate("Basalt"), [
 ]);
 
 Recipes.addFurnace(BlockID.basaltCobble, BlockID.rp_basalt, 0);
-Recipes.addShapeless({id: BlockID.basaltPaver, count: 1, data: 0}, [{id: BlockID.rp_basalt, data: 0}]);
-
-Recipes.addShaped({id: BlockID.basaltBrick, count: 4, data: 0}, [
-	"xx",
-	"xx"
-], ['x', BlockID.rp_basalt, 0]);
 
 VanillaRecipe.addCraftingRecipe("basalt_brick", {
   type: "shaped",
@@ -83,11 +77,11 @@ VanillaRecipe.addCraftingRecipe("basalt_brick", {
     "X": { item: "block:rp_basalt" }
   },
   result: {
-	item: "block:basaltBrick",
-	data: 0,
-	count: 4
+    item: "block:basaltBrick",
+    data: 0,
+    count: 4
   }
-});
+}, true);
 
 VanillaRecipe.addCraftingRecipe("basalt_paver", {
   type: "shapeless",
@@ -98,15 +92,15 @@ VanillaRecipe.addCraftingRecipe("basalt_paver", {
   result: {
     item: "block:basaltPaver"
   }
-});
+}, true);
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick", {
   ingredients: [
     { item: "block:rp_basalt" }
   ],
   result: {
-	item: "block:basaltBrick",
-	data: 0
+    item: "block:basaltBrick",
+    data: 0
   }
 });
 
@@ -115,8 +109,8 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_chiseled_basalt_brick", {
     { item: "block:rp_basalt" }
   ],
   result: {
-	item: "block:basaltBrick",
-	data: 1
+    item: "block:basaltBrick",
+    data: 1
   }
 });
 

@@ -25,11 +25,6 @@ ToolAPI.registerBlockMaterial(BlockID.marbleBrick, "stone", 1, true);
 Block.setDestroyLevel("marbleBrick", 1);
 ToolLib.addBlockDropOnExplosion("marbleBrick");
 
-Recipes.addShaped({id: BlockID.marbleBrick, count: 4, data: 1}, [
-	"xx",
-	"xx"
-], ['x', BlockID.rp_marble, 0]);
-
 VanillaRecipe.addCraftingRecipe("marbleBrick", {
   type: "shaped",
   pattern: [
@@ -40,21 +35,21 @@ VanillaRecipe.addCraftingRecipe("marbleBrick", {
     "X": { item: "block:rp_marble" }
   },
   result: {
-	item: "block:marbleBrick",
-	data: 0,
-	count: 4
+    item: "block:marbleBrick",
+    data: 0,
+    count: 4
   }
-});
+}, true);
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick", {
-	ingredients: [
-	  { item: "block:rp_marble" }
-	],
-	result: {
-	  item: "block:marbleBrick",
-	  data: 0
-	}
-  });
+  ingredients: [
+    { item: "block:rp_marble" }
+  ],
+  result: {
+    item: "block:marbleBrick",
+    data: 0
+  }
+}, true);
 
 function genMarble(x, y, z, random) {
 	GenerationUtils.generateOre(x, y, z, BlockID.rp_marble, 0, 72, false, random.nextInt());
