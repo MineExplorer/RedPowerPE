@@ -1,7 +1,7 @@
 // libraries
 IMPORT("flags");
 IMPORT("ToolLib");
-IMPORT("energylib");
+IMPORT("EnergyNet");
 IMPORT("ChargeItem");
 IMPORT("TileRender");
 IMPORT("BackpackAPI");

@@ -94,9 +94,7 @@ MachineRegistry.registerPrototype(BlockID.btfurnace, {
 		
 		this.container.setScale("progressScale", this.data.progress/100);
 		this.container.setScale("btScale", this.data.energy / energyStorage);
-	},
-	
-	energyTick: MachineRegistry.basicEnergyReceiveFunc
+	}
 });
 
 TileRenderer.setRotationPlaceFunction(BlockID.btfurnace);

@@ -44,6 +44,14 @@ var MachineRegistry = {
 					return 0;
 				};
 			}
+
+			if (!Prototype.energyReceive) {
+				Prototype.energyReceive = function(type, amount, voltage) {
+					var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+					this.data.energy += add;
+					return add;
+				}
+			}
 		}
 		
 		Block.setDestroyTime(id, 3.25);
@@ -65,11 +73,6 @@ var MachineRegistry = {
 			this.data.isActive = isActive;
 			TileRenderer.mapAtCoords(this.x, this.y, this.z, this.id, this.data.meta + (isActive? 4 : 0));
 		}
-	},
-	
-	basicEnergyReceiveFunc: function(type, src) {
-		var energyNeed = this.getEnergyStorage() - this.data.energy;
-		this.data.energy += src.get(energyNeed);
 	},
 	
 	updateGuiHeader: function(gui, text) {

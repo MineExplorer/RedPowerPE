@@ -104,16 +104,20 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 		}
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 	},
+
+	isEnergySource: function() {
+		return true;
+	},
 	
 	getEnergyStorage: function() {
 		return 48000;
 	},
-	
+
 	energyTick: function(type, src) {
-		var TRANSFER = 100;
-		this.data.energy += src.storage(Math.min(TRANSFER*4, this.getEnergyStorage() - this.data.energy), Math.min(TRANSFER, this.data.energy));
+		var output = Math.min(100, this.data.energy);
+		this.data.energy += src.add(output) - output;
 	},
-	
+
 	destroyBlock: function(coords, player) {
 		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		var extra;

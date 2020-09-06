@@ -16,12 +16,23 @@ Callback.addCallback("PreLoaded", function() {
 
 
 MachineRegistry.registerPrototype(BlockID.rp_solar, {
-	isGenerator: function() {
+	defaultValues: {
+		canSeeSky: false
+	},
+
+	isEnergySource: function() {
 		return true;
 	},
 	
+	init: function() {
+		this.data.canSeeSky = GenerationUtils.canSeeSky(this.x, this.y + 1, this.z);
+	},
+	
 	energyTick: function(type, src) {
-		if (World.getBlockID(this.x, this.y + 1, this.z) != BlockID.luminator && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
+		if (World.getThreadTime()%100 == 0) {
+			this.data.canSeeSky = GenerationUtils.canSeeSky(this.x, this.y + 1, this.z);
+		}
+		if (this.data.canSeeSky && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
 			src.add(2);
 		}
 	}
