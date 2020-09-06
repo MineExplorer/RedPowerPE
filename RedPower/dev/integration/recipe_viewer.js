@@ -1,11 +1,10 @@
 ModAPI.addAPICallback("RecipeViewer", function(api) {
 	let RecipeViewer = api.Core;
-	const Bitmap = android.graphics.Bitmap;
-	const Canvas = android.graphics.Canvas;
-	const Rect = android.graphics.Rect;
-
-	let bmp, cvs, source;
-	let x = y = 0;
+	
+	if (RecipeViewer.addListByData) {
+		RecipeViewer.addListByData(ItemID.lumar, 16, "item");
+		RecipeViewer.addListByData(ItemID.canvasBag, 16, "item");
+	}
 
 	RecipeViewer.registerRecipeType("rp_smelter", {
 		contents: {
