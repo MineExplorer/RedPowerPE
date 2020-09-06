@@ -1,16 +1,16 @@
-IDRegistry.genBlockID("rp_furnace");
-Block.createBlock("rp_furnace", [
-	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]], inCreative: true}
+IDRegistry.genBlockID("btfurnace");
+Block.createBlock("btfurnace", [
+	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rp_furnace, "stone", 1);
-Block.setDestroyLevel(BlockID.rp_furnace, 1);
+ToolAPI.registerBlockMaterial(BlockID.btfurnace, "stone", 1);
+Block.setDestroyLevel(BlockID.btfurnace, 1);
 
-TileRenderer.setStandartModel(BlockID.rp_furnace, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rp_furnace, 0, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 0], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rp_furnace, 4, [["rp_machine_bottom", 0], ["rp_furnace_top", 0], ["rp_furnace_side", 0], ["rp_furnace_front", 1], ["rp_furnace_side", 0], ["rp_furnace_side", 0]]);
+TileRenderer.setStandartModel(BlockID.btfurnace, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.btfurnace, 0, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.btfurnace, 4, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 1], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
 
 Callback.addCallback("PreLoaded", function() {
-	Recipes.addShaped({id: BlockID.rp_furnace, count: 1, data: 0}, [
+	Recipes.addShaped({id: BlockID.btfurnace, count: 1, data: 0}, [
 		"xxx",
 		"x x",
 		"aba"
@@ -43,7 +43,7 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rp_furnace, {
+MachineRegistry.registerPrototype(BlockID.btfurnace, {
 	defaultValues: {
 		progress: 0,
 		isActive: false
@@ -99,9 +99,9 @@ MachineRegistry.registerPrototype(BlockID.rp_furnace, {
 	energyTick: MachineRegistry.basicEnergyReceiveFunc
 });
 
-TileRenderer.setRotationPlaceFunction(BlockID.rp_furnace);
+TileRenderer.setRotationPlaceFunction(BlockID.btfurnace);
 
-StorageInterface.createInterface(BlockID.rp_furnace, {
+StorageInterface.createInterface(BlockID.btfurnace, {
 	slots: {
 		"slotSource": {input: true},
 		"slotResult": {output: true}

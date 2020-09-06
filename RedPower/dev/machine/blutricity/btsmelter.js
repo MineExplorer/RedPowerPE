@@ -1,16 +1,16 @@
-IDRegistry.genBlockID("rp_bsmelter");
-Block.createBlock("rp_bsmelter", [
-	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["rp_bsmelter_top", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_front", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_side", 0]], inCreative: true}
+IDRegistry.genBlockID("btsmelter");
+Block.createBlock("btsmelter", [
+	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["btsmelter_top", 0], ["btsmelter_side", 0], ["btsmelter_front", 0], ["btsmelter_side", 0], ["btsmelter_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rp_bsmelter, "stone", 1);
-Block.setDestroyLevel(BlockID.rp_bsmelter, 1);
+ToolAPI.registerBlockMaterial(BlockID.btsmelter, "stone", 1);
+Block.setDestroyLevel(BlockID.btsmelter, 1);
 
-TileRenderer.setStandartModel(BlockID.rp_bsmelter, [["rp_machine_bottom", 0], ["rp_bsmelter_top", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_front", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rp_bsmelter, 0, [["rp_machine_bottom", 0], ["rp_bsmelter_top", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_front", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rp_bsmelter, 4, [["rp_machine_bottom", 0], ["rp_bsmelter_top", 0], ["rp_bsmelter_side", 0], ["rp_bsmelter_front", 1], ["rp_bsmelter_side", 0], ["rp_bsmelter_side", 0]]);
+TileRenderer.setStandartModel(BlockID.btsmelter, [["rp_machine_bottom", 0], ["btsmelter_top", 0], ["btsmelter_side", 0], ["btsmelter_front", 0], ["btsmelter_side", 0], ["btsmelter_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.btsmelter, 0, [["rp_machine_bottom", 0], ["btsmelter_top", 0], ["btsmelter_side", 0], ["btsmelter_front", 0], ["btsmelter_side", 0], ["btsmelter_side", 0]]);
+TileRenderer.registerRotationModel(BlockID.btsmelter, 4, [["rp_machine_bottom", 0], ["btsmelter_top", 0], ["btsmelter_side", 0], ["btsmelter_front", 1], ["btsmelter_side", 0], ["btsmelter_side", 0]]);
 
 Callback.addCallback("PreLoaded", function() {
-	Recipes.addShaped({id: BlockID.rp_bsmelter, count: 1, data: 0}, [
+	Recipes.addShaped({id: BlockID.btsmelter, count: 1, data: 0}, [
 		"xxx",
 		"x x",
 		"aba"
@@ -46,7 +46,7 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rp_bsmelter, {
+MachineRegistry.registerPrototype(BlockID.btsmelter, {
 	defaultValues: {
 		progress: 0,
 		isActive: false
@@ -108,9 +108,9 @@ MachineRegistry.registerPrototype(BlockID.rp_bsmelter, {
 	energyTick: MachineRegistry.basicEnergyReceiveFunc
 });
 
-TileRenderer.setRotationPlaceFunction(BlockID.rp_bsmelter);
+TileRenderer.setRotationPlaceFunction(BlockID.btsmelter);
 
-StorageInterface.createInterface(BlockID.rp_bsmelter, {
+StorageInterface.createInterface(BlockID.btsmelter, {
 	slots: {
 		"slotSource1": {input: true},
 		"slotSource2": {input: true},

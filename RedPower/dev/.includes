@@ -20,7 +20,7 @@ machine/smelter.js
 machine/blutricity/solar.js
 machine/blutricity/thermopile.js
 machine/blutricity/furnace.js
-machine/blutricity/bsmelter.js
+machine/blutricity/btsmelter.js
 machine/blutricity/batbox.js
 
 items/resource.js
