@@ -1,5 +1,5 @@
-IDRegistry.genBlockID("rpLamp");
-Block.createBlock("rpLamp", [
+IDRegistry.genBlockID("rp_lamp");
+Block.createBlock("rp_lamp", [
 	{name: "White Lamp", texture: [["rp_lamp", 0]], inCreative: true},
 	{name: "Orange Lamp", texture: [["rp_lamp", 1]], inCreative: true},
 	{name: "Magenta Lamp", texture: [["rp_lamp", 2]], inCreative: true},
@@ -17,10 +17,10 @@ Block.createBlock("rpLamp", [
 	{name: "Red Lamp", texture: [["rp_lamp", 14]], inCreative: true},
 	{name: "Black Lamp", texture: [["rp_lamp", 15]], inCreative: true}
 ], "opaque");
-Block.setDestroyTime(BlockID.rpLamp, 2);
+Block.setDestroyTime(BlockID.rp_lamp, 2);
 
-IDRegistry.genBlockID("rpLampInv");
-Block.createBlock("rpLampInv", [
+IDRegistry.genBlockID("rp_lamp_inverted");
+Block.createBlock("rp_lamp_inverted", [
 	{name: "White Inverted Lamp", texture: [["rp_lamp_on", 0]], inCreative: true},
 	{name: "Orange Inverted Lamp", texture: [["rp_lamp_on", 1]], inCreative: true},
 	{name: "Magenta Inverted Lamp", texture: [["rp_lamp_on", 2]], inCreative: true},
@@ -46,38 +46,38 @@ Block.createBlock("rpLampInv", [
 });
 
 
-Item.addCreativeGroup("rpLamp", Translation.translate("Lamps"), [
-	BlockID.rpLamp,
+Item.addCreativeGroup("rp_lamp", Translation.translate("Lamps"), [
+	BlockID.rp_lamp,
 ]);
 
-Item.addCreativeGroup("rpLampInv", Translation.translate("Inverted Lamps"), [
-	BlockID.rpLampInv,
+Item.addCreativeGroup("rp_lamp_inverted", Translation.translate("Inverted Lamps"), [
+	BlockID.rp_lamp_inverted,
 ]);
 
-Block.registerDropFunction("rpLamp", function(coords, blockID, blockData, level) {
+Block.registerDropFunction("rp_lamp", function(coords, blockID, blockData, level) {
 	return [];
 });
-Block.registerDropFunction("rpLampInv", function(coords, blockID, blockData, level) {
+Block.registerDropFunction("rp_lamp_inverted", function(coords, blockID, blockData, level) {
 	return [];
 });
 
 Callback.addCallback("PreLoaded", function() {
 	for (var i = 0; i < 16; i++) {
-		Recipes.addShaped({id: BlockID.rpLamp, count: 1, data: i}, [
+		Recipes.addShaped({id: BlockID.rp_lamp, count: 1, data: i}, [
 			"gxg",
 			"gxg",
 			"grg",
 		], ['x', ItemID.lumar, i, 'g', 102, -1, 'r', 331, 0]);
 		
-		Recipes.addShaped({id: BlockID.rpLampInv, count: 1, data: i}, [
+		Recipes.addShaped({id: BlockID.rp_lamp_inverted, count: 1, data: i}, [
 			"gxg",
 			"gxg",
 			"grg",
-		], ['x', ItemID.lumar, i, 'g', 102, -1, 'r', 75, 0]);
+		], ['x', ItemID.lumar, i, 'g', 102, -1, 'r', 76, 0]);
 	}
 });
 
-TileEntity.registerPrototype(BlockID.rpLamp, {
+TileEntity.registerPrototype(BlockID.rp_lamp, {
 	defaultValues: {
 		inverted: false,
 	},
@@ -87,30 +87,27 @@ TileEntity.registerPrototype(BlockID.rpLamp, {
 		if (!this.data.inverted && signal.power) {
 			this.selfDestroy();
 			var data = World.getBlock(x, y, z).data;
-			World.setBlock(x, y, z, BlockID.rpLampInv, data);
+			World.setBlock(x, y, z, BlockID.rp_lamp_inverted, data);
 			var tile = World.addTileEntity(x, y, z);
 			tile.data.inverted = false;
 		}
 		if (this.data.inverted && !signal.power) {
 			this.selfDestroy();
 			var data = World.getBlock(x, y, z).data;
-			World.setBlock(x, y, z, BlockID.rpLampInv, data);
+			World.setBlock(x, y, z, BlockID.rp_lamp_inverted, data);
 			var tile = World.addTileEntity(x, y, z);
 			tile.data.inverted = true;
 		}
 	},
 	
 	destroyBlock: function(coords, player) {
-		var data = World.getBlock(coords.x, coords.y, coords.z).data;
-		if (this.data.inverted) {
-			World.drop(coords.x, coords.y, coords.z, BlockID.rpLampInv, 1, data);
-		} else {
-			World.drop(coords.x, coords.y, coords.z, BlockID.rpLamp, 1, data);
-		}
+		var blockID = this.data.inverted ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
+		var blockData = World.getBlockData(coords.x, coords.y, coords.z);
+		World.drop(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 });
 
-TileEntity.registerPrototype(BlockID.rpLampInv, {
+TileEntity.registerPrototype(BlockID.rp_lamp_inverted, {
 	defaultValues: {
 		inverted: true,
 	},
@@ -120,49 +117,22 @@ TileEntity.registerPrototype(BlockID.rpLampInv, {
 		if (!this.data.inverted && !signal.power) {
 			this.selfDestroy();
 			var data = World.getBlockData(x, y, z);
-			World.setBlock(x, y, z, BlockID.rpLamp, data);
+			World.setBlock(x, y, z, BlockID.rp_lamp, data);
 			var tile = World.addTileEntity(x, y, z);
 			tile.data.inverted = false;
 		}
 		if (this.data.inverted && signal.power) {
 			this.selfDestroy();
 			var data = World.getBlockData(x, y, z);
-			World.setBlock(x, y, z, BlockID.rpLamp, data);
+			World.setBlock(x, y, z, BlockID.rp_lamp, data);
 			var tile = World.addTileEntity(x, y, z);
 			tile.data.inverted = true;
 		}
 	},
 	
 	destroyBlock: function(coords, player) {
-		var data = World.getBlockData(coords.x, coords.y, coords.z);
-		if (this.data.inverted) {
-			World.drop(coords.x, coords.y, coords.z, BlockID.rpLampInv, 1, data);
-		} else {
-			World.drop(coords.x, coords.y, coords.z, BlockID.rpLamp, 1, data);
-		}
-	}
-});
-
-Block.registerPlaceFunction("rpLamp", function(coords, item, block) {
-	Game.prevent();
-	var x = coords.relative.x
-	var y = coords.relative.y
-	var z = coords.relative.z
-	block = World.getBlockID(x, y, z)
-	if (GenerationUtils.isTransparentBlock(block)) {
-		World.setBlock(x, y, z, item.id, item.data);
-		World.addTileEntity(x, y, z);
-	}
-});
-
-Block.registerPlaceFunction("rpLampInv", function(coords, item, block) {
-	Game.prevent();
-	var x = coords.relative.x
-	var y = coords.relative.y
-	var z = coords.relative.z
-	block = World.getBlockID(x, y, z)
-	if (GenerationUtils.isTransparentBlock(block)) {
-		World.setBlock(x, y, z, item.id, item.data);
-		World.addTileEntity(x, y, z);
+		var blockID = this.data.inverted ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
+		var blockData = World.getBlockData(coords.x, coords.y, coords.z);
+		World.drop(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 });

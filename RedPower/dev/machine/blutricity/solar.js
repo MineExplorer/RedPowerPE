@@ -22,7 +22,7 @@ MachineRegistry.registerPrototype(BlockID.rp_solar, {
 	
 	energyTick: function(type, src) {
 		if (World.getBlockID(this.x, this.y + 1, this.z) != BlockID.luminator && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
-			src.add(1);
+			src.add(2);
 		}
 	}
 });

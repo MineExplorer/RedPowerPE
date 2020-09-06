@@ -30,7 +30,7 @@ Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
 
 IDRegistry.genItemID("nikolite");
 Item.createItem("nikolite", "Nikolite", {name: "nikolite"});
-ChargeItemRegistry.registerFlashItem(ItemID.nikolite, "Bu", 500, 0);
+ChargeItemRegistry.registerFlashItem(ItemID.nikolite, "Bt", 1000, 0);
 
 IDRegistry.genItemID("gemRuby");
 Item.createItem("gemRuby", "Ruby", {name: "ruby"});

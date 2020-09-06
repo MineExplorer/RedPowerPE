@@ -25,13 +25,7 @@ var guiBSmelter = new UI.StandartWindow({
 		background: {standart: true}
 	},
 	
-	params: {       
-		slot: "default_slot",
-		invSlot: "default_slot"              
-	},
-	
 	drawing: [
-		{type: "background", color: android.graphics.Color.parseColor("#b3b3b3")},
 		{type: "bitmap", x: 636, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 425, y: 92, bitmap: "bstorage_small_background", scale: GUI_SCALE},
 	],
@@ -67,7 +61,7 @@ MachineRegistry.registerPrototype(BlockID.rp_bsmelter, {
 	},
 	
 	getEnergyStorage: function() {
-		return 800;
+		return 1600;
 	},
 	
 	tick: function() {
@@ -87,8 +81,8 @@ MachineRegistry.registerPrototype(BlockID.rp_bsmelter, {
 		if (recipe) {
 			var resultSlot = this.container.getSlot("slotResult");
 			if (resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0) {
-				if (this.data.energy >= 2) {
-					this.data.energy -= 2;
+				if (this.data.energy >= 4) {
+					this.data.energy -= 4;
 					this.data.progress++;
 					newActive = true;
 				}
@@ -105,7 +99,7 @@ MachineRegistry.registerPrototype(BlockID.rp_bsmelter, {
 		
 		var energyStorage = this.getEnergyStorage();
 		this.data.energy = Math.min(this.data.energy, energyStorage);
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bu", energyStorage - this.data.energy, 25, 0);
+		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 25, 0);
 		
 		this.container.setScale("progressScale", this.data.progress/100);
 		this.container.setScale("btScale", this.data.energy / energyStorage);

@@ -28,6 +28,7 @@ var MachineRegistry = {
 		if (!notElectric) {
 			// wire connection
 			ICRender.getGroup("bt-wire").add(id, -1);
+			ICRender.getGroup("ic-wire").add(id, -1);
 			// setup energy value
 			if (Prototype.defaultValues) {
 				Prototype.defaultValues.energy = 0;
@@ -50,6 +51,7 @@ var MachineRegistry = {
 		
 		if (!notElectric) {
 			EnergyTileRegistry.addEnergyTypeForId(id, BT);
+			EnergyTileRegistry.addEnergyTypeForId(id, EU);
 		}
 	},
 

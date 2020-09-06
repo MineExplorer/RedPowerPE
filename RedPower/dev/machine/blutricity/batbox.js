@@ -36,21 +36,15 @@ var guiBatBox = new UI.StandartWindow({
 		background: {standart: true}
 	},
 	
-	params: {       
-		slot: "default_slot",
-		invSlot: "default_slot"              
-	},
-	
 	drawing: [
-		{type: "background", color: android.graphics.Color.parseColor("#b3b3b3")},
 		{type: "bitmap", x: 530, y: 75, bitmap: "bstorage_background", scale: GUI_SCALE},
 	],
 	
 	elements: {
 		"batteryIcon": {type: "image", x: 530 + 6*GUI_SCALE, y: 75 - 7*GUI_SCALE, bitmap: "battery_icon_off", scale: GUI_SCALE},
 		"btScale": {type: "scale", x: 530 + GUI_SCALE, y: 75 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "bstorage_scale", scale: GUI_SCALE},
-		"slot1": {type: "slot", x: 650, y: 80, isValid: function(id) {return ChargeItemRegistry.isValidItem(id, "Bu", 0);}},
-		"slot2": {type: "slot", x: 650, y: 172, isValid: function(id) {return ChargeItemRegistry.isValidStorage(id, "Bu", 0);}},
+		"slot1": {type: "slot", x: 650, y: 80, isValid: function(id) {return ChargeItemRegistry.isValidItem(id, "Bt", 0);}},
+		"slot2": {type: "slot", x: 650, y: 172, isValid: function(id) {return ChargeItemRegistry.isValidStorage(id, "Bt", 0);}},
 	}
 });
 
@@ -67,38 +61,41 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 	getGuiScreen: function() {
 		return guiBatBox;
 	},
+
+	getEnergyLevel: function() {
+		return Math.floor(this.data.energy / this.getEnergyStorage()) * 8;
+	},
 	
 	init: function() {
-		var meta = Math.floor(this.data.energy/3000);
-		if (meta) {
+		var meta = this.getEnergyLevel();
+		if (meta > 0) {
 			this.data.meta = meta;
 			TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rp_batbox, meta);
+		}
+	},
+
+	renderModel: function(meta) {
+		if (meta > 0) {
+			TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rp_batbox, meta);
+		} else {
+			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		}
 	},
 	
 	tick: function() {
 		var energyStorage = this.getEnergyStorage();
 		
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slot2"), "Bu", energyStorage - this.data.energy, 1);
-		this.data.energy -= ChargeItemRegistry.addEnergyTo(this.container.getSlot("slot1"), "Bu", this.data.energy, 1);
+		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 1);
+		this.data.energy -= ChargeItemRegistry.addEnergyTo(this.container.getSlot("slot1"), "Bt", this.data.energy, 1);
 		
-		var meta = Math.floor(this.data.energy/3000);
+		var meta = this.getEnergyLevel();
 		if (meta != this.data.meta) {
 			this.data.meta = meta;
-			if (meta) {
-				TileRenderer.mapAtCoords(this.x, this.y, this.z, BlockID.rp_batbox, meta);
-			}
-			else {
-				BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
-				var content = this.container.getGuiContent();
-				if (content) {
-					
-				}
-			}
+			this.renderModel(meta);
 		}
 		var content = this.container.getGuiContent();
 		if (content) {
-			if (this.data.energy == 24000) {
+			if (this.data.energy == this.getEnergyStorage()) {
 				content.elements.batteryIcon.bitmap = "battery_icon_on";
 			}
 			else {
@@ -109,11 +106,11 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 	},
 	
 	getEnergyStorage: function() {
-		return 24000;
+		return 48000;
 	},
 	
 	energyTick: function(type, src) {
-		var TRANSFER = 25;
+		var TRANSFER = 100;
 		this.data.energy += src.storage(Math.min(TRANSFER*4, this.getEnergyStorage() - this.data.energy), Math.min(TRANSFER, this.data.energy));
 	},
 	
@@ -121,19 +118,18 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		var extra;
 		if (this.data.energy > 0) {
-			extra = new ItemExtraData();
-			extra.putInt("energy", this.data.energy);
+			extra = new ItemExtraData().putInt("energy", this.data.energy);
 		}
-		var blockData = Math.floor(this.data.energy / 3000);
-		World.drop(coords.x, coords.y, coords.z, BlockID.rp_batbox, 1, blockData, extra);
+		var blockData = this.getEnergyLevel();
+		World.drop(coords.x + .5, coords.y + .5, coords.z + .5, BlockID.rp_batbox, 1, blockData, extra);
 	}
 });
 
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block) {
-	var x = coords.relative.x
-	var y = coords.relative.y
-	var z = coords.relative.z
+	var x = coords.relative.x;
+	var y = coords.relative.y;
+	var z = coords.relative.z;
 	block = World.getBlockID(x, y, z)
 	if (GenerationUtils.isTransparentBlock(block)) {
 		World.setBlock(x, y, z, item.id, 0);
@@ -142,7 +138,7 @@ Block.registerPlaceFunction("rp_batbox", function(coords, item, block) {
 			tile.data.energy = item.extra.getInt("energy") + 16;
 		}
 		else if (item.data == 8) {
-			tile.data.energy = 24016;
+			tile.data.energy = tile.getEnergyStorage() + 16;
 		}
 	}
 });
