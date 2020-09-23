@@ -16,26 +16,35 @@ Callback.addCallback("PreLoaded", function() {
 var blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
 MachineRegistry.registerPrototype(BlockID.rp_thermopile, {
+	defaultValues: {
+		output: 0
+	},
+
 	isEnergySource: function() {
 		return true;
 	},
+
+	getHeatValue: function(id) {
+		return blockHeatValues[id] || 0;
+	},
 	
-	getHeat: function(x, z) {
-		var heat = blockHeatValues[World.getBlockID(x, this.y, z)] || 0;
+	getHeat: function(x, y, z) {
+		var heat = this.getHeatValue(World.getBlockID(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
 	},
 	
 	energyTick: function(type, src) {
-		if (World.getThreadTime()%20 == 0) {
+		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
 			this.heat = 0;
-			this.getHeat(this.x-1, this.z);
-			this.getHeat(this.x+1, this.z);
-			this.getHeat(this.x, this.z - 1);
-			this.getHeat(this.x, this.z + 1);
-			//Debug.m(Math.min(this.cold, this.heat)/8);
+			this.getHeat(this.x - 1, this.y, this.z);
+			this.getHeat(this.x + 1, this.y, this.z);
+			this.getHeat(this.x, this.y, this.z - 1);
+			this.getHeat(this.x, this.y, this.z + 1);
+			this.data.output = Math.min(this.cold, this.heat) / 4;
+			//Debug.m(this.data.output);
 		}
-		src.add(Math.min(this.cold, this.heat)/8);
+		src.add(this.data.output);
 	}
 });

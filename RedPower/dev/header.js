@@ -34,7 +34,7 @@ const COLOR_INDEX_TO_DYE_DATA = {
 
 // API
 function randomInt(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
+	return Math.floor(min + Math.random() * (max - min + 1));
 }
 
 function Vector(x, y, z) {

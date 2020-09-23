@@ -29,7 +29,7 @@ MachineRegistry.registerPrototype(BlockID.rp_solar, {
 	},
 	
 	energyTick: function(type, src) {
-		if (World.getThreadTime()%100 == 0) {
+		if (World.getThreadTime() % 100 == 0) {
 			this.data.canSeeSky = GenerationUtils.canSeeSky(this.x, this.y + 1, this.z);
 		}
 		if (this.data.canSeeSky && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
