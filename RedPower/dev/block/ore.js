@@ -143,7 +143,7 @@ Item.addCreativeGroup("ores", Translation.translate("Ores"), [
 
 var OreGeneration = {
 	config: {
-		oreGenCoppler: __config__.getBool("ore_gen.copper"),
+		oreGenCopper: __config__.getBool("ore_gen.copper"),
 		oreGenTin: __config__.getBool("ore_gen.tin"),
 		oreGenSilver: __config__.getBool("ore_gen.silver"),
 		oreGenTungsten: __config__.getBool("ore_gen.tungsten"),
@@ -206,21 +206,21 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random
 	}
 	
 	if (OreGeneration.config.oreGenRuby) {
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < 6; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false, random.nextInt());
 		}
 	}
 	
 	if (OreGeneration.config.oreGenSapphire) {
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < 6; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false, random.nextInt());
 		}
 	}
 	
 	if (OreGeneration.config.oreGenGreenSapphire) {
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < 6; i++) {
 			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false, random.nextInt());
 		}
