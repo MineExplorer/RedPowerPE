@@ -22,6 +22,7 @@ machine/blutricity/thermopile.js
 machine/blutricity/furnace.js
 machine/blutricity/btsmelter.js
 machine/blutricity/batbox.js
+machine/blutricity/transformer.js
 
 items/resource.js
 items/bags.js
@@ -29,7 +30,7 @@ items/seed_bag.js
 items/lumar.js
 items/components.js
 items/battery.js
-items/tool/handsaw.js
+items/tool/crafting.js
 items/tool/athame.js
 items/tool/sword.js
 items/tool/shovel.js

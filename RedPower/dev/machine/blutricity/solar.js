@@ -15,13 +15,9 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rp_solar, {
+MachineRegistry.registerGenerator(BlockID.rp_solar, {
 	defaultValues: {
 		canSeeSky: false
-	},
-
-	isEnergySource: function() {
-		return true;
 	},
 	
 	init: function() {

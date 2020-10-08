@@ -25,7 +25,7 @@ ToolAPI.registerBlockMaterial(BlockID.marbleBrick, "stone", 1, true);
 Block.setDestroyLevel("marbleBrick", 1);
 ToolLib.addBlockDropOnExplosion("marbleBrick");
 
-VanillaRecipe.addCraftingRecipe("marbleBrick", {
+VanillaRecipe.addCraftingRecipe("marble_brick", {
   type: "shaped",
   pattern: [
     "XX",

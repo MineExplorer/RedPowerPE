@@ -16,8 +16,8 @@ Item.createItem("ingotCopper", "Copper Ingot", {name: "ingot_copper"});
 IDRegistry.genItemID("ingotSilver");
 Item.createItem("ingotSilver", "Silver Ingot", {name: "ingot_silver"});
 
-//IDRegistry.genItemID("ingotTungsten");
-//Item.createItem("ingotTungsten", "Tungsten Ingot", {name: "ingot_tungsten"});
+IDRegistry.genItemID("ingotTungsten");
+Item.createItem("ingotTungsten", "Tungsten Ingot", {name: "ingot_tungsten"});
 
 Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
 	ItemID.ingotRed,
@@ -25,7 +25,8 @@ Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
 	ItemID.ingotBronze,
 	ItemID.ingotTin,
 	ItemID.ingotCopper,
-	ItemID.ingotSilver
+	ItemID.ingotSilver,
+	ItemID.ingotTungsten
 ]);
 
 IDRegistry.genItemID("nikolite");

@@ -5,9 +5,9 @@ Block.createBlock("rp_smelter", [
 ToolAPI.registerBlockMaterial(BlockID.rp_smelter, "stone", 1);
 Block.setDestroyLevel(BlockID.rp_smelter, 1);
 
-TileRenderer.setStandartModel(BlockID.rp_smelter, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], true);
-TileRenderer.registerRotationModel(BlockID.rp_smelter, 0, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.rp_smelter, 4, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 1], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
+TileRenderer.setStandardModelWithRotation(BlockID.rp_smelter, 0, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], true);
+TileRenderer.registerModelWithRotation(BlockID.rp_smelter, 2, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 1], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
+TileRenderer.setRotationFunction(BlockID.rp_smelter);
 
 Recipes.addShaped({id: BlockID.rp_smelter, count: 1, data: 0}, [
 	"xxx",
@@ -25,6 +25,8 @@ Callback.addCallback("PreLoaded", function() {
 	SmelterRecipes.addRecipe({id: ItemID.siliconBoule, count: 1}, [{id: 12, count: 8}, {id: 263, count: 8}]);
 	SmelterRecipes.addRecipe({id: ItemID.waferRed, count: 1}, [{id: ItemID.waferSilicon, count: 1}, {id: 331, count: 4}]);
 	SmelterRecipes.addRecipe({id: ItemID.waferBlue, count: 1}, [{id: ItemID.waferSilicon, count: 1}, {id: ItemID.nikolite, count: 4}]);
+	SmelterRecipes.addRecipe({id: ItemID.ingotCopper, count: 1}, [{id: ItemID.fineCopperWire, count: 1}]);
+	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: ItemID.fineIronWire, count: 1}]);
 
 	// tools
 	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: 256, count: 1}]);
@@ -111,22 +113,18 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerPrototype(BlockID.rp_smelter, {
+MachineRegistry.registerMachine(BlockID.rp_smelter, {	
 	defaultValues: {
 		progress: 0,
 		burn: 0,
 		burnMax: 0,
 		isActive: false
 	},
-	
+
 	getGuiScreen: function() {
 		return guiSmelter;
 	},
-	
-	getTransportSlots: function() {
-		return {input: ["slotSource1", "slotSource2", "slotSource3", "slotSource4", "slotFuel"], output: ["slotResult"]};
-	},
-	
+
 	tick: function() {
 		StorageInterface.checkHoppers(this);
 		
@@ -188,7 +186,6 @@ MachineRegistry.registerPrototype(BlockID.rp_smelter, {
 	},
 }, true);
 
-TileRenderer.setRotationPlaceFunction(BlockID.rp_smelter);
 
 StorageInterface.createInterface(BlockID.rp_smelter, {
 	slots: {

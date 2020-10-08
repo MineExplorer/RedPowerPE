@@ -8,36 +8,19 @@ Block.createSpecialType({
 }, "stone_slab");
 
 IDRegistry.genBlockID("marbleSlab");
-Block.createBlock("marbleSlab", [
+IDRegistry.genBlockID("doubleMarbleSlab");
+
+BaseBlocks.createSlab("marbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: true},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: true},
-	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: false},
-	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: false}
-], "stone_slab");
+], "stone_slab", BlockID.doubleMarbleSlab);
 ToolAPI.registerBlockMaterial(BlockID.marbleSlab, "stone", 1, true);
-Block.registerDropFunction("marbleSlab", function(coords, blockID, blockData, level) {
-	if (level > 0) {
-		return [[BlockID.marbleSlab, 1, blockData%2]];
-	}
-	return [];
-});
-ToolLib.addBlockDropOnExplosion("marbleSlab");
 
-IDRegistry.genBlockID("doubleMarbleSlab");
-Block.createBlock("doubleMarbleSlab", [
+BaseBlocks.createDoubleSlab("doubleMarbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: false},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: false},
-], "stone");
+], "stone", BlockID.marbleSlab);
 ToolAPI.registerBlockMaterial(BlockID.doubleMarbleSlab, "stone", 1, true);
-Block.registerDropFunction("doubleMarbleSlab", function(coords, blockID, blockData, level) {
-	if (level > 0) {
-		return [[BlockID.marbleSlab, 1, blockData], [BlockID.marbleSlab, 1, blockData]];
-	}
-	return [];
-});
-ToolLib.addBlockDropOnExplosion("doubleMarbleSlab");
-TileRenderer.setSlabShape(BlockID.marbleSlab, 2);
-TileRenderer.setSlabPlaceFunction(BlockID.marbleSlab, 2, BlockID.doubleMarbleSlab);
 
 Item.addCreativeGroup("rpSlabs", Translation.translate("Slabs"), [
 	BlockID.basaltSlab,

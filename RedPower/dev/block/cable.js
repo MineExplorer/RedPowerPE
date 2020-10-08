@@ -22,5 +22,5 @@ Callback.addCallback("PreLoaded", function() {
 	], ['x', ItemID.ingotBlue, 0, 'a', 35, -1]);
 });
 
-BT.registerWire(BlockID.blueWire);
+BT.registerWire(BlockID.blueWire, 100);
 TileRenderer.setupWireModel(BlockID.blueWire, 0, 1/4, "bt-wire");

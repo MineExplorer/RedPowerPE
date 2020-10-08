@@ -1,7 +1,7 @@
 IDRegistry.genBlockID("rp_thermopile");
-Block.createBlock("rp_thermopile", [
+Block.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
-], "opaque");
+], "stone");
 ToolAPI.registerBlockMaterial(BlockID.rp_thermopile, "stone", 1);
 Block.setDestroyLevel("rp_thermopile", 1);
 
@@ -15,13 +15,9 @@ Callback.addCallback("PreLoaded", function() {
 
 var blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
-MachineRegistry.registerPrototype(BlockID.rp_thermopile, {
+MachineRegistry.registerGenerator(BlockID.rp_thermopile, {
 	defaultValues: {
 		output: 0
-	},
-
-	isEnergySource: function() {
-		return true;
 	},
 
 	getHeatValue: function(id) {

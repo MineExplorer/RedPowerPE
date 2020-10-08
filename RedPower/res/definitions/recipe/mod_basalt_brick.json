@@ -11,6 +11,7 @@
 	},
 	"result": {
 		"item": "minecraft:block_basalt_brick",
+		"data": 0,
 		"count": 4
 	},
 	"tags": [

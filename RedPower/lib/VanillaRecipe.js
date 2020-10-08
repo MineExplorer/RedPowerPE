@@ -1,14 +1,3 @@
-var __values = (this && this.__values) || function(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
 LIBRARY({
     name: "VanillaRecipe",
     version: 2,
@@ -55,10 +44,12 @@ var VanillaRecipe;
         return 0;
     }
     VanillaRecipe.getNumericID = getNumericID;
+    var __isValid__ = true;
     function convertToVanillaID(stringID) {
         var newID = "";
         if (!getNumericID(stringID)) {
-            Logger.Log("Invalid vanilla recipe entry id " + stringID, "ERROR");
+            Logger.Log("ID " + stringID + " is invalid", "ERROR");
+            __isValid__ = false;
             return null;
         }
         stringID = stringID.replace(":", "_");
@@ -88,7 +79,10 @@ var VanillaRecipe;
     }
     VanillaRecipe.generateJSONRecipe = generateJSONRecipe;
     function addWorkbenchRecipeFromJSON(obj) {
-        var e_1, _a;
+        if (Array.isArray(obj.result)) {
+            Logger.Log("Recipes with multiply output are not supported in modded workbench", "ERROR");
+            return;
+        }
         var result = {
             id: getNumericID(obj.result.item),
             count: obj.result.count || 1,
@@ -105,40 +99,39 @@ var VanillaRecipe;
         }
         else {
             var ingredients = [];
-            try {
-                for (var _b = __values(obj.ingredients), _c = _b.next(); !_c.done; _c = _b.next()) {
-                    var item = _c.value;
-                    ingredients.push({ id: getNumericID(item.item), data: item.data || 0 });
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
+            obj.ingredients.forEach(function (item) {
+                ingredients.push({ id: getNumericID(item.item), data: item.data || 0 });
+            });
             Recipes.addShapeless(result, ingredients);
         }
     }
     VanillaRecipe.addWorkbenchRecipeFromJSON = addWorkbenchRecipeFromJSON;
-    function addCraftingRecipe(name, obj, addRecipeToWorkbench) {
-        if (addRecipeToWorkbench)
+    function addCraftingRecipe(name, obj, addToWorkbench) {
+        if (addToWorkbench)
             addWorkbenchRecipeFromJSON(obj);
         obj.type = "crafting_" + obj.type;
         if (!obj.tags)
             obj.tags = ["crafting_table"];
+        __isValid__ = true;
         var items = obj.key || obj.ingredients;
         for (var i in items) {
-            var item = convertToVanillaID(items[i].item);
-            items[i].item = item;
-            if (!item)
-                return;
+            items[i].item = convertToVanillaID(items[i].item);
         }
-        obj.result.item = convertToVanillaID(obj.result.item);
-        if (!obj.result.item)
-            return;
-        generateJSONRecipe(name, obj);
+        if (Array.isArray(obj.result)) {
+            for (var i in obj.result) {
+                var itemStack = obj.result[i];
+                itemStack.item = convertToVanillaID(itemStack.item);
+            }
+        }
+        else {
+            obj.result.item = convertToVanillaID(obj.result.item);
+        }
+        if (__isValid__) {
+            generateJSONRecipe(name, obj);
+        }
+        else {
+            Logger.Log("Failed to add JSON recipe: " + name, "ERROR");
+        }
     }
     VanillaRecipe.addCraftingRecipe = addCraftingRecipe;
     function addStonecutterRecipe(name, obj) {
@@ -148,16 +141,5 @@ var VanillaRecipe;
         addCraftingRecipe(name, obj);
     }
     VanillaRecipe.addStonecutterRecipe = addStonecutterRecipe;
-    function addFurnaceRecipe(name, obj) {
-        obj.type = "furnace_recipe";
-        if (!obj.tags)
-            obj.tags = ["furnace"];
-        obj.input.item = convertToVanillaID(obj.input.item);
-        obj.output.item = convertToVanillaID(obj.output.item);
-        if (obj.input.item && obj.output.item) {
-            generateJSONRecipe(name, obj);
-        }
-    }
-    VanillaRecipe.addFurnaceRecipe = addFurnaceRecipe;
 })(VanillaRecipe || (VanillaRecipe = {}));
 EXPORT("VanillaRecipe", VanillaRecipe);

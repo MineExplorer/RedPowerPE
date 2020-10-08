@@ -1,16 +1,16 @@
-IDRegistry.genBlockID("btfurnace");
-Block.createBlock("btfurnace", [
-	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]], inCreative: true}
+IDRegistry.genBlockID("bt_furnace");
+Block.createBlockWithRotation("bt_furnace", [
+	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.btfurnace, "stone", 1);
-Block.setDestroyLevel(BlockID.btfurnace, 1);
+ToolAPI.registerBlockMaterial(BlockID.bt_furnace, "stone", 1);
+Block.setDestroyLevel(BlockID.bt_furnace, 1);
 
-TileRenderer.setStandartModel(BlockID.btfurnace, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.btfurnace, 0, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 0], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
-TileRenderer.registerRotationModel(BlockID.btfurnace, 4, [["rp_machine_bottom", 0], ["btfurnace_top", 0], ["btfurnace_side", 0], ["btfurnace_front", 1], ["btfurnace_side", 0], ["btfurnace_side", 0]]);
+TileRenderer.setStandardModelWithRotation(BlockID.bt_furnace, 2, [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]]);
+TileRenderer.registerModelWithRotation(BlockID.bt_furnace, 2, [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 1], ["bt_furnace_side", 0], ["bt_furnace_side", 0]]);
+TileRenderer.setRotationFunction(BlockID.bt_furnace);
 
 Callback.addCallback("PreLoaded", function() {
-	Recipes.addShaped({id: BlockID.btfurnace, count: 1, data: 0}, [
+	Recipes.addShaped({id: BlockID.bt_furnace, count: 1, data: 0}, [
 		"xxx",
 		"x x",
 		"aba"
@@ -18,7 +18,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-var guiBFurnace = new UI.StandartWindow({
+var guiBTFurnace = new UI.StandartWindow({
 	standart: {
 		header: {text: {text: "Blulectric Furnace"}},
 		inventory: {standart: true},
@@ -27,40 +27,41 @@ var guiBFurnace = new UI.StandartWindow({
 	
 	drawing: [
 		{type: "bitmap", x: 625, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
-		{type: "bitmap", x: 425, y: 92, bitmap: "bstorage_small_background", scale: GUI_SCALE},
+		{type: "bitmap", x: 425, y: 92, bitmap: "btstorage_small_background", scale: GUI_SCALE},
 	],
 	
 	elements: {
 		"progressScale": {type: "scale", x: 625, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE},
-		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "bstorage_small_scale", scale: GUI_SCALE},
+		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_small_scale", scale: GUI_SCALE},
 		"slotSource": {type: "slot", x: 536, y: 136, size: 72},
 		"slotResult": {type: "slot", x: 720, y: 136, size: 72},
 	}
 });
 
 Callback.addCallback("LevelLoaded", function() {
-	MachineRegistry.updateGuiHeader(guiBFurnace, "Blulectric Furnace");
+	MachineRegistry.updateGuiHeader(guiBTFurnace, "Blulectric Furnace");
 });
 
 
-MachineRegistry.registerPrototype(BlockID.btfurnace, {
+MachineRegistry.registerMachine(BlockID.bt_furnace, {
 	defaultValues: {
+		energy: 0,
 		progress: 0,
 		isActive: false
 	},
-	
+
 	getGuiScreen: function() {
-		return guiBFurnace;
+		return guiBTFurnace;
 	},
-	
+
 	getTransportSlots: function() {
 		return {input: ["slotSource"], output: ["slotResult"]};
 	},
-	
+
 	getEnergyStorage: function() {
-		return 1600;
+		return 2000;
 	},
-	
+
 	tick: function() {
 		StorageInterface.checkHoppers(this);
 		
@@ -90,16 +91,15 @@ MachineRegistry.registerPrototype(BlockID.btfurnace, {
 		
 		var energyStorage = this.getEnergyStorage();
 		this.data.energy = Math.min(this.data.energy, energyStorage);
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 25, 0);
+		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
 		
 		this.container.setScale("progressScale", this.data.progress/100);
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 	}
 });
 
-TileRenderer.setRotationPlaceFunction(BlockID.btfurnace);
 
-StorageInterface.createInterface(BlockID.btfurnace, {
+StorageInterface.createInterface(BlockID.bt_furnace, {
 	slots: {
 		"slotSource": {input: true},
 		"slotResult": {output: true}

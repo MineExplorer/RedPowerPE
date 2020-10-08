@@ -81,13 +81,13 @@ Translation.addTranslation("Solar Panel", {ru: "Солнечная панель"
 Translation.addTranslation("Thermopile", {ru: "Термоэлемент"});
 
 Translation.addTranslation("Battery Box", {ru: "Аккумулятор"});
+Translation.addTranslation("Blutricity Transformer", {ru: "Преобразователь блутричества"});
 
 Translation.addTranslation("Blue Alloy Wire", {ru: "Провод из синего сплава"});
 
 
 // Items
 Translation.addTranslation("Flax Seeds", {ru: "Семена льна"});
-Translation.addTranslation("Indigo Dye", {ru: "Краситель индиго"});
 
 Translation.addTranslation("Ruby", {ru: "Рубин"});
 Translation.addTranslation("Sapphire", {ru: "Сапфир"});
@@ -100,17 +100,22 @@ Translation.addTranslation("Blue Alloy Ingot", {ru: "Слиток синего �
 Translation.addTranslation("Tin Ingot", {ru: "Оловянный слиток", es: "Lingote de Estaño", pt: "Lingote de Estanho", zh: "锡锭"});
 Translation.addTranslation("Copper Ingot", {ru: "Медный слиток", es: "Lingote de Cobre", pt: "Lingote de Cobre", zh: "铜锭"});
 Translation.addTranslation("Silver Ingot", {ru: "Серебрянный слиток", es: "Lingote de Plata", pt: "Lingote de Prata", zh: "银锭"});
-//Translation.addTranslation("Tungsten Ingot", {ru: "Вольфрамовый слиток", es: "Lingote de Tungsteno", zh: "钨锭"})
+Translation.addTranslation("Tungsten Ingot", {ru: "Вольфрамовый слиток", es: "Lingote de Tungsteno", zh: "钨锭"})
 
 Translation.addTranslation("Silicon Boule", {ru: "Кремниевый монокристалл"});
 Translation.addTranslation("Silicon Wafer", {ru: "Кремниевая плата"});
 Translation.addTranslation("Red-Doped Wafer", {ru: "Красная плата"});
 Translation.addTranslation("Blue-Doped Wafer", {ru: "Синяя плата"});
+Translation.addTranslation("Fine Copper Wire", {ru: "Качественная медная проволока"});
+Translation.addTranslation("Fine Iron Wire", {ru: "Качественная железная проволока"});
+Translation.addTranslation("Copper Coil", {ru: "Медная катушка"});
 
 Translation.addTranslation("BT Battery", {ru: "Батарея"});
 
 // Tools
 Translation.addTranslation("Diamond Handsaw", {ru: "Алмазная ножовка"});
+Translation.addTranslation("Diamond Drawplate", {ru: "Алмазная волока"});
+Translation.addTranslation("Wool Card", {ru: "Чесалка"});
 
 Translation.addTranslation("Athame", {ru: "Атам"});
 

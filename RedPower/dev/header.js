@@ -1,5 +1,6 @@
 // libraries
 IMPORT("flags");
+IMPORT("BaseBlocks");
 IMPORT("ToolLib");
 IMPORT("EnergyNet");
 IMPORT("ChargeItem");
