@@ -136,3 +136,27 @@ TileEntity.registerPrototype(BlockID.rp_lamp_inverted, {
 		World.drop(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 });
+
+Block.registerPlaceFunction("rp_lamp", function(coords, item, block) {
+	Game.prevent();
+	var x = coords.relative.x
+	var y = coords.relative.y
+	var z = coords.relative.z
+	block = World.getBlockID(x, y, z)
+	if (GenerationUtils.isTransparentBlock(block)) {
+		World.setBlock(x, y, z, item.id, item.data);
+		World.addTileEntity(x, y, z);
+	}
+});
+
+Block.registerPlaceFunction("rp_lamp_inverted", function(coords, item, block) {
+	Game.prevent();
+	var x = coords.relative.x
+	var y = coords.relative.y
+	var z = coords.relative.z
+	block = World.getBlockID(x, y, z)
+	if (GenerationUtils.isTransparentBlock(block)) {
+		World.setBlock(x, y, z, item.id, item.data);
+		World.addTileEntity(x, y, z);
+	}
+});
