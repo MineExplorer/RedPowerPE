@@ -27,14 +27,14 @@ let SmelterRecipes = {
 			for (let j = 1; j <= 4; j++) {
 				let slot = container.getSlot("slotSource" + j);
 				if (slot.id == recipe.input[i].id) {
-					let c = Math.min(count, slot.count);
-					slot.count -= c;
-					count -= c;
+					let dc = Math.min(count, slot.count);
+					count -= dc;
+					slot.setSlot(slot.id, slot.count - dc, slot.data);
+					slot.validate();
 				}
 			}
 		}
-		resultSlot.id = recipe.result.id;
-		resultSlot.count += recipe.result.count;
+		resultSlot.setSlot(recipe.result.id, resultSlot.count + 1, recipe.result.data || 0);
 		container.validateAll();
 	}
 }

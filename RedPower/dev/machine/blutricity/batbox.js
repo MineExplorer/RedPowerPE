@@ -24,7 +24,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-var guiBatBox = new UI.StandartWindow({
+let guiBatBox = new UI.StandartWindow({
 	standart: {
 		header: {text: {text: "Battery Box"}},
 		inventory: {standart: true},
@@ -49,38 +49,28 @@ Callback.addCallback("LevelLoaded", function() {
 
 
 MachineRegistry.registerPrototype(BlockID.rp_batbox, {
-	defaultValues: {
-		meta: 0
-	},
-
-	getGuiScreen: function() {
+	getScreenByName: function() {
 		return guiBatBox;
 	},
 
 	getEnergyLevel: function() {
-		return Math.floor(this.data.energy / this.getEnergyStorage()) * 8;
-	},
-
-	init: function() {
-		var meta = this.getEnergyLevel();
-		if (meta > 0) {
-			this.data.meta = meta;
-			World.setBlock(this.x, this.y, this.z, this.blockID, meta);
-		}
+		return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
 	},
 
 	tick: function() {
-		var energyStorage = this.getEnergyStorage();
-		
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 1);
-		this.data.energy -= ChargeItemRegistry.addEnergyTo(this.container.getSlot("slot1"), "Bt", this.data.energy, 1);
-		
-		var meta = this.getEnergyLevel();
-		if (meta != this.data.meta) {
-			this.data.meta = meta;
-			World.setBlock(this.x, this.y, this.z, this.blockID, meta);
+		let energyStorage = this.getEnergyStorage();
+
+		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 1);
+		this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot("slot1"), "Bt", this.data.energy, 1);
+
+		let energyLevel = this.getEnergyLevel();
+		if (energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
+			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
 		}
-		var content = this.container.getGuiContent();
+
+		// TODO: rewrite to container events
+		/*
+		let content = this.container.getGuiContent();
 		if (content) {
 			if (this.data.energy == this.getEnergyStorage()) {
 				content.elements.batteryIcon.bitmap = "battery_icon_on";
@@ -89,7 +79,10 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 				content.elements.batteryIcon.bitmap = "battery_icon_off";
 			}
 		}
+		*/
+
 		this.container.setScale("btScale", this.data.energy / energyStorage);
+		this.container.sendChanges();
 	},
 
 	isEnergySource: function() {
@@ -101,35 +94,32 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 	},
 
 	energyTick: function(type, src) {
-		var output = Math.min(100, this.data.energy);
+		let output = Math.min(100, this.data.energy);
 		this.data.energy += src.add(output) - output;
 	},
 
 	destroyBlock: function(coords, player) {
 		if (this.data.energy > 0) {
-			var extra = new ItemExtraData().putInt("energy", this.data.energy);
-			var blockData = this.getEnergyLevel();
-			World.drop(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
+			let extra = new ItemExtraData().putInt("energy", this.data.energy);
+			let blockData = this.getEnergyLevel();
+			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
 		} else {
-			World.drop(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
+			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
 		}
 	}
 });
 
 
-Block.registerPlaceFunction("rp_batbox", function(coords, item, block) {
-	var x = coords.relative.x;
-	var y = coords.relative.y;
-	var z = coords.relative.z;
-	var blockID = World.getBlockID(x, y, z)
-	if (GenerationUtils.isTransparentBlock(blockID)) {
-		World.setBlock(x, y, z, item.id, item.data);
-		var tile = World.addTileEntity(x, y, z);
-		if (item.extra) {
-			tile.data.energy = item.extra.getInt("energy");
-		}
-		else if (item.data > 0) {
-			tile.data.energy = tile.getEnergyStorage() / item.data * 8;
-		}
+Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
+	let x = coords.relative.x;
+	let y = coords.relative.y;
+	let z = coords.relative.z;
+	region.setBlock(x, y, z, item.id, item.data);
+	let tile = World.addTileEntity(x, y, z, region);
+	if (item.extra) {
+		tile.data.energy = item.extra.getInt("energy");
+	}
+	else {
+		tile.data.energy = tile.getEnergyStorage() / 8 * item.data;
 	}
 });

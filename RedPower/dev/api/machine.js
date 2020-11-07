@@ -1,6 +1,6 @@
 var MachineRenderer = {
 	getFacing: function() {
-		return World.getBlockData(this.x, this.y, this.z);
+		return this.blockSource.getBlockData(this.x, this.y, this.z);
 	},
 
 	renderModel: function() {
@@ -10,22 +10,22 @@ var MachineRenderer = {
 			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		}
 	},
-	
+
 	setActive: function(isActive) {
 		if (this.data.isActive != isActive) {
 			this.data.isActive = isActive;
 			this.renderModel();
 		}
 	},
-	
+
 	init: function() {
 		if (this.data.meta != undefined) {
-			World.setBlock(this.x, this.y, this.z, this.blockID, this.data.meta + 2);
+			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, this.data.meta + 2);
 			delete this.data.meta;
 		}
 		this.renderModel();
 	},
-	
+
 	destroy: function() {
 		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 	}
@@ -42,11 +42,15 @@ var MachineRegistry = {
 	registerPrototype: function(id, Prototype, notElectric) {
 		// register ID
 		this.machineIDs[id] = true;
-		
+
 		if (!notElectric) {
 			// wire connection
 			ICRender.getGroup("bt-wire").add(id, -1);
 			// setup prototype properties
+			Prototype.useNetworkItemContainer = true;
+			Prototype.getScreenName = function (player, coords) {
+				return "main";
+			};
 			Prototype.defaultValues = Prototype.defaultValues || {};
 			Prototype.defaultValues.energy = 0;
 			Prototype.getEnergyStorage = Prototype.getEnergyStorage || function() {
@@ -58,10 +62,10 @@ var MachineRegistry = {
 				return add;
 			}
 		}
-		
+
 		Block.setDestroyTime(id, 3.25);
 		TileEntity.registerPrototype(id, Prototype);
-		
+
 		if (!notElectric) {
 			EnergyTileRegistry.addEnergyTypeForId(id, BT);
 		}

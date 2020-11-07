@@ -1,5 +1,5 @@
 IDRegistry.genBlockID("bt_smelter");
-Block.createBlockWithRotation("bt_smelter", [
+Block.createBlock("bt_smelter", [
 	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]], inCreative: true}
 ], "stone");
 ToolAPI.registerBlockMaterial(BlockID.bt_smelter, "stone", 1);
@@ -52,7 +52,7 @@ MachineRegistry.registerMachine(BlockID.bt_smelter, {
 		isActive: false
 	},
 
-	getGuiScreen: function() {
+	getScreenByName: function() {
 		return guiBTSmelter;
 	},
 
@@ -62,7 +62,7 @@ MachineRegistry.registerMachine(BlockID.bt_smelter, {
 
 	tick: function() {
 		StorageInterface.checkHoppers(this);
-		
+
 		var sourceItems = {};
 		for (var i = 1; i <= 4; i++) {
 			var slot = this.container.getSlot("slotSource" + i);
@@ -71,7 +71,7 @@ MachineRegistry.registerMachine(BlockID.bt_smelter, {
 				sourceItems[slot.id] += slot.count;
 			}
 		}
-		
+
 		var recipe = SmelterRecipes.getRecipe(sourceItems);
 		var newActive = false;
 		if (recipe) {
@@ -92,13 +92,13 @@ MachineRegistry.registerMachine(BlockID.bt_smelter, {
 			this.data.progress = 0;
 		}
 		this.setActive(newActive);
-		
+
 		var energyStorage = this.getEnergyStorage();
-		this.data.energy = Math.min(this.data.energy, energyStorage);
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
-		
-		this.container.setScale("progressScale", this.data.progress/100);
+		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
+
+		this.container.setScale("progressScale", this.data.progress / 100);
 		this.container.setScale("btScale", this.data.energy / energyStorage);
+		this.container.sendChanges();
 	}
 });
 

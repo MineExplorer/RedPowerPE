@@ -1,5 +1,5 @@
 IDRegistry.genBlockID("bt_furnace");
-Block.createBlockWithRotation("bt_furnace", [
+Block.createBlock("bt_furnace", [
 	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true}
 ], "stone");
 ToolAPI.registerBlockMaterial(BlockID.bt_furnace, "stone", 1);
@@ -50,7 +50,7 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 		isActive: false
 	},
 
-	getGuiScreen: function() {
+	getScreenByName: function() {
 		return guiBTFurnace;
 	},
 
@@ -64,7 +64,7 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 
 	tick: function() {
 		StorageInterface.checkHoppers(this);
-		
+
 		var sourceSlot = this.container.getSlot("slotSource");
 		var resultSlot = this.container.getSlot("slotResult");
 		var newActive = false;
@@ -76,11 +76,9 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 				newActive = true;
 			}
 			if (this.data.progress >= 100) {
-				sourceSlot.count--;
-				resultSlot.id = result.id;
-				resultSlot.data = result.data;
-				resultSlot.count++;
-				this.container.validateAll();
+				sourceSlot.setSlot(sourceSlot.id, sourceSlot.count - 1, sourceSlot.data);
+				sourceSlot.validate();
+				resultSlot.setSlot(result.id, resultSlot.count + 1, result.data);
 				this.data.progress = 0;
 			}
 		}
@@ -88,13 +86,13 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 			this.data.progress = 0;
 		}
 		this.setActive(newActive);
-		
+
 		var energyStorage = this.getEnergyStorage();
-		this.data.energy = Math.min(this.data.energy, energyStorage);
-		this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
-		
-		this.container.setScale("progressScale", this.data.progress/100);
+		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
+
+		this.container.setScale("progressScale", this.data.progress / 100);
 		this.container.setScale("btScale", this.data.energy / energyStorage);
+		this.container.sendChanges();
 	}
 });
 

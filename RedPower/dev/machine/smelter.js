@@ -121,7 +121,7 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 		isActive: false
 	},
 
-	getGuiScreen: function() {
+	getScreenByName: function() {
 		return guiSmelter;
 	},
 
@@ -164,6 +164,7 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 		
 		this.container.setScale("burningScale", this.data.burn / this.data.burnMax || 0);
 		this.container.setScale("progressScale", this.data.progress / 200);
+		this.container.sendChanges();
 	},
 	
 	getFuel: function(slotName) {

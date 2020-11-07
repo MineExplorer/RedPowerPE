@@ -19,16 +19,16 @@ MachineRegistry.registerGenerator(BlockID.rp_solar, {
 	defaultValues: {
 		canSeeSky: false
 	},
-	
+
 	init: function() {
-		this.data.canSeeSky = GenerationUtils.canSeeSky(this.x, this.y + 1, this.z);
+		this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
 	},
-	
+
 	energyTick: function(type, src) {
 		if (World.getThreadTime() % 100 == 0) {
-			this.data.canSeeSky = GenerationUtils.canSeeSky(this.x, this.y + 1, this.z);
+			this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
 		}
-		if (this.data.canSeeSky && World.getLightLevel(this.x, this.y + 1, this.z) == 15) {
+		if (this.data.canSeeSky && this.blockSource.getLightLevel(this.x, this.y + 1, this.z) == 15) {
 			src.add(2);
 		}
 	}

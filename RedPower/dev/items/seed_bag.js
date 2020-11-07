@@ -141,7 +141,7 @@ Item.registerNoTargetUseFunction(ItemID.seedBag, function (item) {
 let seeds = {295: 59, 391: 141, 392: 142, 458: 244}
 seeds[ItemID.flaxSeeds] = BlockID.flax;
 
-Item.registerUseFunction("seedBag", function(coords, item, block) {
+Item.registerUseFunction("seedBag", function(coords, item, block, player) {
 	if (item.extra && block.id == 60 && coords.side == 1) {
 		let id = 0;
 		let count = 0;
@@ -170,7 +170,7 @@ Item.registerUseFunction("seedBag", function(coords, item, block) {
 			}
 			SeedBag.decreaseCount(item, container, decreaseCount);
 		} else {
-			Player.setCarriedItem(item.id, 1, 0, item.extra);
+			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
 		}
 	}
 });
