@@ -20,7 +20,7 @@ Callback.addCallback("PreLoaded", function() {
 
 var guiBTSmelter = new UI.StandartWindow({
 	standard: {
-		header: {text: {text: "Blulectric Smelter"}},
+		header: {text: {text: Translation.translate("Blulectric Smelter")}},
 		inventory: {standard: true},
 		background: {standard: true}
 	},
@@ -58,6 +58,12 @@ MachineRegistry.registerMachine(BlockID.bt_smelter, {
 
 	getEnergyStorage: function() {
 		return 2000;
+	},
+
+	init: function() {
+		this.container.setSlotAddTransferPolicy("slotResult", function() {
+			return 0;
+		});
 	},
 
 	tick: function() {

@@ -27,42 +27,42 @@ Item.addCreativeGroup("sickles", Translation.translate("Sickles"), [
 	ItemID.greenSapphireSickle
 ]);
 
-var plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
+let plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
 
 ToolType.sickle = {
 	damage: 1,
 	baseDamage: 0,
 	blockTypes: ["fibre"],
 	calcDestroyTime: function(item, coords, block, params, destroyTime, enchant) {
-		var material = ToolAPI.getBlockMaterialName(block.id);
+		let material = ToolAPI.getBlockMaterialName(block.id);
 		if (material == "fibre" || material == "plant" || block.id == 30) {
 			return 0;
 		}
 		return destroyTime;
 	},
-	destroyBlock: function(coords, side, item, block) {
-		var x = coords.x, y = coords.y, z = coords.z;
-		var material = ToolAPI.getBlockMaterialName(block.id);
+	destroyBlock: function(coords, side, item, block, player) {
+		let region = BlockSource.getDefaultForActor(player);
+		let x = coords.x, y = coords.y, z = coords.z;
+		let material = ToolAPI.getBlockMaterialName(block.id);
 		if (material == "plant" && plants.indexOf(block.id) == -1) {
-			for (var xx = x - 1; xx <= x + 1; xx++) {
-				for (var yy = y - 1; yy <= y + 1; yy++) {
-					for (var zz = z - 1; zz <= z + 1; zz++) {
-						block = World.getBlock(xx, yy, zz);
-						var material = ToolAPI.getBlockMaterialName(block.id);
-						if (material == "plant") {
-							World.destroyBlock(xx, yy, zz, true);
+			for (let xx = x - 1; xx <= x + 1; xx++) {
+				for (let yy = y - 1; yy <= y + 1; yy++) {
+					for (let zz = z - 1; zz <= z + 1; zz++) {
+						let blockID = region.getBlockId(xx, yy, zz);
+						if (ToolAPI.getBlockMaterialName(blockID) == "plant") {
+							region.destroyBlock(xx, yy, zz, true);
 						}
 					}
 				}
 			}
 		} else if (plants.indexOf(block.id) != -1) {
-			for (var xx = x - 2; xx <= x + 2; xx++) {
-				for (var zz = z - 2; zz <= z + 2; zz++) {
-					block = World.getBlock(xx, y, zz);
+			for (let xx = x - 2; xx <= x + 2; xx++) {
+				for (let zz = z - 2; zz <= z + 2; zz++) {
+					let block = region.getBlock(xx, y, zz);
 					if (plants.indexOf(block.id) != -1) {
-						World.destroyBlock(xx, y, zz, true);
+						region.destroyBlock(xx, y, zz, true);
 						if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
-							World.drop(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
+							region.spawnDroppedItem(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
 						}
 					}
 				}

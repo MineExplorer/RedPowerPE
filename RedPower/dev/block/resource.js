@@ -140,7 +140,7 @@ Callback.addCallback("PostLoaded", function() {
 	  }
 	}, true);
 	
-	VanillaRecipe.addCraftingRecipe("ingot_bronze", {
+	/*VanillaRecipe.addCraftingRecipe("ingot_bronze", {
 	  type: "shapeless",
 	  ingredients: [
 	    { item: "block:blockBronze" }
@@ -149,7 +149,7 @@ Callback.addCallback("PostLoaded", function() {
 	    item: "item:ingotBronze",
 	    count: 9
 	  }
-	}, true);
+	}, true);*/
 	
 	VanillaRecipe.addCraftingRecipe("ingot_silver", {
 	  type: "shapeless",

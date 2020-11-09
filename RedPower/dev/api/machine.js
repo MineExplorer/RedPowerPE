@@ -42,15 +42,16 @@ var MachineRegistry = {
 	registerPrototype: function(id, Prototype, notElectric) {
 		// register ID
 		this.machineIDs[id] = true;
-
+		
+		Prototype.useNetworkItemContainer = true;
+		Prototype.getScreenName = function(player, coords) {
+			return "main";
+		};
+		
 		if (!notElectric) {
 			// wire connection
 			ICRender.getGroup("bt-wire").add(id, -1);
-			// setup prototype properties
-			Prototype.useNetworkItemContainer = true;
-			Prototype.getScreenName = function(player, coords) {
-				return "main";
-			};
+			// setup prototype properties and functions
 			Prototype.defaultValues = Prototype.defaultValues || {};
 			Prototype.defaultValues.energy = 0;
 			Prototype.getEnergyStorage = Prototype.getEnergyStorage || function() {
@@ -92,6 +93,6 @@ var MachineRegistry = {
 
 	updateGuiHeader: function(gui, text) {
 		var header = gui.getWindow("header");
-		header.contentProvider.drawing[1].text = Translation.translate(text);
+		header.contentProvider.drawing[2].text = Translation.translate(text);
 	}
 }

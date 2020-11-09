@@ -35,14 +35,23 @@ Item.registerNameOverrideFunction(ItemID.seedBag, function(item, name) {
 
 Saver.addSavesScope("SeedBagScope",
     function read(scope) {
-        SeedBag.nextUnique = scope.nextUnique || 1;
-        SeedBag.containers = scope.containers || {};
+		SeedBag.nextUnique = scope.nextUnique || 1;
+		if (!scope.format) {
+			var containers = scope.containers;
+			for (var key in containers) {
+				containers[key] = new ItemContainer(containers[key]);
+			}
+			SeedBag.containers = containers;
+		} else {
+			SeedBag.containers = scope.containers || {};
+		}
     },
 
     function save() {
         return {
             nextUnique: SeedBag.nextUnique,
-            containers: SeedBag.containers
+			containers: SeedBag.containers,
+			format: 1
         };
     }
 );
@@ -59,27 +68,28 @@ let SeedBag = {
 		return null;
 	},
 	
-	decreaseCount: function(item, container, decreaseCount) {
+	decreaseCount: function(item, container, decreaseCount, player) {
 		if (decreaseCount == 0) return;
 		let storedCount = 0;
-		for (let i in container.slots) {
-			let slot = container.getSlot(i);
+		for (let name in container.slots) {
+			let slot = container.getSlot(name);
 			if (slot.id > 0) {
 				let count = Math.min(slot.count, decreaseCount);
 				slot.count -= count;
 				decreaseCount -= count;
 				storedCount += slot.count;
+				container.setSlot(name, slot.id, slot.count, slot.data);
 			}
 		}
 		container.validateAll();
 		if (storedCount > 0) {
-			Player.setCarriedItem(item.id, 1, 577 - storedCount, item.extra);
+			Entity.setCarriedItem(player, item.id, 1, 577 - storedCount, item.extra);
 		} else {
-			Player.setCarriedItem(item.id, 1, 0, item.extra);
+			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
 		}
 	},
 	
-	isValidItem: function(id, count, data, container) {
+	isValidItem: function(id, container) {
 		if (!seeds[id]) return false;
 		for (let i in container.slots) {
 			let slot = container.getSlot(i);
@@ -89,8 +99,15 @@ let SeedBag = {
 		}
 		return true;
 	},
+
+	setupContainer: function (container) {
+        container.setClientContainerTypeName("seed_bag.ui");
+        container.setGlobalAddTransferPolicy(function (container, name, id, amount, data) {
+            return SeedBag.isValidItem(id, container) ? amount : 0;
+        });
+    },
 	
-	openGuiFor: function (item) {
+	openGuiFor: function (item, player) {
 		let containerID = 0;
 		let extra = item.extra;
         if (!extra) {
@@ -102,41 +119,52 @@ let SeedBag = {
 		if (!container) {
 			let containerID = this.nextUnique++;
 			extra.putInt("container", containerID);
-			container = this.containers["d" + containerID] = new UI.Container();
-			Player.setCarriedItem(item.id, 1, item.data, extra);
+			container = this.containers["d" + containerID] = new ItemContainer();
+			Entity.setCarriedItem(player, item.id, 1, item.data, extra);
 		}
-		container.openAs(this.gui);
+		var client = Network.getClientForPlayer(player);
+		if (client) {
+			if (!container.getClientContainerTypeName()) {
+                this.setupContainer(container);
+            }
+			container.openFor(client, "seed_bag");
+			return true;
+		}
     }
 }
 
 SeedBag.gui = new UI.StandartWindow({
-	standart: {
+	standard: {
 		header: {text: {text: Translation.translate("Seed Bag")}},
-		inventory: {standart: true},
-		background: {standart: true}
+		inventory: {standard: true},
+		background: {standard: true}
 	},
 	drawing: [],
 	elements: {
-		"slot0": {type: "slot", x: 530, y: 120, isValid: SeedBag.isValidItem},
-		"slot1": {type: "slot", x: 590, y: 120, isValid: SeedBag.isValidItem},
-		"slot2": {type: "slot", x: 650, y: 120, isValid: SeedBag.isValidItem},
-		"slot4": {type: "slot", x: 530, y: 180, isValid: SeedBag.isValidItem},
-		"slot5": {type: "slot", x: 590, y: 180, isValid: SeedBag.isValidItem},
-		"slot6": {type: "slot", x: 650, y: 180, isValid: SeedBag.isValidItem},
-		"slot8": {type: "slot", x: 530, y: 240, isValid: SeedBag.isValidItem},
-		"slot9": {type: "slot", x: 590, y: 240, isValid: SeedBag.isValidItem},
-		"slot10": {type: "slot", x: 650, y: 240, isValid: SeedBag.isValidItem}
+		"slot0": {type: "slot", x: 530, y: 120},
+		"slot1": {type: "slot", x: 590, y: 120},
+		"slot2": {type: "slot", x: 650, y: 120},
+		"slot4": {type: "slot", x: 530, y: 180},
+		"slot5": {type: "slot", x: 590, y: 180},
+		"slot6": {type: "slot", x: 650, y: 180},
+		"slot8": {type: "slot", x: 530, y: 240},
+		"slot9": {type: "slot", x: 590, y: 240},
+		"slot10": {type: "slot", x: 650, y: 240}
 	}
+}),
+
+ItemContainer.registerScreenFactory("seed_bag.ui", function(container, name) {
+	return SeedBag.gui;
 });
 
 Callback.addCallback("LevelLoaded", function() {
-	let header = SeedBag.gui.getWindow("header");
-	header.contentProvider.drawing[1].text = Translation.translate("Seed Bag");
+	MachineRegistry.updateGuiHeader(SeedBag.gui, "Seed Bag");
 });
 
-Item.registerNoTargetUseFunction(ItemID.seedBag, function (item) {
-	SeedBag.openGuiFor(item);
+Item.registerNoTargetUseFunction(ItemID.seedBag, function (item, player) {
+	SeedBag.openGuiFor(item, player);
 });
+
 
 let seeds = {295: 59, 391: 141, 392: 142, 458: 244}
 seeds[ItemID.flaxSeeds] = BlockID.flax;
@@ -147,34 +175,36 @@ Item.registerUseFunction("seedBag", function(coords, item, block, player) {
 		let count = 0;
 		let decreaseCount = 0;
 		let container = SeedBag.getContainer(item.extra);
+		let region = BlockSource.getDefaultForActor(player);
 		if (container) {
-			for (let i in container.slots) {
-				let slot = container.getSlot(i);
+			for (let name in container.slots) {
+				let slot = container.getSlot(name);
 				if (slot.id > 0) {
 					id = slot.id;
 					count += slot.count;
+					container.setSlot(name, slot.id, slot.count, slot.data);
 				}
 			}
 		}
 		if (count) {
 			for (let x = coords.x - 2; x <= coords.x + 2; x++)
 			for (let z = coords.z - 2; z <= coords.z + 2; z++) {
-				if (World.getBlockID(x, coords.y, z) == 60 && World.getBlockID(x, coords.y + 1, z) == 0) {
-					World.setBlock(x, coords.y + 1, z, seeds[id], 0);
+				if (region.getBlockId(x, coords.y, z) == 60 && region.getBlockId(x, coords.y + 1, z) == 0) {
+					region.setBlock(x, coords.y + 1, z, seeds[id], 0);
 					decreaseCount++;
 				}
 				if (decreaseCount >= count) {
-					SeedBag.decreaseCount(item, container, decreaseCount);
+					SeedBag.decreaseCount(item, container, decreaseCount, player);
 					return;
 				}
 			}
-			SeedBag.decreaseCount(item, container, decreaseCount);
+			SeedBag.decreaseCount(item, container, decreaseCount, player);
 		} else {
 			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
 		}
 	}
 });
-
+/*
 Callback.addCallback("tick", function() {
 	if (World.getThreadTime() % 10 == 0) {
 		var item = Player.getCarriedItem();
@@ -199,3 +229,4 @@ Callback.addCallback("tick", function() {
 		}
 	}
 });
+*/

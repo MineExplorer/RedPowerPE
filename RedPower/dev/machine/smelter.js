@@ -81,7 +81,7 @@ ModAPI.addAPICallback("ICore", function(api) {
 
 var guiSmelter = new UI.StandartWindow({
 	standard: {
-		header: {text: {text: "Smelter"}},
+		header: {text: {text: Translation.translate("Smelter")}},
 		inventory: {standard: true},
 		background: {standard: true}
 	},
@@ -98,9 +98,7 @@ var guiSmelter = new UI.StandartWindow({
 		"slotSource2": {type: "slot", x: 562, y: 112},
 		"slotSource3": {type: "slot", x: 502, y: 172},
 		"slotSource4": {type: "slot", x: 562, y: 172},
-		"slotFuel": {type: "slot", x: 410, y: 200, isValid: function(id, count, data) {
-			return Recipes.getFuelBurnDuration(id, data) > 0;
-		}},
+		"slotFuel": {type: "slot", x: 410, y: 200},
 		"slotResult": {type: "slot", x: 720, y: 142},
 	}
 });
@@ -120,6 +118,15 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 
 	getScreenByName: function() {
 		return guiSmelter;
+	},
+
+	init: function() {
+		this.container.setSlotAddTransferPolicy("slotFuel", function(container, name, id, amount, data, extra) {
+			return (Recipes.getFuelBurnDuration(id, data) > 0) ? amount : 0;
+		});
+		this.container.setSlotAddTransferPolicy("slotResult", function() {
+			return 0;
+		});
 	},
 
 	tick: function() {

@@ -26,7 +26,7 @@ Callback.addCallback("PreLoaded", function() {
 
 let guiBatBox = new UI.StandartWindow({
 	standard: {
-		header: {text: {text: "Battery Box"}},
+		header: {text: {text: Translation.translate("Battery Box")}},
 		inventory: {standard: true},
 		background: {standard: true}
 	},
@@ -58,14 +58,11 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 	},
 
 	init: function() {
-		this.container.setGlobalAddTransferPolicy(function(container, name, id, amount, data, extra, playerUid) {
-			if (name == "slot1" && ChargeItemRegistry.isValidItem(id, "Bt", 0)) {
-				return amount;
-			}
-			if (name == "slot2" && ChargeItemRegistry.isValidStorage(id, "Bt", 0)) {
-				return amount;
-			}
-			return 0;
+		this.container.setSlotAddTransferPolicy("slot1", function(container, name, id, amount, data, extra) {
+			return ChargeItemRegistry.isValidItem(id, "Bt", 0) ? amount : 0;
+		});
+		this.container.setSlotAddTransferPolicy("slot2", function(container, name, id, amount, data, extra) {
+			return ChargeItemRegistry.isValidStorage(id, "Bt", 0) ? amount : 0;
 		});
 	},
 

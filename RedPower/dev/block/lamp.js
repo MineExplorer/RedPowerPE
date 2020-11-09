@@ -83,15 +83,16 @@ function TileEntityLamp(isInverted) {
 			inverted: isInverted
 		},
 
-		getBlockID: function(isInverted) {
-			return isInverted ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
+		getBlockID: function(isActive) {
+			return isActive ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
 		},
 
 		redstone: function(signal) {
 			let region = this.blockSource;
-			if (!this.data.inverted == signal.power > 0) {
+			let active = (!this.data.inverted == signal.power > 0);
+			let blockID = this.getBlockID(active);
+			if (this.blockID != blockID) {
 				this.selfDestroy();
-				let blockID = this.getBlockID(!this.data.inverted);
 				let blockData = region.getBlockData(this.x, this.y, this.z);
 				region.setBlock(this.x, this.y, this.z, blockID, blockData);
 				let tile = World.addTileEntity(this.x, this.y, this.z, region);

@@ -20,7 +20,7 @@ Callback.addCallback("PreLoaded", function() {
 
 var guiBTFurnace = new UI.StandartWindow({
 	standard: {
-		header: {text: {text: "Blulectric Furnace"}},
+		header: {text: {text: Translation.translate("Blulectric Furnace")}},
 		inventory: {standard: true},
 		background: {standard: true}
 	},
@@ -54,12 +54,14 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 		return guiBTFurnace;
 	},
 
-	getTransportSlots: function() {
-		return {input: ["slotSource"], output: ["slotResult"]};
-	},
-
 	getEnergyStorage: function() {
 		return 2000;
+	},
+
+	init: function() {
+		this.container.setSlotAddTransferPolicy("slotResult", function() {
+			return 0;
+		});
 	},
 
 	tick: function() {

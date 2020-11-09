@@ -291,7 +291,7 @@ var BackpackRegistry = /** @class */ (function () {
 }());
 EXPORT("BackpackRegistry", BackpackRegistry);
 BackpackRegistry.setupClientSide();
-Callback.addCallback("ServerPlayerLoaded", function () {
+Callback.addCallback("LevelLoaded", function () {
     for (var id in BackpackRegistry.prototypes) {
         var prototype = BackpackRegistry.prototypes[id];
         if (!prototype.title) {

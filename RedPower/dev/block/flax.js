@@ -34,7 +34,7 @@ Block.registerDropFunction("flax", function(coords, blockID, blockData, level, e
 Callback.addCallback("DestroyBlock", function(coords, block, player) {
 	let region = BlockSource.getDefaultForActor(player);
 	if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
-		region.drop(coords.x + .5, coords.y + .5, coords.z + .5, ItemID.flaxSeeds, 1, 0);
+		region.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, ItemID.flaxSeeds, 1, 0);
 	}
 });
 
