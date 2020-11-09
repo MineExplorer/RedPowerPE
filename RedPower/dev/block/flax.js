@@ -49,7 +49,7 @@ Item.registerUseFunction("flaxSeeds", function(coords, item, block, player) {
 	if (block.id == 60 && coords.side == 1 && region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
 		region.setBlock(coords.x, coords.y + 1, coords.z, BlockID.flax, 0);
 		if (Game.isItemSpendingAllowed(player)) {
-            Entity.setCarriedItem(item.id, item.count - 1, 0);
+            Entity.setCarriedItem(player, item.id, item.count - 1, 0);
         }
         World.playSound(coords.x, coords.y + 1, coords.z, "dig.grass", 1, 0.8);
 	}
@@ -110,7 +110,7 @@ Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player
 			region.setBlock(coords.x, coords.y, coords.z, block.id, 4);
 			region.setBlock(coords.x, coords.y + 1, coords.z, block.id, 5);
 		}
-		Entity.setCarriedItem(item.id, item.count - 1, item.data);
+		Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
 		for (let i = 0; i < 16; i++) {
 			let px = coords.x + Math.random();
 			let pz = coords.z + Math.random();
