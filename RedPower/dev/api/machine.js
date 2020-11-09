@@ -48,7 +48,7 @@ var MachineRegistry = {
 			ICRender.getGroup("bt-wire").add(id, -1);
 			// setup prototype properties
 			Prototype.useNetworkItemContainer = true;
-			Prototype.getScreenName = function (player, coords) {
+			Prototype.getScreenName = function(player, coords) {
 				return "main";
 			};
 			Prototype.defaultValues = Prototype.defaultValues || {};

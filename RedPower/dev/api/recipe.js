@@ -34,7 +34,7 @@ let SmelterRecipes = {
 				}
 			}
 		}
-		resultSlot.setSlot(recipe.result.id, resultSlot.count + 1, recipe.result.data || 0);
+		resultSlot.setSlot(recipe.result.id, resultSlot.count + recipe.result.count, recipe.result.data || 0);
 		container.validateAll();
 	}
 }

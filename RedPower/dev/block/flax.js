@@ -22,7 +22,7 @@ Block.setShape(BlockID.flax, 0, 0, 0, 1, 3/4, 1, 2);
 Block.setShape(BlockID.flax, 0, 0, 0, 1, 15/16, 1, 3);
 
 Block.registerDropFunction("flax", function(coords, blockID, blockData, level, enchant, item, region) {
-	if (region.getBlockID(coords.x, coords.y + 1, coords.z) == blockID) {
+	if (region.getBlockId(coords.x, coords.y + 1, coords.z) == blockID) {
 		region.destroyBlock(coords.x, coords.y + 1, coords.z, true);
 	}
 	if (blockData < 4) {
@@ -39,14 +39,14 @@ Callback.addCallback("DestroyBlock", function(coords, block, player) {
 });
 
 Block.registerNeighbourChangeFunction("flax", function(coords, block, changeCoords, region) {
-	if (changeCoords.y < coords.y && region.getBlockID(coords.x, coords.y - 1, coords.z) != 60) {
+	if (changeCoords.y < coords.y && region.getBlockId(coords.x, coords.y - 1, coords.z) != 60) {
 		region.destroyBlock(coords.x, coords.y, coords.z, true);
 	}
 });
 
 Item.registerUseFunction("flaxSeeds", function(coords, item, block, player) {
 	let region = BlockSource.getDefaultForActor(player);
-	if (block.id == 60 && coords.side == 1 && region.getBlockID(coords.x, coords.y + 1, coords.z) == 0) {
+	if (block.id == 60 && coords.side == 1 && region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
 		region.setBlock(coords.x, coords.y + 1, coords.z, BlockID.flax, 0);
 		if (Game.isItemSpendingAllowed(player)) {
             Entity.setCarriedItem(item.id, item.count - 1, 0);
@@ -87,13 +87,13 @@ Block.setRandomTickCallback(BlockID.flax, function(x, y, z, id, data, region) {
 				if (data < 3) {
 					region.setBlock(x, y, z, id, data + 1);
 				}
-				else if (region.getBlockID(x, y+1, z) == 0) {
+				else if (region.getBlockId(x, y+1, z) == 0) {
 					region.setBlock(x, y, z, id, 4);
 					region.setBlock(x, y+1, z, id, 5);
 				}
 			}
 		}
-	} else if (region.getBlockID(x, y-1, z) != id) {
+	} else if (region.getBlockId(x, y-1, z) != id) {
 		region.destroyBlock(x, y, z, true);
 	}
 });
@@ -106,7 +106,7 @@ Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player
 		if (block.data < 4) {
 			region.setBlock(coords.x, coords.y, coords.z, block.id, block.data);
 		}
-		else if (region.getBlockID(coords.x, coords.y + 1, coords.z) == 0) {
+		else if (region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
 			region.setBlock(coords.x, coords.y, coords.z, block.id, 4);
 			region.setBlock(coords.x, coords.y + 1, coords.z, block.id, 5);
 		}

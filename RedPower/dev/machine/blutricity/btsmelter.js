@@ -19,10 +19,10 @@ Callback.addCallback("PreLoaded", function() {
 
 
 var guiBTSmelter = new UI.StandartWindow({
-	standart: {
+	standard: {
 		header: {text: {text: "Blulectric Smelter"}},
-		inventory: {standart: true},
-		background: {standart: true}
+		inventory: {standard: true},
+		background: {standard: true}
 	},
 	
 	drawing: [
@@ -46,7 +46,7 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerMachine(BlockID.bt_smelter, {	
+MachineRegistry.registerMachine(BlockID.bt_smelter, {
 	defaultValues: {
 		progress: 0,
 		isActive: false

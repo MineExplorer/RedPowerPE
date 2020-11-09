@@ -27,8 +27,7 @@ Callback.addCallback("PreLoaded", function() {
 	SmelterRecipes.addRecipe({id: ItemID.waferBlue, count: 1}, [{id: ItemID.waferSilicon, count: 1}, {id: ItemID.nikolite, count: 4}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotCopper, count: 1}, [{id: ItemID.fineCopperWire, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: ItemID.fineIronWire, count: 1}]);
-
-	// tools
+	// iron tools
 	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: 256, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 257, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 258, count: 1}]);
@@ -36,34 +35,32 @@ Callback.addCallback("PreLoaded", function() {
 	SmelterRecipes.addRecipe({id: 265, count: 2}, [{id: 292, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 2}, [{id: 359, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: ItemID.sickleIron, count: 1}]);
-
+	// golden tools
 	SmelterRecipes.addRecipe({id: 266, count: 2}, [{id: 283, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 1}, [{id: 284, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 3}, [{id: 285, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 3}, [{id: 286, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 2}, [{id: 294, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 3}, [{id: ItemID.sickleGold, count: 1}]);
-
-	// armor
+	// iron armor
 	SmelterRecipes.addRecipe({id: 265, count: 5}, [{id: 306, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 8}, [{id: 307, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 7}, [{id: 308, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 4}, [{id: 309, count: 1}]);
-
+	// golden armor
 	SmelterRecipes.addRecipe({id: 266, count: 5}, [{id: 314, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 8}, [{id: 315, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 7}, [{id: 316, count: 1}]);
 	SmelterRecipes.addRecipe({id: 266, count: 4}, [{id: 317, count: 1}]);
-
 	// other
-	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 66, count: 8}]);
-	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 101, count: 8}]);
-	SmelterRecipes.addRecipe({id: 265, count: 31}, [{id: 145, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 4}, [{id: 167, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 325, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 5}, [{id: 328, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 6}, [{id: 330, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 7}, [{id: 380, count: 1}]);
+	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 66, count: 8}]); // rail
+	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 101, count: 8}]); // iron bars
+	SmelterRecipes.addRecipe({id: 265, count: 31}, [{id: 145, count: 1}]); // anvil
+	SmelterRecipes.addRecipe({id: 265, count: 4}, [{id: 167, count: 1}]); // iron trapdoor
+	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 325, count: 1}]); // bucket
+	SmelterRecipes.addRecipe({id: 265, count: 5}, [{id: 328, count: 1}]); // minecart
+	SmelterRecipes.addRecipe({id: 265, count: 2}, [{id: 330, count: 1}]); // iron door
+	SmelterRecipes.addRecipe({id: 265, count: 7}, [{id: 380, count: 1}]); // cauldron
 });
 
 // mod compatibility
@@ -83,17 +80,17 @@ ModAPI.addAPICallback("ICore", function(api) {
 
 
 var guiSmelter = new UI.StandartWindow({
-	standart: {
+	standard: {
 		header: {text: {text: "Smelter"}},
-		inventory: {standart: true},
-		background: {standart: true}
+		inventory: {standard: true},
+		background: {standard: true}
 	},
-	
+
 	drawing: [
 		{type: "bitmap", x: 636, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 419, y: 150, bitmap: "fire_background", scale: GUI_SCALE}
 	],
-	
+
 	elements: {
 		"progressScale": {type: "scale", x: 636, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE},
 		"burningScale": {type: "scale", x: 419, y: 150, direction: 1, value: 0.5, bitmap: "fire_scale", scale: GUI_SCALE},
@@ -113,7 +110,7 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerMachine(BlockID.rp_smelter, {	
+MachineRegistry.registerMachine(BlockID.rp_smelter, {
 	defaultValues: {
 		progress: 0,
 		burn: 0,
@@ -127,7 +124,7 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 
 	tick: function() {
 		StorageInterface.checkHoppers(this);
-		
+
 		var sourceItems = {};
 		for (var i = 1; i <= 4; i++) {
 			var slot = this.container.getSlot("slotSource" + i);
@@ -136,11 +133,11 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 				sourceItems[slot.id] += slot.count;
 			}
 		}
-		
+
 		if (this.data.burn > 0) {
 			this.data.burn--;
 		}
-		
+
 		var recipe = SmelterRecipes.getRecipe(sourceItems);
 		if (recipe) {
 			var resultSlot = this.container.getSlot("slotResult");
@@ -156,17 +153,17 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 		} else {
 			this.data.progress = 0;
 		}
-		
+
 		this.setActive(this.data.burn > 0);
 		if (this.data.burn == 0) {
 			this.data.progress = 0;
 		}
-		
+
 		this.container.setScale("burningScale", this.data.burn / this.data.burnMax || 0);
 		this.container.setScale("progressScale", this.data.progress / 200);
 		this.container.sendChanges();
 	},
-	
+
 	getFuel: function(slotName) {
 		var fuelSlot = this.container.getSlot(slotName);
 		if (fuelSlot.id > 0) {

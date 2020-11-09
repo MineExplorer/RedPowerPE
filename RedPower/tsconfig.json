@@ -5,7 +5,8 @@
     // "outDir": "build",
     "outFile": "main.js",
     "allowJs": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "downlevelIteration": true
   },
   "exclude": [
     "typedoc",

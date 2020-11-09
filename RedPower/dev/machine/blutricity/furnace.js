@@ -19,10 +19,10 @@ Callback.addCallback("PreLoaded", function() {
 
 
 var guiBTFurnace = new UI.StandartWindow({
-	standart: {
+	standard: {
 		header: {text: {text: "Blulectric Furnace"}},
-		inventory: {standart: true},
-		background: {standart: true}
+		inventory: {standard: true},
+		background: {standard: true}
 	},
 	
 	drawing: [

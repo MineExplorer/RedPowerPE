@@ -25,10 +25,10 @@ Callback.addCallback("PreLoaded", function() {
 
 
 let guiBatBox = new UI.StandartWindow({
-	standart: {
+	standard: {
 		header: {text: {text: "Battery Box"}},
-		inventory: {standart: true},
-		background: {standart: true}
+		inventory: {standard: true},
+		background: {standard: true}
 	},
 	
 	drawing: [
@@ -38,8 +38,8 @@ let guiBatBox = new UI.StandartWindow({
 	elements: {
 		"batteryIcon": {type: "image", x: 530 + 6*GUI_SCALE, y: 75 - 7*GUI_SCALE, bitmap: "battery_icon_off", scale: GUI_SCALE},
 		"btScale": {type: "scale", x: 530 + GUI_SCALE, y: 75 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_scale", scale: GUI_SCALE},
-		"slot1": {type: "slot", x: 650, y: 80, isValid: function(id) {return ChargeItemRegistry.isValidItem(id, "Bt", 0);}},
-		"slot2": {type: "slot", x: 650, y: 172, isValid: function(id) {return ChargeItemRegistry.isValidStorage(id, "Bt", 0);}},
+		"slot1": {type: "slot", x: 650, y: 80},
+		"slot2": {type: "slot", x: 650, y: 172},
 	}
 });
 
@@ -57,14 +57,26 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 		return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
 	},
 
+	init: function() {
+		this.container.setGlobalAddTransferPolicy(function(container, name, id, amount, data, extra, playerUid) {
+			if (name == "slot1" && ChargeItemRegistry.isValidItem(id, "Bt", 0)) {
+				return amount;
+			}
+			if (name == "slot2" && ChargeItemRegistry.isValidStorage(id, "Bt", 0)) {
+				return amount;
+			}
+			return 0;
+		});
+	},
+
 	tick: function() {
 		let energyStorage = this.getEnergyStorage();
 
-		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 1);
-		this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot("slot1"), "Bt", this.data.energy, 1);
+		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 0);
+		this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot("slot1"), "Bt", this.data.energy, 0);
 
 		let energyLevel = this.getEnergyLevel();
-		if (energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
+		if (!this.remove && energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
 			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
 		}
 

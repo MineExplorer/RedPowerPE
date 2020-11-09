@@ -23,13 +23,13 @@ MachineRegistry.registerGenerator(BlockID.rp_thermopile, {
 	getHeatValue: function(id) {
 		return blockHeatValues[id] || 0;
 	},
-	
+
 	getHeat: function(x, y, z) {
-		var heat = this.getHeatValue(World.getBlockID(x, y, z));
+		var heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
 	},
-	
+
 	energyTick: function(type, src) {
 		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
