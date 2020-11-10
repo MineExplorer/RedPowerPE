@@ -37,7 +37,7 @@ Saver.addSavesScope("SeedBagScope",
     function read(scope) {
 		SeedBag.nextUnique = scope.nextUnique || 1;
 		if (!scope.format) {
-			var containers = scope.containers;
+			var containers = scope.containers || {};
 			for (var key in containers) {
 				containers[key] = new ItemContainer(containers[key]);
 			}
@@ -108,28 +108,25 @@ let SeedBag = {
     },
 	
 	openGuiFor: function (item, player) {
-		let containerID = 0;
-		let extra = item.extra;
-        if (!extra) {
-			extra = new ItemExtraData();
-		} else {
-			containerID = extra.getInt("container");
+		let client = Network.getClientForPlayer(player);
+		if (!client) {
+			return;
 		}
+
+		let extra = item.extra || new ItemExtraData();
+        let containerID = extra.getInt("container");
+		
         let container = this.containers["d" + containerID];
 		if (!container) {
-			let containerID = this.nextUnique++;
+			containerID = this.nextUnique++;
 			extra.putInt("container", containerID);
 			container = this.containers["d" + containerID] = new ItemContainer();
 			Entity.setCarriedItem(player, item.id, 1, item.data, extra);
 		}
-		var client = Network.getClientForPlayer(player);
-		if (client) {
-			if (!container.getClientContainerTypeName()) {
-                this.setupContainer(container);
-            }
-			container.openFor(client, "seed_bag");
-			return true;
+		if (!container.getClientContainerTypeName()) {
+			this.setupContainer(container);
 		}
+		container.openFor(client, "seed_bag");
     }
 }
 

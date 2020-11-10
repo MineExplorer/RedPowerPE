@@ -51,24 +51,27 @@ ToolType.sickle = {
 						let block = region.getBlock(xx, yy, zz);
 						if (ToolAPI.getBlockMaterialName(blockID) == "plant") {
 							region.destroyBlock(xx, yy, zz, true);
-							Block.onBlockDestroyed({x: x, y: y,z: z}, block, false, player);
+							Block.onBlockDestroyed({x: xx, y: y,z: zz}, block, false, player);
 						}
 					}
 				}
 			}
-		} else if (plants.indexOf(block.id) != -1) {
+			ToolLib.breakCarriedTool(1);
+		}
+		else if (plants.indexOf(block.id) != -1) {
 			for (let xx = x - 2; xx <= x + 2; xx++) {
 				for (let zz = z - 2; zz <= z + 2; zz++) {
 					let block = region.getBlock(xx, y, zz);
 					if (plants.indexOf(block.id) != -1) {
 						region.destroyBlock(xx, y, zz, true);
-						Block.onBlockDestroyed({x: x, y: y,z: z}, block, false, player);
+						Block.onBlockDestroyed({x: xx, y: y,z: zz}, block, false, player);
 						if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
 							region.spawnDroppedItem(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
 						}
 					}
 				}
 			}
+			ToolLib.breakCarriedTool(1);
 		}
 	}
 }
