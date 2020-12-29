@@ -5,7 +5,7 @@ Block.createBlock("rp_smelter", [
 ToolAPI.registerBlockMaterial(BlockID.rp_smelter, "stone", 1);
 Block.setDestroyLevel(BlockID.rp_smelter, 1);
 
-TileRenderer.setStandardModelWithRotation(BlockID.rp_smelter, 0, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], true);
+TileRenderer.setStandardModelWithRotation(BlockID.rp_smelter, 2, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
 TileRenderer.registerModelWithRotation(BlockID.rp_smelter, 2, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 1], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);
 TileRenderer.setRotationFunction(BlockID.rp_smelter);
 
@@ -107,29 +107,29 @@ Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiSmelter, "Smelter");
 });
 
-
-MachineRegistry.registerMachine(BlockID.rp_smelter, {
-	defaultValues: {
+class Smelter
+extends MachineBase {
+	defaultValues = {
 		progress: 0,
 		burn: 0,
-		burnMax: 0,
-		isActive: false
-	},
+		burnMax: 0
+	}
 
-	getScreenByName: function() {
+	getScreenByName() {
 		return guiSmelter;
-	},
+	}
 
-	init: function() {
+	init() {
+		super.init();
 		this.container.setSlotAddTransferPolicy("slotFuel", function(container, name, id, amount, data, extra) {
 			return (Recipes.getFuelBurnDuration(id, data) > 0) ? amount : 0;
 		});
 		this.container.setSlotAddTransferPolicy("slotResult", function() {
 			return 0;
 		});
-	},
+	}
 
-	tick: function() {
+	tick() {
 		StorageInterface.checkHoppers(this);
 
 		var sourceItems = {};
@@ -157,21 +157,19 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 					this.data.progress = 0;
 				}
 			}
-		} else {
+		}
+		if (!recipe || this.data.burn == 0) {
 			this.data.progress = 0;
 		}
 
 		this.setActive(this.data.burn > 0);
-		if (this.data.burn == 0) {
-			this.data.progress = 0;
-		}
 
 		this.container.setScale("burningScale", this.data.burn / this.data.burnMax || 0);
 		this.container.setScale("progressScale", this.data.progress / 200);
 		this.container.sendChanges();
-	},
+	}
 
-	getFuel: function(slotName) {
+	getFuel(slotName) {
 		var fuelSlot = this.container.getSlot(slotName);
 		if (fuelSlot.id > 0) {
 			var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
@@ -188,17 +186,18 @@ MachineRegistry.registerMachine(BlockID.rp_smelter, {
 			}
 		}
 		return 0;
-	},
-}, true);
+	}
+}
 
+MachineRegistry.registerPrototype(BlockID.rp_smelter, new Smelter());
 
 StorageInterface.createInterface(BlockID.rp_smelter, {
 	slots: {
-		"slotFuel": {input: true, isValid: function(item, side) {return side > 1}},
-		"slotSource1": {input: true, isValid: function(item, side) {return side == 1}},
-		"slotSource2": {input: true, isValid: function(item, side) {return side == 1}},
-		"slotSource3": {input: true, isValid: function(item, side) {return side == 1}},
-		"slotSource4": {input: true, isValid: function(item, side) {return side == 1}},
+		"slotFuel": {input: true, side: "horizontal"},
+		"slotSource1": {input: true, side: "up"},
+		"slotSource2": {input: true, side: "up"},
+		"slotSource3": {input: true, side: "up"},
+		"slotSource4": {input: true, side: "up"},
 		"slotResult": {output: true}
 	}
 });

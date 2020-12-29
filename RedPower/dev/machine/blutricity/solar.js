@@ -14,17 +14,16 @@ Callback.addCallback("PreLoaded", function() {
 	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0]);
 });
 
-
-MachineRegistry.registerGenerator(BlockID.rp_solar, {
-	defaultValues: {
+class SolarPanel {
+	defaultValues = {
 		canSeeSky: false
-	},
+	}
 
-	init: function() {
+	init() {
 		this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
-	},
+	}
 
-	energyTick: function(type, src) {
+	energyTick(type, src) {
 		if (World.getThreadTime() % 100 == 0) {
 			this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
 		}
@@ -32,4 +31,6 @@ MachineRegistry.registerGenerator(BlockID.rp_solar, {
 			src.add(2);
 		}
 	}
-});
+}
+
+MachineRegistry.registerGenerator(BlockID.rp_solar, new SolarPanel());

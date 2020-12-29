@@ -1,33 +1,48 @@
-var MachineRenderer = {
-	getFacing: function() {
+class MachineBase {
+	getFacing() {
 		return this.blockSource.getBlockData(this.x, this.y, this.z);
-	},
+	}
 
-	renderModel: function() {
-		if (this.data.isActive) {
-			TileRenderer.mapAtCoords(this.x, this.y, this.z, this.blockID, this.getFacing());
-		} else {
-			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+	setActive(isActive) {
+		if (this.networkData.getBoolean("isActive") !== isActive) {
+			this.networkData.putBoolean("isActive", isActive);
+			this.networkData.sendChanges();
 		}
-	},
+	}
 
-	setActive: function(isActive) {
-		if (this.data.isActive != isActive) {
-			this.data.isActive = isActive;
-			this.renderModel();
-		}
-	},
-
-	init: function() {
-		if (this.data.meta != undefined) {
+	init() {
+		if (this.data.meta !== undefined) {
 			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, this.data.meta + 2);
 			delete this.data.meta;
 		}
-		this.renderModel();
-	},
+		this.networkData.putInt("blockId", this.blockID);
+		this.networkData.putInt("blockData", this.getFacing());
+		this.networkData.sendChanges();
+	}
 
-	destroy: function() {
-		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+	client = {
+		renderModel: function() {
+			if (this.networkData.getBoolean("isActive")) {
+				let blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
+				let blockData = this.networkData.getInt("blockData");
+				Game.message(blockId + ":" + blockData);
+				TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
+			} else {
+				BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+			}
+		},
+
+		load: function() {
+			this.renderModel();
+			let self =  this;
+			this.networkData.addOnDataChangedListener(function(data, isExternal) {
+				self.renderModel();
+			});
+		},
+
+		unload: function() {
+			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+		}
 	}
 }
 
@@ -39,37 +54,35 @@ var MachineRegistry = {
 		return this.machineIDs[id];
 	},
 
-	registerPrototype: function(id, Prototype, notElectric) {
+	registerPrototype: function(id, Prototype) {
 		// register ID
 		this.machineIDs[id] = true;
-		
+
 		Prototype.useNetworkItemContainer = true;
 		Prototype.getScreenName = function(player, coords) {
 			return "main";
 		};
-		
-		if (!notElectric) {
-			// wire connection
-			ICRender.getGroup("bt-wire").add(id, -1);
-			// setup prototype properties and functions
-			Prototype.defaultValues = Prototype.defaultValues || {};
-			Prototype.defaultValues.energy = 0;
-			Prototype.getEnergyStorage = Prototype.getEnergyStorage || function() {
-				return 0;
-			}
-			Prototype.energyReceive = Prototype.energyReceive || function(type, amount, voltage) {
-				var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
-				this.data.energy += add;
-				return add;
-			}
-		}
 
 		Block.setDestroyTime(id, 3.25);
 		TileEntity.registerPrototype(id, Prototype);
+	},
 
-		if (!notElectric) {
-			EnergyTileRegistry.addEnergyTypeForId(id, BT);
+	registerMachine: function(id, Prototype, notElectric) {
+		// wire connection
+		ICRender.getGroup("bt-wire").add(id, -1);
+		// setup prototype properties and functions
+		Prototype.defaultValues = Prototype.defaultValues || {};
+		Prototype.defaultValues.energy = 0;
+		Prototype.getEnergyStorage = Prototype.getEnergyStorage || function() {
+			return 0;
 		}
+		Prototype.energyReceive = Prototype.energyReceive || function(type, amount, voltage) {
+			var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+			this.data.energy += add;
+			return add;
+		}
+		this.registerPrototype(id, Prototype);
+		EnergyTileRegistry.addEnergyTypeForId(id, BT);
 	},
 
 	registerGenerator: function(id, Prototype) {
@@ -79,16 +92,7 @@ var MachineRegistry = {
 		Prototype.canReceiveEnergy = function() {
 			return false;
 		}
-		this.registerPrototype(id, Prototype);
-	},
-
-	registerMachine: function(id, Prototype, notElectric) {
-		for(var property in MachineRenderer) {
-			if (!Prototype[property]) {
-				Prototype[property] = MachineRenderer[property];
-			}
-		}
-		this.registerPrototype(id, Prototype, notElectric);
+		this.registerMachine(id, Prototype);
 	},
 
 	updateGuiHeader: function(gui, text) {

@@ -15,22 +15,22 @@ Callback.addCallback("PreLoaded", function() {
 
 var blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
-MachineRegistry.registerGenerator(BlockID.rp_thermopile, {
-	defaultValues: {
+class Thermopile {
+	defaultValues = {
 		output: 0
-	},
+	}
 
-	getHeatValue: function(id) {
+	getHeatValue(id) {
 		return blockHeatValues[id] || 0;
-	},
+	}
 
-	getHeat: function(x, y, z) {
+	getHeat(x, y, z) {
 		var heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
-	},
+	}
 
-	energyTick: function(type, src) {
+	energyTick(type, src) {
 		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
 			this.heat = 0;
@@ -43,4 +43,6 @@ MachineRegistry.registerGenerator(BlockID.rp_thermopile, {
 		}
 		src.add(this.data.output);
 	}
-});
+}
+
+MachineRegistry.registerGenerator(BlockID.rp_thermopile, new Thermopile());

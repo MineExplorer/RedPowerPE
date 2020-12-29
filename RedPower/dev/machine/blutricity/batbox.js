@@ -30,11 +30,11 @@ let guiBatBox = new UI.StandartWindow({
 		inventory: {standard: true},
 		background: {standard: true}
 	},
-	
+
 	drawing: [
 		{type: "bitmap", x: 530, y: 75, bitmap: "btstorage_background", scale: GUI_SCALE},
 	],
-	
+
 	elements: {
 		"batteryIcon": {type: "image", x: 530 + 6*GUI_SCALE, y: 75 - 7*GUI_SCALE, bitmap: "battery_icon_off", scale: GUI_SCALE},
 		"btScale": {type: "scale", x: 530 + GUI_SCALE, y: 75 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_scale", scale: GUI_SCALE},
@@ -47,26 +47,25 @@ Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
 });
 
-
-MachineRegistry.registerPrototype(BlockID.rp_batbox, {
-	getScreenByName: function() {
+class BatBox {
+	getScreenByName() {
 		return guiBatBox;
-	},
+	}
 
-	getEnergyLevel: function() {
+	getEnergyLevel() {
 		return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
-	},
+	}
 
-	init: function() {
+	init() {
 		this.container.setSlotAddTransferPolicy("slot1", function(container, name, id, amount, data, extra) {
 			return ChargeItemRegistry.isValidItem(id, "Bt", 0) ? amount : 0;
 		});
 		this.container.setSlotAddTransferPolicy("slot2", function(container, name, id, amount, data, extra) {
 			return ChargeItemRegistry.isValidStorage(id, "Bt", 0) ? amount : 0;
 		});
-	},
+	}
 
-	tick: function() {
+	tick() {
 		let energyStorage = this.getEnergyStorage();
 
 		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 0);
@@ -92,22 +91,22 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 		this.container.sendChanges();
-	},
+	}
 
-	isEnergySource: function() {
+	isEnergySource() {
 		return true;
-	},
+	}
 
-	getEnergyStorage: function() {
+	getEnergyStorage() {
 		return 64000;
-	},
+	}
 
-	energyTick: function(type, src) {
+	energyTick(type, src) {
 		let output = Math.min(100, this.data.energy);
 		this.data.energy += src.add(output) - output;
-	},
+	}
 
-	destroyBlock: function(coords, player) {
+	destroyBlock(coords, player) {
 		if (this.data.energy > 0) {
 			let extra = new ItemExtraData().putInt("energy", this.data.energy);
 			let blockData = this.getEnergyLevel();
@@ -116,8 +115,9 @@ MachineRegistry.registerPrototype(BlockID.rp_batbox, {
 			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
 		}
 	}
-});
+}
 
+MachineRegistry.registerPrototype(BlockID.rp_batbox, new BatBox());
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
 	let x = coords.relative.x;

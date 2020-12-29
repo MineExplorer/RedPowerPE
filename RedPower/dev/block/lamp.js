@@ -77,34 +77,34 @@ Callback.addCallback("PreLoaded", function() {
 	}
 });
 
-function TileEntityLamp(isInverted) {
-	return {
-		defaultValues: {
+class TileEntityLamp {
+	constructor(isInverted) {
+		this.defaultValues = {
 			inverted: isInverted
-		},
-
-		getBlockID: function(isActive) {
-			return isActive ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
-		},
-
-		redstone: function(signal) {
-			let region = this.blockSource;
-			let active = (!this.data.inverted == signal.power > 0);
-			let blockID = this.getBlockID(active);
-			if (this.blockID != blockID) {
-				this.selfDestroy();
-				let blockData = region.getBlockData(this.x, this.y, this.z);
-				region.setBlock(this.x, this.y, this.z, blockID, blockData);
-				let tile = World.addTileEntity(this.x, this.y, this.z, region);
-				tile.data.inverted = this.data.inverted;
-			}
-		},
-
-		destroyBlock: function(coords, player) {
-			let blockID = this.getBlockID(this.data.inverted);
-			let blockData = this.blockSource.getBlockData(coords.x, coords.y, coords.z);
-			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 		}
+	}
+
+	getBlockID(isActive) {
+		return isActive ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
+	}
+
+	redstone(signal) {
+		let region = this.blockSource;
+		let active = (!this.data.inverted == signal.power > 0);
+		let blockID = this.getBlockID(active);
+		if (this.blockID != blockID) {
+			this.selfDestroy();
+			let blockData = region.getBlockData(this.x, this.y, this.z);
+			region.setBlock(this.x, this.y, this.z, blockID, blockData);
+			let tile = World.addTileEntity(this.x, this.y, this.z, region);
+			tile.data.inverted = this.data.inverted;
+		}
+	}
+
+	destroyBlock(coords, player) {
+		let blockID = this.getBlockID(this.data.inverted);
+		let blockData = this.blockSource.getBlockData(coords.x, coords.y, coords.z);
+		this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 }
 

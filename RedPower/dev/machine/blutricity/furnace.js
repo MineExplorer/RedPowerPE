@@ -24,12 +24,12 @@ var guiBTFurnace = new UI.StandartWindow({
 		inventory: {standard: true},
 		background: {standard: true}
 	},
-	
+
 	drawing: [
 		{type: "bitmap", x: 625, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 425, y: 92, bitmap: "btstorage_small_background", scale: GUI_SCALE},
 	],
-	
+
 	elements: {
 		"progressScale": {type: "scale", x: 625, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE},
 		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_small_scale", scale: GUI_SCALE},
@@ -43,28 +43,29 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-MachineRegistry.registerMachine(BlockID.bt_furnace, {
-	defaultValues: {
+class BTFurnace
+extends MachineBase {
+	defaultValues = {
 		energy: 0,
-		progress: 0,
-		isActive: false
-	},
+		progress: 0
+	}
 
-	getScreenByName: function() {
+	getScreenByName() {
 		return guiBTFurnace;
-	},
+	}
 
-	getEnergyStorage: function() {
+	getEnergyStorage() {
 		return 2000;
-	},
+	}
 
-	init: function() {
+	init() {
+		super.init();
 		this.container.setSlotAddTransferPolicy("slotResult", function() {
 			return 0;
 		});
-	},
+	}
 
-	tick: function() {
+	tick() {
 		StorageInterface.checkHoppers(this);
 
 		var sourceSlot = this.container.getSlot("slotSource");
@@ -96,8 +97,9 @@ MachineRegistry.registerMachine(BlockID.bt_furnace, {
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 		this.container.sendChanges();
 	}
-});
+}
 
+MachineRegistry.registerMachine(BlockID.bt_furnace, new BTFurnace());
 
 StorageInterface.createInterface(BlockID.bt_furnace, {
 	slots: {

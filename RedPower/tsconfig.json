@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES5",
     "lib": ["ESNext"],
-    // "outDir": "build",
     "outFile": "main.js",
     "allowJs": true,
     "experimentalDecorators": true,
@@ -15,7 +14,48 @@
     "dom"
   ],
   "include": [
-    "dev/**/*"
+    "dev/header.js",
+    "dev/translation.js",
+
+    "dev/api/machine.js",
+    "dev/api/recipe.js",
+    "dev/api/integration.js",
+    "dev/api/red_core.js",
+
+    "dev/block/flax.js",
+    "dev/block/basalt.js",
+    "dev/block/marble.js",
+    "dev/block/basalt_slab.js",
+    "dev/block/marble_slab.js",
+    "dev/block/ore.js",
+    "dev/block/resource.js",
+    "dev/block/lamp.js",
+    "dev/block/cable.js",
+
+    "dev/machine/smelter.js",
+    "dev/machine/blutricity/solar.js",
+    "dev/machine/blutricity/thermopile.js",
+    "dev/machine/blutricity/furnace.js",
+    "dev/machine/blutricity/btsmelter.js",
+    "dev/machine/blutricity/batbox.js",
+    "dev/machine/blutricity/transformer.js",
+
+    "dev/items/resource.js",
+    "dev/items/bags.js",
+    "dev/items/seed_bag.js",
+    "dev/items/lumar.js",
+    "dev/items/components.js",
+    "dev/items/battery.js",
+    "dev/items/tool/crafting.js",
+    "dev/items/tool/athame.js",
+    "dev/items/tool/sword.js",
+    "dev/items/tool/shovel.js",
+    "dev/items/tool/pickaxe.js",
+    "dev/items/tool/axe.js",
+    "dev/items/tool/hoe.js",
+    "dev/items/tool/sickle.js",
+
+    "dev/integration/recipe_viewer.js"
   ],
   "files": [
     "../global.d.ts"

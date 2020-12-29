@@ -60,14 +60,14 @@ Saver.addSavesScope("SeedBagScope",
 let SeedBag = {
 	containers: {},
 	nextUnique: 1,
-	
+
 	getContainer: function(extra) {
 		if (extra) {
 			return this.containers["d" + extra.getInt("container")];
 		}
 		return null;
 	},
-	
+
 	decreaseCount: function(item, container, decreaseCount, player) {
 		if (decreaseCount == 0) return;
 		let storedCount = 0;
@@ -88,7 +88,7 @@ let SeedBag = {
 			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
 		}
 	},
-	
+
 	isValidItem: function(id, container) {
 		if (!seeds[id]) return false;
 		for (let i in container.slots) {
@@ -106,7 +106,7 @@ let SeedBag = {
             return SeedBag.isValidItem(id, container) ? amount : 0;
         });
     },
-	
+
 	openGuiFor: function (item, player) {
 		let client = Network.getClientForPlayer(player);
 		if (!client) {
@@ -115,7 +115,7 @@ let SeedBag = {
 
 		let extra = item.extra || new ItemExtraData();
         let containerID = extra.getInt("container");
-		
+
         let container = this.containers["d" + containerID];
 		if (!container) {
 			containerID = this.nextUnique++;

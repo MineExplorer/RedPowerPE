@@ -26,33 +26,33 @@ ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
 	TileRenderer.setCollisionShape(BlockID.bt_transformer, 0, modelBoxes);
 })();
 
-MachineRegistry.registerPrototype(BlockID.bt_transformer, {
-	defaultValues: {
+class BTTransformer {
+	defaultValues = {
 		electric_mode: false
-	},
+	}
 
-	isEnergySource: function() {
+	isEnergySource() {
 		return true;
-	},
+	}
 
-	getEnergyStorage: function() {
+	getEnergyStorage() {
 		return 128;
-	},
-	
+	}
+
 	redstone(signal) {
 		this.data.electric_mode = signal.power > 0;
-	},
+	}
 
-	energyReceive: function(type, amount, voltage) {
+	energyReceive(type, amount, voltage) {
 		if ((type == "Bt" && !this.data.electric_mode) || (type == "Eu" && this.data.electric_mode)) {
 			var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
 			this.data.energy += add;
 			return add;
 		}
 		return 0;
-	},
-	
-	energyTick: function(type, src) {
+	}
+
+	energyTick(type, src) {
 		var output = this.data.energy;
 		if (type == "Bt" && this.data.electric_mode) {
 			this.data.energy += src.add(output) - output;
@@ -61,6 +61,8 @@ MachineRegistry.registerPrototype(BlockID.bt_transformer, {
 			this.data.energy += src.add(output) - output;
 		}
 	}
-});
+}
+
+MachineRegistry.registerPrototype(BlockID.bt_transformer, new BTTransformer());
 
 EnergyTileRegistry.addEnergyTypeForId(BlockID.bt_transformer, EU);

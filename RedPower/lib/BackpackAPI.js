@@ -19,7 +19,7 @@
 */
 LIBRARY({
     name: "BackpackAPI",
-    version: 9,
+    version: 10,
     shared: true,
     api: "CoreEngine"
 });
@@ -65,12 +65,10 @@ var BackpackRegistry = /** @class */ (function () {
     BackpackRegistry.register = function (id, prototype) {
         var _a, _b, _c, _d, _e;
         if (id <= 0) {
-            Logger.Log("id for backpack register function is not valid", "ERROR");
-            return;
+            throw "Invalid item id";
         }
         if (!prototype) {
-            Logger.Log("object for backpack register function is not valid", "ERROR");
-            return;
+            throw "Invalid backpack prototype";
         }
         prototype.title = (_a = prototype.title) !== null && _a !== void 0 ? _a : "Backpack";
         prototype.kind = prototype.useExtraData ? BackpackKind.EXTRA : ((_b = prototype.kind) !== null && _b !== void 0 ? _b : BackpackKind.META);
@@ -80,8 +78,7 @@ var BackpackRegistry = /** @class */ (function () {
         var slots = prototype.slots;
         if (!prototype.gui) {
             if (slots <= 0) {
-                Logger.Log("slots amount is not valid", "ERROR");
-                return;
+                throw "Amount of slots must be greater than zero";
             }
             prototype.gui = new UI.StandartWindow({
                 standart: {
@@ -103,30 +100,20 @@ var BackpackRegistry = /** @class */ (function () {
             });
             BackpackRegistry.addSlotsToGui(prototype.gui, slots, prototype.inRow, prototype.slotsCenter);
         }
-        Item.registerUseFunctionForID(id, function (coords, item, block, player) {
-            BackpackRegistry.openGuiFor(item, player);
-        });
-        Item.registerNoTargetUseFunction(id, function (item, player) {
-            BackpackRegistry.openGuiFor(item, player);
-        });
+        Item.registerUseFunctionForID(id, function (coords, item, block, player) { return BackpackRegistry.openGuiFor(item, player); });
+        Item.registerNoTargetUseFunction(id, function (item, player) { return BackpackRegistry.openGuiFor(item, player); });
         this.prototypes[id] = prototype;
     };
     BackpackRegistry.setupClientSide = function () {
         var _this = this;
-        ItemContainer.registerScreenFactory("backpack_api.ui", function (container, name) {
-            var prototype = _this.prototypes[Network.serverToLocalId(parseInt(name))];
-            if (prototype) {
-                return prototype.gui;
-            }
-            return null;
-        });
+        ItemContainer.registerScreenFactory("backpack_api.ui", function (container, name) { var _a; return (_a = _this.prototypes[Network.serverToLocalId(parseInt(name))]) === null || _a === void 0 ? void 0 : _a.gui; });
     };
     BackpackRegistry.setupContainer = function (proto, container) {
+        var isValidFunc = proto.isValidItem || (function (id, count, data) {
+            return !BackpackRegistry.isBackpack(id)
+                && (proto.items ? BackpackRegistry.isValidFor(id, data, proto.items) : true);
+        });
         container.setClientContainerTypeName("backpack_api.ui");
-        var isValidFunc = proto.isValidItem || function (id, count, data) {
-            return !BackpackRegistry.isBackpack(id) &&
-                (proto.items ? BackpackRegistry.isValidFor(id, data, proto.items) : true);
-        };
         container.setGlobalAddTransferPolicy(function (container, name, id, amount, data) {
             return isValidFunc(id, amount, data) ? Math.min(amount, Item.getMaxStack(id) - container.getSlot(name).count) : 0;
         });
@@ -205,7 +192,7 @@ var BackpackRegistry = /** @class */ (function () {
                 case BackpackKind.META:
                     if (!item.data) {
                         item.data = BackpackRegistry.nextUnique++;
-                        Player.setCarriedItem(item.id, item.count, item.data);
+                        Entity.setCarriedItem(player, item.id, item.count, item.data);
                     }
                     key = "d" + item.data;
                     container = this.containers[key];
@@ -223,7 +210,7 @@ var BackpackRegistry = /** @class */ (function () {
                     if (data === -1) {
                         data = BackpackRegistry.nextUnique++;
                         item.extra.putInt("__backpack_id", data);
-                        Player.setCarriedItem(item.id, item.count, item.data, item.extra);
+                        Entity.setCarriedItem(player, item.id, item.count, item.data, item.extra);
                     }
                     key = "d" + data;
                     container = this.containers[key];
@@ -239,8 +226,7 @@ var BackpackRegistry = /** @class */ (function () {
             container.openFor(client, item.id + "");
             return item.data;
         }
-        Logger.Log("item is not a backpack", "ERROR");
-        return null;
+        throw "Item is not a backpack";
     };
     ;
     /**
@@ -291,7 +277,7 @@ var BackpackRegistry = /** @class */ (function () {
 }());
 EXPORT("BackpackRegistry", BackpackRegistry);
 BackpackRegistry.setupClientSide();
-Callback.addCallback("LevelLoaded", function () {
+Callback.addCallback("ServerPlayerLoaded", function () {
     for (var id in BackpackRegistry.prototypes) {
         var prototype = BackpackRegistry.prototypes[id];
         if (!prototype.title) {
