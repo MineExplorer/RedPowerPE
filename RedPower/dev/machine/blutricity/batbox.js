@@ -47,7 +47,8 @@ Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
 });
 
-class BatBox {
+class BatBox
+extends TileEntityBase {
 	getScreenByName() {
 		return guiBatBox;
 	}
@@ -76,18 +77,12 @@ class BatBox {
 			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
 		}
 
-		// TODO: rewrite to container events
-		/*
-		let content = this.container.getGuiContent();
-		if (content) {
-			if (this.data.energy == this.getEnergyStorage()) {
-				content.elements.batteryIcon.bitmap = "battery_icon_on";
-			}
-			else {
-				content.elements.batteryIcon.bitmap = "battery_icon_off";
-			}
+		if (this.data.energy == this.getEnergyStorage()) {
+			this.container.sendEvent("setBatteryIcon", "on");
 		}
-		*/
+		else {
+			this.container.sendEvent("setBatteryIcon", "off");
+		}
 
 		this.container.setScale("btScale", this.data.energy / energyStorage);
 		this.container.sendChanges();
@@ -115,9 +110,19 @@ class BatBox {
 			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
 		}
 	}
+
+	client = {
+		containerEvents: {
+			setBatteryIcon(container, window, content, data) {
+				if (content) {
+					content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
+				}
+			}
+		},
+	}
 }
 
-MachineRegistry.registerPrototype(BlockID.rp_batbox, new BatBox());
+MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
 	let x = coords.relative.x;

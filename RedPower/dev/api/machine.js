@@ -1,4 +1,17 @@
-class MachineBase {
+class TileEntityBase {
+	useNetworkItemContainer = true;
+
+	getScreenName(player, coords) {
+		return "main";
+	}
+
+	getScreenByName(screenName) {
+		return null;
+	}
+}
+
+class MachineBase
+extends TileEntityBase {
 	getFacing() {
 		return this.blockSource.getBlockData(this.x, this.y, this.z);
 	}
@@ -20,19 +33,19 @@ class MachineBase {
 		this.networkData.sendChanges();
 	}
 
+	// Client functions
 	client = {
-		renderModel: function() {
+		renderModel() {
 			if (this.networkData.getBoolean("isActive")) {
 				let blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
 				let blockData = this.networkData.getInt("blockData");
-				Game.message(blockId + ":" + blockData);
 				TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
 			} else {
 				BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 			}
 		},
 
-		load: function() {
+		load() {
 			this.renderModel();
 			let self =  this;
 			this.networkData.addOnDataChangedListener(function(data, isExternal) {
@@ -40,7 +53,7 @@ class MachineBase {
 			});
 		},
 
-		unload: function() {
+		unload() {
 			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		}
 	}
@@ -55,14 +68,7 @@ var MachineRegistry = {
 	},
 
 	registerPrototype: function(id, Prototype) {
-		// register ID
 		this.machineIDs[id] = true;
-
-		Prototype.useNetworkItemContainer = true;
-		Prototype.getScreenName = function(player, coords) {
-			return "main";
-		};
-
 		Block.setDestroyTime(id, 3.25);
 		TileEntity.registerPrototype(id, Prototype);
 	},

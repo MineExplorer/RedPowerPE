@@ -194,14 +194,28 @@ Translation.addTranslation("Pickaxes", { ru: "Кирки" });
 Translation.addTranslation("Axes", { ru: "Топоры" });
 Translation.addTranslation("Hoes", { ru: "Мотыги" });
 Translation.addTranslation("Sickles", { ru: "Серпы" });
-var MachineBase = /** @class */ (function () {
+var TileEntityBase = /** @class */ (function () {
+    function TileEntityBase() {
+        this.useNetworkItemContainer = true;
+    }
+    TileEntityBase.prototype.getScreenName = function (player, coords) {
+        return "main";
+    };
+    TileEntityBase.prototype.getScreenByName = function (screenName) {
+        return null;
+    };
+    return TileEntityBase;
+}());
+var MachineBase = /** @class */ (function (_super) {
+    __extends(MachineBase, _super);
     function MachineBase() {
-        this.client = {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        // Client functions
+        _this.client = {
             renderModel: function () {
                 if (this.networkData.getBoolean("isActive")) {
                     var blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
                     var blockData = this.networkData.getInt("blockData");
-                    Game.message(blockId + ":" + blockData);
                     TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
                 }
                 else {
@@ -219,6 +233,7 @@ var MachineBase = /** @class */ (function () {
                 BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
             }
         };
+        return _this;
     }
     MachineBase.prototype.getFacing = function () {
         return this.blockSource.getBlockData(this.x, this.y, this.z);
@@ -239,19 +254,14 @@ var MachineBase = /** @class */ (function () {
         this.networkData.sendChanges();
     };
     return MachineBase;
-}());
+}(TileEntityBase));
 var MachineRegistry = {
     machineIDs: {},
     isMachine: function (id) {
         return this.machineIDs[id];
     },
     registerPrototype: function (id, Prototype) {
-        // register ID
         this.machineIDs[id] = true;
-        Prototype.useNetworkItemContainer = true;
-        Prototype.getScreenName = function (player, coords) {
-            return "main";
-        };
         Block.setDestroyTime(id, 3.25);
         TileEntity.registerPrototype(id, Prototype);
     },
@@ -1391,8 +1401,8 @@ var Smelter = /** @class */ (function (_super) {
     };
     Smelter.prototype.init = function () {
         _super.prototype.init.call(this);
-        this.container.setSlotAddTransferPolicy("slotFuel", function (container, name, id, amount, data, extra) {
-            return (Recipes.getFuelBurnDuration(id, data) > 0) ? amount : 0;
+        StorageInterface.setSlotValidatePolicy(this.container, "slotFuel", function (name, id, amount, data) {
+            return Recipes.getFuelBurnDuration(id, data) > 0;
         });
         this.container.setSlotAddTransferPolicy("slotResult", function () {
             return 0;
@@ -1585,7 +1595,7 @@ var BTFurnace = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.defaultValues = {
             energy: 0,
-            progress: 0,
+            progress: 0
         };
         return _this;
     }
@@ -1683,7 +1693,8 @@ var BTSmelter = /** @class */ (function (_super) {
     function BTSmelter() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.defaultValues = {
-            progress: 0,
+            energy: 0,
+            progress: 0
         };
         return _this;
     }
@@ -1789,8 +1800,20 @@ var guiBatBox = new UI.StandartWindow({
 Callback.addCallback("LevelLoaded", function () {
     MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
 });
-var BatBox = /** @class */ (function () {
+var BatBox = /** @class */ (function (_super) {
+    __extends(BatBox, _super);
     function BatBox() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.client = {
+            containerEvents: {
+                setBatteryIcon: function (container, window, content, data) {
+                    if (content) {
+                        content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
+                    }
+                }
+            },
+        };
+        return _this;
     }
     BatBox.prototype.getScreenByName = function () {
         return guiBatBox;
@@ -1814,18 +1837,12 @@ var BatBox = /** @class */ (function () {
         if (!this.remove && energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
             this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
         }
-        // TODO: rewrite to container events
-        /*
-        let content = this.container.getGuiContent();
-        if (content) {
-            if (this.data.energy == this.getEnergyStorage()) {
-                content.elements.batteryIcon.bitmap = "battery_icon_on";
-            }
-            else {
-                content.elements.batteryIcon.bitmap = "battery_icon_off";
-            }
+        if (this.data.energy == this.getEnergyStorage()) {
+            this.container.sendEvent("setBatteryIcon", "on");
         }
-        */
+        else {
+            this.container.sendEvent("setBatteryIcon", "off");
+        }
         this.container.setScale("btScale", this.data.energy / energyStorage);
         this.container.sendChanges();
     };
@@ -1850,8 +1867,8 @@ var BatBox = /** @class */ (function () {
         }
     };
     return BatBox;
-}());
-MachineRegistry.registerPrototype(BlockID.rp_batbox, new BatBox());
+}(TileEntityBase));
+MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
 Block.registerPlaceFunction("rp_batbox", function (coords, item, block, player, region) {
     var x = coords.relative.x;
     var y = coords.relative.y;
@@ -2004,10 +2021,11 @@ for (var i = 1; i < 16; i++) {
     ], ['x', 351, COLOR_INDEX_TO_DYE_DATA[i], 'a', ItemID.canvas, 0]);
 }
 IDRegistry.genItemID("seedBag");
-Item.createItem("seedBag", "Seed Bag", { name: "seed_bag", meta: 0 }, { stack: 1 });
+Item.createItem("seedBag", "Seed Bag", { name: "seed_bag", meta: 0 }, { stack: 1, isTech: true });
 Item.setMaxDamage(ItemID.seedBag, 576);
+Item.addToCreative(ItemID.seedBag, 1, 576);
 Item.registerIconOverrideFunction(ItemID.seedBag, function (item, name) {
-    return { name: "seed_bag", meta: (item.data > 0) ? 1 : 0 };
+    return { name: "seed_bag", meta: (item.data < 576) ? 1 : 0 };
 });
 Recipes.addShaped({ id: ItemID.seedBag, count: 1, data: 0 }, [
     " s ",
@@ -2074,15 +2092,10 @@ var SeedBag = {
                 decreaseCount -= count;
                 storedCount += slot.count;
                 container.setSlot(name, slot.id, slot.count, slot.data);
+                container.validateSlot(name);
             }
         }
-        container.validateAll();
-        if (storedCount > 0) {
-            Entity.setCarriedItem(player, item.id, 1, 577 - storedCount, item.extra);
-        }
-        else {
-            Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
-        }
+        Entity.setCarriedItem(player, item.id, 1, 576 - storedCount, item.extra);
     },
     isValidItem: function (id, container) {
         if (!seeds[id])
@@ -2097,8 +2110,22 @@ var SeedBag = {
     },
     setupContainer: function (container) {
         container.setClientContainerTypeName("seed_bag.ui");
-        container.setGlobalAddTransferPolicy(function (container, name, id, amount, data) {
-            return SeedBag.isValidItem(id, container) ? amount : 0;
+        container.setGlobalAddTransferPolicy(function (container, name, id, amount, data, extra, player) {
+            amount = SeedBag.isValidItem(id, container) ? amount : 0;
+            if (SeedBag.isValidItem(id, container)) {
+                amount = Math.min(amount, 64 - container.getSlot(name).count);
+                var item = Entity.getCarriedItem(player);
+                if (item.id == ItemID.seedBag)
+                    Entity.setCarriedItem(player, item.id, 1, item.data - amount, item.extra);
+                return amount;
+            }
+            return 0;
+        });
+        container.setGlobalGetTransferPolicy(function (container, name, id, amount, data, extra, player) {
+            var item = Entity.getCarriedItem(player);
+            if (item.id == ItemID.seedBag)
+                Entity.setCarriedItem(player, item.id, 1, item.data + amount, item.extra);
+            return amount;
         });
     },
     openGuiFor: function (item, player) {
@@ -2182,37 +2209,8 @@ Item.registerUseFunction("seedBag", function (coords, item, block, player) {
                 }
             SeedBag.decreaseCount(item, container, decreaseCount, player);
         }
-        else {
-            Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
-        }
     }
 });
-/*
-Callback.addCallback("tick", function() {
-    if (World.getThreadTime() % 10 == 0) {
-        var item = Player.getCarriedItem();
-        if (item.id == ItemID.seedBag) {
-            let count = 0;
-            let container = SeedBag.getContainer(item.extra);
-            if (container) {
-                for (let i in container.slots) {
-                    let slot = container.getSlot(i);
-                    if (slot.id > 0) {
-                        count += slot.count;
-                    }
-                }
-            }
-            if (count > 0) {
-                if (item.data != 577 - count) {
-                    Player.setCarriedItem(item.id, 1, 577 - count, item.extra);
-                }
-            } else if (item.data > 0) {
-                Player.setCarriedItem(item.id, 1, 0, item.extra);
-            }
-        }
-    }
-});
-*/ 
 IDRegistry.genItemID("lumar");
 Item.createItem("lumar", "Lumar", { name: "lumar" }, { isTech: true });
 Item.registerIconOverrideFunction(ItemID.lumar, function (item, name) {

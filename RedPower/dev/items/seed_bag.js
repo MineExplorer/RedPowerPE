@@ -1,9 +1,10 @@
 IDRegistry.genItemID("seedBag");
-Item.createItem("seedBag", "Seed Bag", {name: "seed_bag", meta: 0}, {stack: 1});
+Item.createItem("seedBag", "Seed Bag", {name: "seed_bag", meta: 0}, {stack: 1, isTech: true});
 Item.setMaxDamage(ItemID.seedBag, 576);
+Item.addToCreative(ItemID.seedBag, 1, 576);
 
 Item.registerIconOverrideFunction(ItemID.seedBag, function(item, name) {
-	return {name: "seed_bag", meta: (item.data > 0)? 1: 0}
+	return {name: "seed_bag", meta: (item.data < 576)? 1: 0}
 });
 
 Recipes.addShaped({id: ItemID.seedBag, count: 1, data: 0}, [
@@ -79,14 +80,10 @@ let SeedBag = {
 				decreaseCount -= count;
 				storedCount += slot.count;
 				container.setSlot(name, slot.id, slot.count, slot.data);
+				container.validateSlot(name);
 			}
 		}
-		container.validateAll();
-		if (storedCount > 0) {
-			Entity.setCarriedItem(player, item.id, 1, 577 - storedCount, item.extra);
-		} else {
-			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
-		}
+		Entity.setCarriedItem(player, item.id, 1, 576 - storedCount, item.extra);
 	},
 
 	isValidItem: function(id, container) {
@@ -102,8 +99,22 @@ let SeedBag = {
 
 	setupContainer: function (container) {
         container.setClientContainerTypeName("seed_bag.ui");
-        container.setGlobalAddTransferPolicy(function (container, name, id, amount, data) {
-            return SeedBag.isValidItem(id, container) ? amount : 0;
+        container.setGlobalAddTransferPolicy(function (container, name, id, amount, data, extra, player) {
+			amount = SeedBag.isValidItem(id, container) ? amount : 0;
+			if (SeedBag.isValidItem(id, container)) {
+				amount = Math.min(amount, 64 - container.getSlot(name).count);
+				let item = Entity.getCarriedItem(player);
+				if (item.id == ItemID.seedBag)
+					Entity.setCarriedItem(player, item.id, 1, item.data - amount, item.extra);
+				return amount;
+			}
+			return 0;
+		});
+		container.setGlobalGetTransferPolicy(function (container, name, id, amount, data, extra, player) {
+			let item = Entity.getCarriedItem(player);
+			if (item.id == ItemID.seedBag)
+				Entity.setCarriedItem(player, item.id, 1, item.data + amount, item.extra);
+			return amount;
         });
     },
 
@@ -196,34 +207,6 @@ Item.registerUseFunction("seedBag", function(coords, item, block, player) {
 				}
 			}
 			SeedBag.decreaseCount(item, container, decreaseCount, player);
-		} else {
-			Entity.setCarriedItem(player, item.id, 1, 0, item.extra);
 		}
 	}
 });
-/*
-Callback.addCallback("tick", function() {
-	if (World.getThreadTime() % 10 == 0) {
-		var item = Player.getCarriedItem();
-		if (item.id == ItemID.seedBag) {
-			let count = 0;
-			let container = SeedBag.getContainer(item.extra);
-			if (container) {
-				for (let i in container.slots) {
-					let slot = container.getSlot(i);
-					if (slot.id > 0) {
-						count += slot.count;
-					}
-				}
-			}
-			if (count > 0) {
-				if (item.data != 577 - count) {
-					Player.setCarriedItem(item.id, 1, 577 - count, item.extra);
-				}
-			} else if (item.data > 0) {
-				Player.setCarriedItem(item.id, 1, 0, item.extra);
-			}
-		}
-	}
-});
-*/

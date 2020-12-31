@@ -121,8 +121,8 @@ extends MachineBase {
 
 	init() {
 		super.init();
-		this.container.setSlotAddTransferPolicy("slotFuel", function(container, name, id, amount, data, extra) {
-			return (Recipes.getFuelBurnDuration(id, data) > 0) ? amount : 0;
+		StorageInterface.setSlotValidatePolicy(this.container, "slotFuel", function(name, id, amount, data) {
+			return Recipes.getFuelBurnDuration(id, data) > 0;
 		});
 		this.container.setSlotAddTransferPolicy("slotResult", function() {
 			return 0;
