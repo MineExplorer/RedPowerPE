@@ -79,7 +79,7 @@ ModAPI.addAPICallback("ICore", function(api) {
 });
 
 
-var guiSmelter = new UI.StandartWindow({
+const guiSmelter = new UI.StandartWindow({
 	standard: {
 		header: {text: {text: Translation.translate("Smelter")}},
 		inventory: {standard: true},
@@ -132,9 +132,9 @@ extends MachineBase {
 	tick() {
 		StorageInterface.checkHoppers(this);
 
-		var sourceItems = {};
-		for (var i = 1; i <= 4; i++) {
-			var slot = this.container.getSlot("slotSource" + i);
+		let sourceItems = {};
+		for (let i = 1; i <= 4; i++) {
+			let slot = this.container.getSlot("slotSource" + i);
 			if (slot.id > 0 && slot.data==0) {
 				sourceItems[slot.id] = sourceItems[slot.id] || 0;
 				sourceItems[slot.id] += slot.count;
@@ -145,9 +145,9 @@ extends MachineBase {
 			this.data.burn--;
 		}
 
-		var recipe = SmelterRecipes.getRecipe(sourceItems);
+		let recipe = SmelterRecipes.getRecipe(sourceItems);
 		if (recipe) {
-			var resultSlot = this.container.getSlot("slotResult");
+			let resultSlot = this.container.getSlot("slotResult");
 			if (resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0) {
 				if (this.data.burn == 0) {
 					this.data.burn = this.data.burnMax = this.getFuel("slotFuel");
@@ -170,12 +170,12 @@ extends MachineBase {
 	}
 
 	getFuel(slotName) {
-		var fuelSlot = this.container.getSlot(slotName);
+		let fuelSlot = this.container.getSlot(slotName);
 		if (fuelSlot.id > 0) {
-			var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
+			let burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
 			if (burn) {
 				if (LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)) {
-					var empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
+					let empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
 					fuelSlot.id = empty.id;
 					fuelSlot.data = empty.data;
 					return burn;

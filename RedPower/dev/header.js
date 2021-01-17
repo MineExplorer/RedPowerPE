@@ -43,5 +43,5 @@ function Vector(x, y, z) {
 }
 
 // blutricity
-var BT = EnergyTypeRegistry.assureEnergyType("Bt", 1);
-var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
+const BT = EnergyTypeRegistry.assureEnergyType("Bt", 1);
+const EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);

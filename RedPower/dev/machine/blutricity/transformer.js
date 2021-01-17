@@ -16,7 +16,7 @@ Callback.addCallback("PreLoaded", function() {
 // render
 ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
 (function() {
-	var modelBoxes =  [
+	let modelBoxes =  [
 		[0, 0, 0, 1, 1/8, 1],
 		[1/8, 1/8, 1/16, 7/8, 7/8, 15/16],
 		[0, 1/8, 3/8, 1, 1, 5/8]
@@ -45,7 +45,7 @@ class BTTransformer {
 
 	energyReceive(type, amount, voltage) {
 		if ((type == "Bt" && !this.data.electric_mode) || (type == "Eu" && this.data.electric_mode)) {
-			var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+			let add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
 			this.data.energy += add;
 			return add;
 		}
@@ -53,7 +53,7 @@ class BTTransformer {
 	}
 
 	energyTick(type, src) {
-		var output = this.data.energy;
+		let output = this.data.energy;
 		if (type == "Bt" && this.data.electric_mode) {
 			this.data.energy += src.add(output) - output;
 		}

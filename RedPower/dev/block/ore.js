@@ -52,9 +52,9 @@ Block.registerDropFunction("oreNikolite", function(coords, blockID, blockData, l
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 2, 5, enchant.experience);
-		var drop = [];
-		var count = randomInt(4, 5) + randomInt(0, enchant.fortune);
-		for (var i = 0; i < count; i++) {
+		let drop = [];
+		let count = randomInt(4, 5) + randomInt(0, enchant.fortune);
+		for (let i = 0; i < count; i++) {
 			drop.push([ItemID.nikolite, 1, 0]);
 		}
 		return drop;
@@ -74,9 +74,9 @@ Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-		var drop = [];
-		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++) {
+		let drop = [];
+		let count = randomInt(1, 3);
+		for (let i = 0; i < count; i++) {
 			drop.push([ItemID.gemRuby, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -96,9 +96,9 @@ Block.registerDropFunction("oreSapphire", function(coords, blockID, blockData, l
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-		var drop = [];
-		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++) {
+		let drop = [];
+		let count = randomInt(1, 3);
+		for (let i = 0; i < count; i++) {
 			drop.push([ItemID.gemSapphire, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -118,9 +118,9 @@ Block.registerDropFunction("oreGreenSapphire", function(coords, blockID, blockDa
 			return [[blockID, 1, 0]];
 		}
 		ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-		var drop = [];
-		var count = randomInt(1, 3);
-		for (var i = 0; i < count; i++) {
+		let drop = [];
+		let count = randomInt(1, 3);
+		for (let i = 0; i < count; i++) {
 			drop.push([ItemID.gemGreenSapphire, 1, 0]);
 		}
 		return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
@@ -141,7 +141,7 @@ Item.addCreativeGroup("ores", Translation.translate("Ores"), [
 ]);
 
 
-var OreGeneration = {
+const OreGeneration = {
 	config: {
 		oreGenCopper: __config__.getBool("ore_gen.copper"),
 		oreGenTin: __config__.getBool("ore_gen.tin"),
@@ -152,76 +152,76 @@ var OreGeneration = {
 		oreGenSapphire: __config__.getBool("ore_gen.gems"),
 		oreGenGreenSapphire: __config__.getBool("ore_gen.gems")
 	},
-	
+
 	randomCoords: function(random, chunkX, chunkZ, minHeight, maxHeight) {
 		minHeight = minHeight || 0;
 		maxHeight = maxHeight || 128;
-		var x = chunkX*16 + random.nextInt(16);
-		var z = chunkZ*16 + random.nextInt(16);
-		var y = random.nextInt(maxHeight - minHeight + 1) + minHeight;
+		let x = chunkX*16 + random.nextInt(16);
+		let z = chunkZ*16 + random.nextInt(16);
+		let y = random.nextInt(maxHeight - minHeight + 1) + minHeight;
 		return Vector(x, y, z);
 	}
 }
 
 Callback.addCallback("PostLoaded", function() {
-	for (var flag in OreGeneration.config) {
+	for (let flag in OreGeneration.config) {
 		if (OreGeneration.config[flag]) {
 			OreGeneration.config[flag] = !Flags.addFlag(flag);
 		}
 	}
 });
 
-Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random) {
+Callback.addCallback("GenerateChunk", function(chunkX, chunkZ, random) {
 	if (OreGeneration.config.oreGenCopper) {
-		for (var i = 0; i < 12; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 10, 70);
+		for (let i = 0; i < 12; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 10, 70);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenTin) {
-		for (var i = 0; i < 10; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 64);
+		for (let i = 0; i < 10; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 64);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenSilver) {
-		for (var i = 0; i < 4; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 32);
+		for (let i = 0; i < 4; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 32);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenTungsten) {
-		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 16);
+		let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 16);
 		GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5, false, random.nextInt());
 	}
-	
+
 	if (OreGeneration.config.oreGenNikolite) {
-		for (var i = 0; i < 8; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 20);
+		for (let i = 0; i < 8; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 20);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenRuby) {
-		for (var i = 0; i < 6; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+		for (let i = 0; i < 6; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenSapphire) {
-		for (var i = 0; i < 6; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+		for (let i = 0; i < 6; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false, random.nextInt());
 		}
 	}
-	
+
 	if (OreGeneration.config.oreGenGreenSapphire) {
-		for (var i = 0; i < 6; i++) {
-			var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
+		for (let i = 0; i < 6; i++) {
+			let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 1, 48);
 			GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false, random.nextInt());
 		}
 	}

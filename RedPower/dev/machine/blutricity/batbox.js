@@ -24,7 +24,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-let guiBatBox = new UI.StandartWindow({
+const guiBatBox = new UI.StandartWindow({
 	standard: {
 		header: {text: {text: Translation.translate("Battery Box")}},
 		inventory: {standard: true},

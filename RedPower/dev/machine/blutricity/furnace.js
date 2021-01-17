@@ -18,7 +18,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-var guiBTFurnace = new UI.StandartWindow({
+const guiBTFurnace = new UI.StandartWindow({
 	standard: {
 		header: {text: {text: Translation.translate("Blulectric Furnace")}},
 		inventory: {standard: true},
@@ -68,10 +68,10 @@ extends MachineBase {
 	tick() {
 		StorageInterface.checkHoppers(this);
 
-		var sourceSlot = this.container.getSlot("slotSource");
-		var resultSlot = this.container.getSlot("slotResult");
-		var newActive = false;
-		var result = Recipes.getFurnaceRecipeResult(sourceSlot.id, "iron");
+		let sourceSlot = this.container.getSlot("slotSource");
+		let resultSlot = this.container.getSlot("slotResult");
+		let newActive = false;
+		let result = Recipes.getFurnaceRecipeResult(sourceSlot.id, "iron");
 		if (result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)) {
 			if (this.data.energy >= 4) {
 				this.data.energy -= 4;
@@ -90,7 +90,7 @@ extends MachineBase {
 		}
 		this.setActive(newActive);
 
-		var energyStorage = this.getEnergyStorage();
+		let energyStorage = this.getEnergyStorage();
 		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
 
 		this.container.setScale("progressScale", this.data.progress / 100);

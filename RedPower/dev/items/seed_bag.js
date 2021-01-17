@@ -38,8 +38,8 @@ Saver.addSavesScope("SeedBagScope",
     function read(scope) {
 		SeedBag.nextUnique = scope.nextUnique || 1;
 		if (!scope.format) {
-			var containers = scope.containers || {};
-			for (var key in containers) {
+			let containers = scope.containers || {};
+			for (let key in containers) {
 				containers[key] = new ItemContainer(containers[key]);
 			}
 			SeedBag.containers = containers;

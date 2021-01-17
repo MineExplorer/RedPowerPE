@@ -1,4 +1,4 @@
-let SmelterRecipes = {
+const SmelterRecipes = {
 	recipeData: [],
 	addRecipe: function(result, input) {
 		this.recipeData.push({input: input, result: result});

@@ -932,7 +932,7 @@ Callback.addCallback("PostLoaded", function () {
         }
     }
 });
-Callback.addCallback("GenerateChunkUnderground", function (chunkX, chunkZ, random) {
+Callback.addCallback("GenerateChunk", function (chunkX, chunkZ, random) {
     if (OreGeneration.config.oreGenCopper) {
         for (var i = 0; i < 12; i++) {
             var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 10, 70);
@@ -2598,7 +2598,7 @@ ToolType.sickle = {
                 for (var yy = y - 1; yy <= y + 1; yy++) {
                     for (var zz = z - 1; zz <= z + 1; zz++) {
                         var block_1 = region.getBlock(xx, yy, zz);
-                        if (ToolAPI.getBlockMaterialName(blockID) == "plant") {
+                        if (ToolAPI.getBlockMaterialName(block_1.id) == "plant") {
                             region.destroyBlock(xx, yy, zz, true);
                             Block.onBlockDestroyed({ x: xx, y: y, z: zz }, block_1, false, player);
                         }

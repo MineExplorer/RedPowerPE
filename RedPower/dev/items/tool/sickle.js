@@ -27,7 +27,7 @@ Item.addCreativeGroup("sickles", Translation.translate("Sickles"), [
 	ItemID.greenSapphireSickle
 ]);
 
-let plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
+const plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
 
 ToolType.sickle = {
 	damage: 1,
@@ -49,7 +49,7 @@ ToolType.sickle = {
 				for (let yy = y - 1; yy <= y + 1; yy++) {
 					for (let zz = z - 1; zz <= z + 1; zz++) {
 						let block = region.getBlock(xx, yy, zz);
-						if (ToolAPI.getBlockMaterialName(blockID) == "plant") {
+						if (ToolAPI.getBlockMaterialName(block.id) == "plant") {
 							region.destroyBlock(xx, yy, zz, true);
 							Block.onBlockDestroyed({x: xx, y: y,z: zz}, block, false, player);
 						}

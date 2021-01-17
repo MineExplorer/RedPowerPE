@@ -1,4 +1,4 @@
-var IntegrationAPI = {
+const IntegrationAPI = {
 	registerPlant: function(id) {
 		plants.push(id);
 	},

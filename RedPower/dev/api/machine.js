@@ -60,7 +60,7 @@ extends TileEntityBase {
 }
 
 
-var MachineRegistry = {
+const MachineRegistry = {
 	machineIDs: {},
 
 	isMachine: function(id) {
@@ -83,7 +83,7 @@ var MachineRegistry = {
 			return 0;
 		}
 		Prototype.energyReceive = Prototype.energyReceive || function(type, amount, voltage) {
-			var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+			let add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
 			this.data.energy += add;
 			return add;
 		}
@@ -102,7 +102,7 @@ var MachineRegistry = {
 	},
 
 	updateGuiHeader: function(gui, text) {
-		var header = gui.getWindow("header");
+		let header = gui.getWindow("header");
 		header.contentProvider.drawing[2].text = Translation.translate(text);
 	}
 }

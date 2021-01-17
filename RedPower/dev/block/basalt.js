@@ -120,9 +120,9 @@ function genBasalt(random, x, y, z) {
 	randR = 7 + random.nextFloat()*3;
 	r = Math.ceil(randR)
 	h = r/Math.sqrt(randY)
-	for (var xx = -r; xx <= r; xx++) {
-		for (var yy = -h; yy <= h; yy++) {
-			for (var zz = -r; zz <= r; zz++) {
+	for (let xx = -r; xx <= r; xx++) {
+		for (let yy = -h; yy <= h; yy++) {
+			for (let zz = -r; zz <= r; zz++) {
 				if (Math.sqrt(xx*xx + yy*yy*randY + zz*zz) < randR + random.nextFloat()/2) {
 					id = World.getBlockID(x+xx, y+yy, z+zz)
 					if (id==1 || id==3 || id==13 || id==16)
@@ -134,10 +134,10 @@ function genBasalt(random, x, y, z) {
 }
 
 
-var basaltChance = __config__.getNumber("world_gen.basalt")
+let basaltChance = __config__.getNumber("world_gen.basalt")
 World.addGenerationCallback("GenerateChunkUnderground", function(chunkX, chunkZ, random) {
 	if (random.nextInt(100) < basaltChance) {
-		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 4, 12);
+		let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 4, 12);
 		genBasalt(random, coords.x, coords.y, coords.z);
 	}
 }, "rp-basalt");

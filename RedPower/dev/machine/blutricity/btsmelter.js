@@ -18,7 +18,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-var guiBTSmelter = new UI.StandartWindow({
+const guiBTSmelter = new UI.StandartWindow({
 	standard: {
 		header: {text: {text: Translation.translate("Blulectric Smelter")}},
 		inventory: {standard: true},
@@ -71,19 +71,19 @@ extends MachineBase {
 	tick() {
 		StorageInterface.checkHoppers(this);
 
-		var sourceItems = {};
-		for (var i = 1; i <= 4; i++) {
-			var slot = this.container.getSlot("slotSource" + i);
+		let sourceItems = {};
+		for (let i = 1; i <= 4; i++) {
+			let slot = this.container.getSlot("slotSource" + i);
 			if (slot.id > 0 && slot.data==0) {
 				sourceItems[slot.id] = sourceItems[slot.id] || 0;
 				sourceItems[slot.id] += slot.count;
 			}
 		}
 
-		var recipe = SmelterRecipes.getRecipe(sourceItems);
-		var newActive = false;
+		let recipe = SmelterRecipes.getRecipe(sourceItems);
+		let newActive = false;
 		if (recipe) {
-			var resultSlot = this.container.getSlot("slotResult");
+			let resultSlot = this.container.getSlot("slotResult");
 			if (resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0) {
 				if (this.data.energy >= 4) {
 					this.data.energy -= 4;
@@ -101,7 +101,7 @@ extends MachineBase {
 		}
 		this.setActive(newActive);
 
-		var energyStorage = this.getEnergyStorage();
+		let energyStorage = this.getEnergyStorage();
 		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
 
 		this.container.setScale("progressScale", this.data.progress / 100);

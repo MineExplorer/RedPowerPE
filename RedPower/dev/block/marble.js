@@ -56,10 +56,10 @@ function genMarble(x, y, z, random) {
 	GenerationUtils.generateOre(x + random.nextInt(6), y, z + random.nextInt(6), BlockID.rp_marble, 0, 64, false, random.nextInt());
 }
 
-var marbleChance = __config__.getNumber("world_gen.marble")
+let marbleChance = __config__.getNumber("world_gen.marble")
 World.addGenerationCallback("GenerateChunk", function(chunkX, chunkZ, random) {
 	if (random.nextInt(100) < marbleChance) {
-		var coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 32, 96);
+		let coords = OreGeneration.randomCoords(random, chunkX, chunkZ, 32, 96);
 		if (World.getBlockID(coords.x, coords.y, coords.z) == 1) {
 			genMarble(coords.x, coords.y, coords.z, random);
 		}

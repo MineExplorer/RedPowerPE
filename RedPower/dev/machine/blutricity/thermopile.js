@@ -13,7 +13,7 @@ Callback.addCallback("PreLoaded", function() {
 	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0, 'a', 265, 0, 'c', ItemID.ingotCopper, 0]);
 });
 
-var blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
+const blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
 class Thermopile {
 	defaultValues = {
@@ -25,7 +25,7 @@ class Thermopile {
 	}
 
 	getHeat(x, y, z) {
-		var heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
+		let heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
 	}
