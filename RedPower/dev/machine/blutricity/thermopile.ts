@@ -1,3 +1,5 @@
+/// <reference path="../core/BlulectricMachine.ts" />
+
 IDRegistry.genBlockID("rp_thermopile");
 Block.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
@@ -15,34 +17,48 @@ Callback.addCallback("PreLoaded", function() {
 
 const blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
-class Thermopile {
+class Thermopile extends BlulectricMachine {
+	cold: number;
+	heat: number;
+
 	defaultValues = {
+		energy: 0,
 		output: 0
 	}
 
-	getHeatValue(id) {
+	onInit(): void {}
+
+	canReceiveEnergy(): boolean {
+		return false;
+	}
+
+	getHeatValue(id: number): number {
 		return blockHeatValues[id] || 0;
 	}
 
-	getHeat(x, y, z) {
-		let heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
+	calculateHeat(x: number, y: number, z: number): void {
+		let heat = this.getHeatValue(this.region.getBlockId(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
 	}
 
-	energyTick(type, src) {
+	energyTick(type: string, src: EnergyTileNode) {
 		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
 			this.heat = 0;
-			this.getHeat(this.x - 1, this.y, this.z);
-			this.getHeat(this.x + 1, this.y, this.z);
-			this.getHeat(this.x, this.y, this.z - 1);
-			this.getHeat(this.x, this.y, this.z + 1);
+			this.calculateHeat(this.x - 1, this.y, this.z);
+			this.calculateHeat(this.x + 1, this.y, this.z);
+			this.calculateHeat(this.x, this.y, this.z - 1);
+			this.calculateHeat(this.x, this.y, this.z + 1);
 			this.data.output = Math.min(this.cold, this.heat) / 4;
 			//Debug.m(this.data.output);
 		}
 		src.add(this.data.output);
 	}
+
+	onItemUse() {
+		return true;
+	}
 }
 
-MachineRegistry.registerGenerator(BlockID.rp_thermopile, new Thermopile());
+MachineRegistry.registerMachine(BlockID.rp_thermopile, new Thermopile());

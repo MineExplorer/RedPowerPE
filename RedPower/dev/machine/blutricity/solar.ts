@@ -1,3 +1,5 @@
+/// <reference path="../core/BlulectricMachine.ts" />
+
 IDRegistry.genBlockID("rp_solar");
 Block.createBlock("rp_solar", [
 	{name: "Solar Panel", texture: [["rp_machine_bottom", 0], ["rp_solar", 0], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1]], inCreative: true}
@@ -14,23 +16,32 @@ Callback.addCallback("PreLoaded", function() {
 	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0]);
 });
 
-class SolarPanel {
+class SolarPanel extends BlulectricMachine {
 	defaultValues = {
+		energy: 0,
 		canSeeSky: false
 	}
 
-	init() {
-		this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
+	canReceiveEnergy(): boolean {
+		return false;
 	}
 
-	energyTick(type, src) {
+	onInit(): void {
+		this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
+	}
+
+	energyTick(type: string, src: EnergyTileNode): void {
 		if (World.getThreadTime() % 100 == 0) {
-			this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
+			this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
 		}
-		if (this.data.canSeeSky && this.blockSource.getLightLevel(this.x, this.y + 1, this.z) == 15) {
+		if (this.data.canSeeSky && this.region.getLightLevel(this.x, this.y + 1, this.z) == 15) {
 			src.add(2);
 		}
 	}
+
+	onItemUse(): boolean {
+		return true;
+	}
 }
 
-MachineRegistry.registerGenerator(BlockID.rp_solar, new SolarPanel());
+MachineRegistry.registerMachine(BlockID.rp_solar, new SolarPanel());

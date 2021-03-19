@@ -1,4 +1,5 @@
 // libraries
+IMPORT("BlockEngine");
 IMPORT("flags");
 IMPORT("BaseBlocks");
 IMPORT("ToolLib");
@@ -9,7 +10,7 @@ IMPORT("BackpackAPI");
 IMPORT("StorageInterface");
 IMPORT("VanillaRecipe");
 
-VanillaRecipe.setResourcePath(__dir__ + "res/")
+VanillaRecipe.setResourcePath(__dir__ + "res/");
 
 // constants
 const GUI_SCALE = 3.2;

@@ -1,11 +1,15 @@
-const SmelterRecipes = {
-	recipeData: [],
-	addRecipe: function(result, input) {
-		this.recipeData.push({input: input, result: result});
-	},
-	getRecipe: function(input) {
-		for (let i in this.recipeData) {
-			let recipe = this.recipeData[i];
+namespace SmelterRecipes {
+	type RecipeFormat = {result: {id: number, count: number, data?: number}, input: {id: number, count: number}[]};
+
+	let recipeData: RecipeFormat[] = [];
+
+	export function addRecipe(result: RecipeFormat["result"], input: RecipeFormat["input"]): void {
+		recipeData.push({input: input, result: result});
+	}
+
+	export function getRecipe(input: object): RecipeFormat {
+		for (let i in recipeData) {
+			let recipe = recipeData[i];
 			let valid = true;
 			for (let j in recipe.input) {
 				let source = recipe.input[j];
@@ -19,8 +23,9 @@ const SmelterRecipes = {
 				return recipe;
 			}
 		}
-	},
-	performRecipe: function(recipe, container) {
+	}
+
+	export function performRecipe(recipe: RecipeFormat, container: ItemContainer) {
 		let resultSlot = container.getSlot("slotResult");
 		for (let i in recipe.input) {
 			let count = recipe.input[i].count;

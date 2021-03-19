@@ -1,3 +1,5 @@
+/// <reference path="../core/ProcessingMachine.ts" />
+
 IDRegistry.genBlockID("bt_furnace");
 Block.createBlock("bt_furnace", [
 	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true}
@@ -43,35 +45,18 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-class BTFurnace
-extends MachineBase {
-	defaultValues = {
-		energy: 0,
-		progress: 0
-	}
-
+class BTFurnace extends ProcessingMachine {
 	getScreenByName() {
 		return guiBTFurnace;
 	}
 
-	getEnergyStorage() {
-		return 2000;
-	}
-
-	init() {
-		super.init();
-		this.container.setSlotAddTransferPolicy("slotResult", function() {
-			return 0;
-		});
-	}
-
-	tick() {
-		StorageInterface.checkHoppers(this);
+	onTick(): void {
+		super.onTick();
 
 		let sourceSlot = this.container.getSlot("slotSource");
 		let resultSlot = this.container.getSlot("slotResult");
 		let newActive = false;
-		let result = Recipes.getFurnaceRecipeResult(sourceSlot.id, "iron");
+		let result = Recipes.getFurnaceRecipeResult(sourceSlot.id, sourceSlot.data, "iron");
 		if (result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)) {
 			if (this.data.energy >= 4) {
 				this.data.energy -= 4;
@@ -90,11 +75,8 @@ extends MachineBase {
 		}
 		this.setActive(newActive);
 
-		let energyStorage = this.getEnergyStorage();
-		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
-
 		this.container.setScale("progressScale", this.data.progress / 100);
-		this.container.setScale("btScale", this.data.energy / energyStorage);
+		this.container.setScale("btScale", this.data.energy / this.getEnergyStorage());
 		this.container.sendChanges();
 	}
 }

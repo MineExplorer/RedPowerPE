@@ -47,17 +47,16 @@ Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
 });
 
-class BatBox
-extends TileEntityBase {
+class BatBox extends BlulectricMachine {
 	getScreenByName() {
 		return guiBatBox;
 	}
 
-	getEnergyLevel() {
+	getEnergyLevel(): number {
 		return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
 	}
 
-	init() {
+	onInit(): void {
 		this.container.setSlotAddTransferPolicy("slot1", function(container, name, id, amount, data, extra) {
 			return ChargeItemRegistry.isValidItem(id, "Bt", 0) ? amount : 0;
 		});
@@ -66,15 +65,15 @@ extends TileEntityBase {
 		});
 	}
 
-	tick() {
+	onTick(): void {
 		let energyStorage = this.getEnergyStorage();
 
-		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 0);
-		this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot("slot1"), "Bt", this.data.energy, 0);
+		this.chargeSlot("slot2");
+		this.dischargeSlot("slot1");
 
 		let energyLevel = this.getEnergyLevel();
-		if (!this.remove && energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
-			this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
+		if (!this.remove && energyLevel != this.region.getBlockData(this)) {
+			this.region.setBlock(this, this.blockID, energyLevel);
 		}
 
 		if (this.data.energy == this.getEnergyStorage()) {
@@ -88,37 +87,30 @@ extends TileEntityBase {
 		this.container.sendChanges();
 	}
 
-	isEnergySource() {
-		return true;
-	}
-
-	getEnergyStorage() {
+	getEnergyStorage(): number {
 		return 64000;
 	}
 
-	energyTick(type, src) {
+	energyTick(type: string, src: EnergyTileNode): void {
 		let output = Math.min(100, this.data.energy);
 		this.data.energy += src.add(output) - output;
 	}
 
-	destroyBlock(coords, player) {
+	destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void {
 		if (this.data.energy > 0) {
 			let extra = new ItemExtraData().putInt("energy", this.data.energy);
 			let blockData = this.getEnergyLevel();
-			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
+			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
 		} else {
-			this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
+			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
 		}
 	}
 
-	client = {
-		containerEvents: {
-			setBatteryIcon(container, window, content, data) {
-				if (content) {
-					content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
-				}
-			}
-		},
+	@BlockEngine.Decorators.ContainerEvent(Side.Client)
+	setBatteryIcon(container: ItemContainer, window: any, content: any, data: string): void {
+		if (content) {
+			content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
+		}
 	}
 }
 

@@ -1,3 +1,5 @@
+/// <reference path="../core/ProcessingMachine.ts" />
+
 IDRegistry.genBlockID("bt_smelter");
 Block.createBlock("bt_smelter", [
 	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]], inCreative: true}
@@ -46,30 +48,13 @@ Callback.addCallback("LevelLoaded", function() {
 });
 
 
-class BTSmelter
-extends MachineBase {
-	defaultValues = {
-		energy: 0,
-		progress: 0
-	}
-
+class BTSmelter extends ProcessingMachine {
 	getScreenByName() {
 		return guiBTSmelter;
 	}
 
-	getEnergyStorage() {
-		return 2000;
-	}
-
-	init() {
-		super.init();
-		this.container.setSlotAddTransferPolicy("slotResult", function() {
-			return 0;
-		});
-	}
-
-	tick() {
-		StorageInterface.checkHoppers(this);
+	onTick(): void {
+		super.onTick();
 
 		let sourceItems = {};
 		for (let i = 1; i <= 4; i++) {
@@ -101,11 +86,8 @@ extends MachineBase {
 		}
 		this.setActive(newActive);
 
-		let energyStorage = this.getEnergyStorage();
-		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
-
 		this.container.setScale("progressScale", this.data.progress / 100);
-		this.container.setScale("btScale", this.data.energy / energyStorage);
+		this.container.setScale("btScale", this.data.energy / this.getEnergyStorage());
 		this.container.sendChanges();
 	}
 }

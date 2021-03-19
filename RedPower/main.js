@@ -2,7 +2,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -11,7 +11,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 // libraries
+IMPORT("BlockEngine");
 IMPORT("flags");
 IMPORT("BaseBlocks");
 IMPORT("ToolLib");
@@ -135,7 +142,7 @@ Translation.addTranslation("Green Sapphire", { ru: "Зелёный сапфир"
 Translation.addTranslation("Nikolite", { ru: "Николит" });
 Translation.addTranslation("Red Alloy Ingot", { ru: "Слиток красного сплава" });
 Translation.addTranslation("Blue Alloy Ingot", { ru: "Слиток синего сплава" });
-//Translation.addTranslation("Bronze Ingot", {ru: "Бронзовый слиток", es: "Lingote de Bronce", pt: "Lingote de Bronze", zh: "青铜锭"});
+Translation.addTranslation("Bronze Ingot", { ru: "Бронзовый слиток", es: "Lingote de Bronce", pt: "Lingote de Bronze", zh: "青铜锭" });
 Translation.addTranslation("Tin Ingot", { ru: "Оловянный слиток", es: "Lingote de Estaño", pt: "Lingote de Estanho", zh: "锡锭" });
 Translation.addTranslation("Copper Ingot", { ru: "Медный слиток", es: "Lingote de Cobre", pt: "Lingote de Cobre", zh: "铜锭" });
 Translation.addTranslation("Silver Ingot", { ru: "Серебрянный слиток", es: "Lingote de Plata", pt: "Lingote de Prata", zh: "银锭" });
@@ -194,116 +201,42 @@ Translation.addTranslation("Pickaxes", { ru: "Кирки" });
 Translation.addTranslation("Axes", { ru: "Топоры" });
 Translation.addTranslation("Hoes", { ru: "Мотыги" });
 Translation.addTranslation("Sickles", { ru: "Серпы" });
-var TileEntityBase = /** @class */ (function () {
-    function TileEntityBase() {
-        this.useNetworkItemContainer = true;
+var MachineRegistry;
+(function (MachineRegistry) {
+    var machineIDs = {};
+    function isMachine(id) {
+        return machineIDs[id];
     }
-    TileEntityBase.prototype.getScreenName = function (player, coords) {
-        return "main";
-    };
-    TileEntityBase.prototype.getScreenByName = function (screenName) {
-        return null;
-    };
-    return TileEntityBase;
-}());
-var MachineBase = /** @class */ (function (_super) {
-    __extends(MachineBase, _super);
-    function MachineBase() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        // Client functions
-        _this.client = {
-            renderModel: function () {
-                if (this.networkData.getBoolean("isActive")) {
-                    var blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
-                    var blockData = this.networkData.getInt("blockData");
-                    TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
-                }
-                else {
-                    BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
-                }
-            },
-            load: function () {
-                this.renderModel();
-                var self = this;
-                this.networkData.addOnDataChangedListener(function (data, isExternal) {
-                    self.renderModel();
-                });
-            },
-            unload: function () {
-                BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
-            }
-        };
-        return _this;
-    }
-    MachineBase.prototype.getFacing = function () {
-        return this.blockSource.getBlockData(this.x, this.y, this.z);
-    };
-    MachineBase.prototype.setActive = function (isActive) {
-        if (this.networkData.getBoolean("isActive") !== isActive) {
-            this.networkData.putBoolean("isActive", isActive);
-            this.networkData.sendChanges();
-        }
-    };
-    MachineBase.prototype.init = function () {
-        if (this.data.meta !== undefined) {
-            this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, this.data.meta + 2);
-            delete this.data.meta;
-        }
-        this.networkData.putInt("blockId", this.blockID);
-        this.networkData.putInt("blockData", this.getFacing());
-        this.networkData.sendChanges();
-    };
-    return MachineBase;
-}(TileEntityBase));
-var MachineRegistry = {
-    machineIDs: {},
-    isMachine: function (id) {
-        return this.machineIDs[id];
-    },
-    registerPrototype: function (id, Prototype) {
-        this.machineIDs[id] = true;
+    MachineRegistry.isMachine = isMachine;
+    function registerPrototype(id, Prototype) {
+        machineIDs[id] = true;
         Block.setDestroyTime(id, 3.25);
         TileEntity.registerPrototype(id, Prototype);
-    },
-    registerMachine: function (id, Prototype, notElectric) {
+    }
+    MachineRegistry.registerPrototype = registerPrototype;
+    function registerMachine(id, Prototype) {
+        registerPrototype(id, Prototype);
         // wire connection
         ICRender.getGroup("bt-wire").add(id, -1);
-        // setup prototype properties and functions
-        Prototype.defaultValues = Prototype.defaultValues || {};
-        Prototype.defaultValues.energy = 0;
-        Prototype.getEnergyStorage = Prototype.getEnergyStorage || function () {
-            return 0;
-        };
-        Prototype.energyReceive = Prototype.energyReceive || function (type, amount, voltage) {
-            var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
-            this.data.energy += add;
-            return add;
-        };
-        this.registerPrototype(id, Prototype);
         EnergyTileRegistry.addEnergyTypeForId(id, BT);
-    },
-    registerGenerator: function (id, Prototype) {
-        Prototype.isEnergySource = function () {
-            return true;
-        };
-        Prototype.canReceiveEnergy = function () {
-            return false;
-        };
-        this.registerMachine(id, Prototype);
-    },
-    updateGuiHeader: function (gui, text) {
+    }
+    MachineRegistry.registerMachine = registerMachine;
+    function updateGuiHeader(gui, text) {
         var header = gui.getWindow("header");
         header.contentProvider.drawing[2].text = Translation.translate(text);
     }
-};
-var SmelterRecipes = {
-    recipeData: [],
-    addRecipe: function (result, input) {
-        this.recipeData.push({ input: input, result: result });
-    },
-    getRecipe: function (input) {
-        for (var i in this.recipeData) {
-            var recipe = this.recipeData[i];
+    MachineRegistry.updateGuiHeader = updateGuiHeader;
+})(MachineRegistry || (MachineRegistry = {}));
+var SmelterRecipes;
+(function (SmelterRecipes) {
+    var recipeData = [];
+    function addRecipe(result, input) {
+        recipeData.push({ input: input, result: result });
+    }
+    SmelterRecipes.addRecipe = addRecipe;
+    function getRecipe(input) {
+        for (var i in recipeData) {
+            var recipe = recipeData[i];
             var valid = true;
             for (var j in recipe.input) {
                 var source = recipe.input[j];
@@ -317,8 +250,9 @@ var SmelterRecipes = {
                 return recipe;
             }
         }
-    },
-    performRecipe: function (recipe, container) {
+    }
+    SmelterRecipes.getRecipe = getRecipe;
+    function performRecipe(recipe, container) {
         var resultSlot = container.getSlot("slotResult");
         for (var i in recipe.input) {
             var count = recipe.input[i].count;
@@ -335,25 +269,19 @@ var SmelterRecipes = {
         resultSlot.setSlot(recipe.result.id, resultSlot.count + recipe.result.count, recipe.result.data || 0);
         container.validateAll();
     }
-};
-var IntegrationAPI = {
-    registerPlant: function (id) {
-        plants.push(id);
-    },
-    registerSeeds: function (item, block) {
-        seeds[item] = block;
+    SmelterRecipes.performRecipe = performRecipe;
+})(SmelterRecipes || (SmelterRecipes = {}));
+var IntegrationAPI;
+(function (IntegrationAPI) {
+    function registerPlant(blockID) {
+        plants.push(blockID);
     }
-};
-ModAPI.registerAPI("RedCore", {
-    Machine: MachineRegistry,
-    SmelterRecipes: SmelterRecipes,
-    World: OreGeneration,
-    Integration: IntegrationAPI,
-    requireGlobal: function (command) {
-        return eval(command);
+    IntegrationAPI.registerPlant = registerPlant;
+    function registerSeeds(itemID, blockID) {
+        seeds[itemID] = blockID;
     }
-});
-Logger.Log("RedCore API shared.", "API");
+    IntegrationAPI.registerSeeds = registerSeeds;
+})(IntegrationAPI || (IntegrationAPI = {}));
 IDRegistry.genItemID("flaxSeeds");
 Item.createItem("flaxSeeds", "Flax Seeds", { name: "flax_seeds" });
 IDRegistry.genBlockID("flax");
@@ -1287,6 +1215,51 @@ Callback.addCallback("PreLoaded", function () {
 });
 BT.registerWire(BlockID.blueWire, 100);
 TileRenderer.setupWireModel(BlockID.blueWire, 0, 1 / 4, "bt-wire");
+var MachineBase = /** @class */ (function (_super) {
+    __extends(MachineBase, _super);
+    function MachineBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MachineBase.prototype.getFacing = function () {
+        return this.region.getBlockData(this);
+    };
+    MachineBase.prototype.setActive = function (isActive) {
+        if (this.networkData.getBoolean("isActive") !== isActive) {
+            this.networkData.putBoolean("isActive", isActive);
+            this.networkData.sendChanges();
+        }
+    };
+    MachineBase.prototype.onInit = function () {
+        this.networkData.putInt("blockId", this.blockID);
+        this.networkData.putInt("blockData", this.getFacing());
+        this.networkData.sendChanges();
+    };
+    MachineBase.prototype.clientLoad = function () {
+        var _this = this;
+        this.renderModel();
+        this.networkData.addOnDataChangedListener(function (data, isExternal) {
+            _this.renderModel();
+        });
+    };
+    MachineBase.prototype.clientUnload = function () {
+        BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+    };
+    MachineBase.prototype.renderModel = function () {
+        if (this.networkData.getBoolean("isActive")) {
+            var blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
+            var blockData = this.networkData.getInt("blockData");
+            TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
+        }
+        else {
+            BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
+        }
+    };
+    __decorate([
+        BlockEngine.Decorators.ClientSide
+    ], MachineBase.prototype, "renderModel", null);
+    return MachineBase;
+}(TileEntityBase));
+/// <reference path="./core/MachineBase.ts" />
 IDRegistry.genBlockID("rp_smelter");
 Block.createBlock("rp_smelter", [
     { name: "Smelter", texture: [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], inCreative: true }
@@ -1399,8 +1372,7 @@ var Smelter = /** @class */ (function (_super) {
     Smelter.prototype.getScreenByName = function () {
         return guiSmelter;
     };
-    Smelter.prototype.init = function () {
-        _super.prototype.init.call(this);
+    Smelter.prototype.onInit = function () {
         StorageInterface.setSlotValidatePolicy(this.container, "slotFuel", function (name, id, amount, data) {
             return Recipes.getFuelBurnDuration(id, data) > 0;
         });
@@ -1408,7 +1380,7 @@ var Smelter = /** @class */ (function (_super) {
             return 0;
         });
     };
-    Smelter.prototype.tick = function () {
+    Smelter.prototype.onTick = function () {
         StorageInterface.checkHoppers(this);
         var sourceItems = {};
         for (var i = 1; i <= 4; i++) {
@@ -1473,6 +1445,44 @@ StorageInterface.createInterface(BlockID.rp_smelter, {
         "slotResult": { output: true }
     }
 });
+/// <reference path="./MachineBase.ts" />
+var BlulectricMachine = /** @class */ (function (_super) {
+    __extends(BlulectricMachine, _super);
+    function BlulectricMachine() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultValues = {
+            energy: 0
+        };
+        return _this;
+    }
+    BlulectricMachine.prototype.getEnergyStorage = function () {
+        return 0;
+    };
+    BlulectricMachine.prototype.isConductor = function (type) {
+        return false;
+    };
+    BlulectricMachine.prototype.canReceiveEnergy = function (side, type) {
+        return true;
+    };
+    BlulectricMachine.prototype.canExtractEnergy = function (side, type) {
+        return true;
+    };
+    BlulectricMachine.prototype.energyReceive = function (type, amount, voltage) {
+        var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+        this.data.energy += add;
+        return add;
+    };
+    BlulectricMachine.prototype.energyTick = function (type, src) { };
+    BlulectricMachine.prototype.chargeSlot = function (slotName) {
+        this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot(slotName), "Eu", this.data.energy, 0);
+    };
+    BlulectricMachine.prototype.dischargeSlot = function (slotName) {
+        var amount = this.getEnergyStorage() - this.data.energy;
+        this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot(slotName), "Eu", amount, 0);
+    };
+    return BlulectricMachine;
+}(MachineBase));
+/// <reference path="../core/BlulectricMachine.ts" />
 IDRegistry.genBlockID("rp_solar");
 Block.createBlock("rp_solar", [
     { name: "Solar Panel", texture: [["rp_machine_bottom", 0], ["rp_solar", 0], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1]], inCreative: true }
@@ -1487,26 +1497,37 @@ Callback.addCallback("PreLoaded", function () {
         "ooo"
     ], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0]);
 });
-var SolarPanel = /** @class */ (function () {
+var SolarPanel = /** @class */ (function (_super) {
+    __extends(SolarPanel, _super);
     function SolarPanel() {
-        this.defaultValues = {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultValues = {
+            energy: 0,
             canSeeSky: false
         };
+        return _this;
     }
-    SolarPanel.prototype.init = function () {
-        this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
+    SolarPanel.prototype.canReceiveEnergy = function () {
+        return false;
+    };
+    SolarPanel.prototype.onInit = function () {
+        this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
     };
     SolarPanel.prototype.energyTick = function (type, src) {
         if (World.getThreadTime() % 100 == 0) {
-            this.data.canSeeSky = this.blockSource.canSeeSky(this.x, this.y + 1, this.z);
+            this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
         }
-        if (this.data.canSeeSky && this.blockSource.getLightLevel(this.x, this.y + 1, this.z) == 15) {
+        if (this.data.canSeeSky && this.region.getLightLevel(this.x, this.y + 1, this.z) == 15) {
             src.add(2);
         }
     };
+    SolarPanel.prototype.onItemUse = function () {
+        return true;
+    };
     return SolarPanel;
-}());
-MachineRegistry.registerGenerator(BlockID.rp_solar, new SolarPanel());
+}(BlulectricMachine));
+MachineRegistry.registerMachine(BlockID.rp_solar, new SolarPanel());
+/// <reference path="../core/BlulectricMachine.ts" />
 IDRegistry.genBlockID("rp_thermopile");
 Block.createBlockWithRotation("rp_thermopile", [
     { name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true }
@@ -1521,17 +1542,25 @@ Callback.addCallback("PreLoaded", function () {
     ], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0, 'a', 265, 0, 'c', ItemID.ingotCopper, 0]);
 });
 var blockHeatValues = { 0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2 };
-var Thermopile = /** @class */ (function () {
+var Thermopile = /** @class */ (function (_super) {
+    __extends(Thermopile, _super);
     function Thermopile() {
-        this.defaultValues = {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultValues = {
+            energy: 0,
             output: 0
         };
+        return _this;
     }
+    Thermopile.prototype.onInit = function () { };
+    Thermopile.prototype.canReceiveEnergy = function () {
+        return false;
+    };
     Thermopile.prototype.getHeatValue = function (id) {
         return blockHeatValues[id] || 0;
     };
-    Thermopile.prototype.getHeat = function (x, y, z) {
-        var heat = this.getHeatValue(this.blockSource.getBlockId(x, y, z));
+    Thermopile.prototype.calculateHeat = function (x, y, z) {
+        var heat = this.getHeatValue(this.region.getBlockId(x, y, z));
         if (heat < 0)
             this.cold -= heat;
         else
@@ -1541,18 +1570,50 @@ var Thermopile = /** @class */ (function () {
         if (World.getThreadTime() % 20 == 0) {
             this.cold = 0;
             this.heat = 0;
-            this.getHeat(this.x - 1, this.y, this.z);
-            this.getHeat(this.x + 1, this.y, this.z);
-            this.getHeat(this.x, this.y, this.z - 1);
-            this.getHeat(this.x, this.y, this.z + 1);
+            this.calculateHeat(this.x - 1, this.y, this.z);
+            this.calculateHeat(this.x + 1, this.y, this.z);
+            this.calculateHeat(this.x, this.y, this.z - 1);
+            this.calculateHeat(this.x, this.y, this.z + 1);
             this.data.output = Math.min(this.cold, this.heat) / 4;
             //Debug.m(this.data.output);
         }
         src.add(this.data.output);
     };
+    Thermopile.prototype.onItemUse = function () {
+        return true;
+    };
     return Thermopile;
-}());
-MachineRegistry.registerGenerator(BlockID.rp_thermopile, new Thermopile());
+}(BlulectricMachine));
+MachineRegistry.registerMachine(BlockID.rp_thermopile, new Thermopile());
+/// <reference path="./BlulectricMachine.ts" />
+var ProcessingMachine = /** @class */ (function (_super) {
+    __extends(ProcessingMachine, _super);
+    function ProcessingMachine() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultValues = {
+            energy: 0,
+            progress: 0
+        };
+        return _this;
+    }
+    ProcessingMachine.prototype.canExtractEnergy = function () {
+        return false;
+    };
+    ProcessingMachine.prototype.getEnergyStorage = function () {
+        return 2000;
+    };
+    ProcessingMachine.prototype.onInit = function () {
+        this.container.setSlotAddTransferPolicy("slotResult", function () {
+            return 0;
+        });
+    };
+    ProcessingMachine.prototype.onTick = function () {
+        StorageInterface.checkHoppers(this);
+        this.dischargeSlot("slotEnergy");
+    };
+    return ProcessingMachine;
+}(BlulectricMachine));
+/// <reference path="../core/ProcessingMachine.ts" />
 IDRegistry.genBlockID("bt_furnace");
 Block.createBlock("bt_furnace", [
     { name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true }
@@ -1592,31 +1653,17 @@ Callback.addCallback("LevelLoaded", function () {
 var BTFurnace = /** @class */ (function (_super) {
     __extends(BTFurnace, _super);
     function BTFurnace() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.defaultValues = {
-            energy: 0,
-            progress: 0
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     BTFurnace.prototype.getScreenByName = function () {
         return guiBTFurnace;
     };
-    BTFurnace.prototype.getEnergyStorage = function () {
-        return 2000;
-    };
-    BTFurnace.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this.container.setSlotAddTransferPolicy("slotResult", function () {
-            return 0;
-        });
-    };
-    BTFurnace.prototype.tick = function () {
-        StorageInterface.checkHoppers(this);
+    BTFurnace.prototype.onTick = function () {
+        _super.prototype.onTick.call(this);
         var sourceSlot = this.container.getSlot("slotSource");
         var resultSlot = this.container.getSlot("slotResult");
         var newActive = false;
-        var result = Recipes.getFurnaceRecipeResult(sourceSlot.id, "iron");
+        var result = Recipes.getFurnaceRecipeResult(sourceSlot.id, sourceSlot.data, "iron");
         if (result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)) {
             if (this.data.energy >= 4) {
                 this.data.energy -= 4;
@@ -1634,14 +1681,12 @@ var BTFurnace = /** @class */ (function (_super) {
             this.data.progress = 0;
         }
         this.setActive(newActive);
-        var energyStorage = this.getEnergyStorage();
-        this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
         this.container.setScale("progressScale", this.data.progress / 100);
-        this.container.setScale("btScale", this.data.energy / energyStorage);
+        this.container.setScale("btScale", this.data.energy / this.getEnergyStorage());
         this.container.sendChanges();
     };
     return BTFurnace;
-}(MachineBase));
+}(ProcessingMachine));
 MachineRegistry.registerMachine(BlockID.bt_furnace, new BTFurnace());
 StorageInterface.createInterface(BlockID.bt_furnace, {
     slots: {
@@ -1649,6 +1694,7 @@ StorageInterface.createInterface(BlockID.bt_furnace, {
         "slotResult": { output: true }
     }
 });
+/// <reference path="../core/ProcessingMachine.ts" />
 IDRegistry.genBlockID("bt_smelter");
 Block.createBlock("bt_smelter", [
     { name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]], inCreative: true }
@@ -1691,27 +1737,13 @@ Callback.addCallback("LevelLoaded", function () {
 var BTSmelter = /** @class */ (function (_super) {
     __extends(BTSmelter, _super);
     function BTSmelter() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.defaultValues = {
-            energy: 0,
-            progress: 0
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     BTSmelter.prototype.getScreenByName = function () {
         return guiBTSmelter;
     };
-    BTSmelter.prototype.getEnergyStorage = function () {
-        return 2000;
-    };
-    BTSmelter.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this.container.setSlotAddTransferPolicy("slotResult", function () {
-            return 0;
-        });
-    };
-    BTSmelter.prototype.tick = function () {
-        StorageInterface.checkHoppers(this);
+    BTSmelter.prototype.onTick = function () {
+        _super.prototype.onTick.call(this);
         var sourceItems = {};
         for (var i = 1; i <= 4; i++) {
             var slot = this.container.getSlot("slotSource" + i);
@@ -1740,14 +1772,12 @@ var BTSmelter = /** @class */ (function (_super) {
             this.data.progress = 0;
         }
         this.setActive(newActive);
-        var energyStorage = this.getEnergyStorage();
-        this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slotEnergy"), "Bt", energyStorage - this.data.energy, 0);
         this.container.setScale("progressScale", this.data.progress / 100);
-        this.container.setScale("btScale", this.data.energy / energyStorage);
+        this.container.setScale("btScale", this.data.energy / this.getEnergyStorage());
         this.container.sendChanges();
     };
     return BTSmelter;
-}(MachineBase));
+}(ProcessingMachine));
 MachineRegistry.registerMachine(BlockID.bt_smelter, new BTSmelter());
 StorageInterface.createInterface(BlockID.bt_smelter, {
     slots: {
@@ -1803,17 +1833,7 @@ Callback.addCallback("LevelLoaded", function () {
 var BatBox = /** @class */ (function (_super) {
     __extends(BatBox, _super);
     function BatBox() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.client = {
-            containerEvents: {
-                setBatteryIcon: function (container, window, content, data) {
-                    if (content) {
-                        content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
-                    }
-                }
-            },
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     BatBox.prototype.getScreenByName = function () {
         return guiBatBox;
@@ -1821,7 +1841,7 @@ var BatBox = /** @class */ (function (_super) {
     BatBox.prototype.getEnergyLevel = function () {
         return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
     };
-    BatBox.prototype.init = function () {
+    BatBox.prototype.onInit = function () {
         this.container.setSlotAddTransferPolicy("slot1", function (container, name, id, amount, data, extra) {
             return ChargeItemRegistry.isValidItem(id, "Bt", 0) ? amount : 0;
         });
@@ -1829,13 +1849,13 @@ var BatBox = /** @class */ (function (_super) {
             return ChargeItemRegistry.isValidStorage(id, "Bt", 0) ? amount : 0;
         });
     };
-    BatBox.prototype.tick = function () {
+    BatBox.prototype.onTick = function () {
         var energyStorage = this.getEnergyStorage();
-        this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot("slot2"), "Bt", energyStorage - this.data.energy, 0);
-        this.data.energy -= ChargeItemRegistry.addEnergyToSlot(this.container.getSlot("slot1"), "Bt", this.data.energy, 0);
+        this.chargeSlot("slot2");
+        this.dischargeSlot("slot1");
         var energyLevel = this.getEnergyLevel();
-        if (!this.remove && energyLevel != this.blockSource.getBlockData(this.x, this.y, this.z)) {
-            this.blockSource.setBlock(this.x, this.y, this.z, this.blockID, energyLevel);
+        if (!this.remove && energyLevel != this.region.getBlockData(this)) {
+            this.region.setBlock(this, this.blockID, energyLevel);
         }
         if (this.data.energy == this.getEnergyStorage()) {
             this.container.sendEvent("setBatteryIcon", "on");
@@ -1845,9 +1865,6 @@ var BatBox = /** @class */ (function (_super) {
         }
         this.container.setScale("btScale", this.data.energy / energyStorage);
         this.container.sendChanges();
-    };
-    BatBox.prototype.isEnergySource = function () {
-        return true;
     };
     BatBox.prototype.getEnergyStorage = function () {
         return 64000;
@@ -1860,14 +1877,22 @@ var BatBox = /** @class */ (function (_super) {
         if (this.data.energy > 0) {
             var extra = new ItemExtraData().putInt("energy", this.data.energy);
             var blockData = this.getEnergyLevel();
-            this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
+            this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
         }
         else {
-            this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
+            this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
         }
     };
+    BatBox.prototype.setBatteryIcon = function (container, window, content, data) {
+        if (content) {
+            content.elements["batteryIcon"].bitmap = "battery_icon_" + data;
+        }
+    };
+    __decorate([
+        BlockEngine.Decorators.ContainerEvent(Side.Client)
+    ], BatBox.prototype, "setBatteryIcon", null);
     return BatBox;
-}(TileEntityBase));
+}(BlulectricMachine));
 MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
 Block.registerPlaceFunction("rp_batbox", function (coords, item, block, player, region) {
     var x = coords.relative.x;
@@ -1882,6 +1907,7 @@ Block.registerPlaceFunction("rp_batbox", function (coords, item, block, player, 
         tile.data.energy = tile.getEnergyStorage() / 8 * item.data;
     }
 });
+/// <reference path="../core/BlulectricMachine.ts" />
 IDRegistry.genBlockID("bt_transformer");
 Block.createBlock("bt_transformer", [
     { name: "Blutricity Transformer", texture: [["bt_transformer_bottom", 0], ["bt_transformer_top", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 1], ["bt_transformer_side", 1]], inCreative: true }
@@ -1895,9 +1921,9 @@ Callback.addCallback("PreLoaded", function () {
         "axa"
     ], ['x', 265, 0, 'a', ItemID.ingotBlue, 0, 'c', ItemID.copperCoil, 0]);
 });
-// render
-ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
-(function () {
+var TransformerRender;
+(function (TransformerRender) {
+    ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
     var modelBoxes = [
         [0, 0, 0, 1, 1 / 8, 1],
         [1 / 8, 1 / 8, 1 / 16, 7 / 8, 7 / 8, 15 / 16],
@@ -1906,42 +1932,49 @@ ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
     var render = TileRenderer.createBlockModel(BlockID.bt_transformer, 0, modelBoxes);
     BlockRenderer.setStaticICRender(BlockID.bt_transformer, 0, render);
     TileRenderer.setCollisionShape(BlockID.bt_transformer, 0, modelBoxes);
-})();
-var BTTransformer = /** @class */ (function () {
+})(TransformerRender || (TransformerRender = {}));
+var BTTransformer = /** @class */ (function (_super) {
+    __extends(BTTransformer, _super);
     function BTTransformer() {
-        this.defaultValues = {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultValues = {
+            energy: 0,
             electric_mode: false
         };
+        return _this;
     }
-    BTTransformer.prototype.isEnergySource = function () {
-        return true;
+    BTTransformer.prototype.canReceiveEnergy = function (side, type) {
+        return this.data.electric_mode == (type == "Bt");
+    };
+    BTTransformer.prototype.canExtractEnergy = function (side, type) {
+        return this.data.electric_mode != (type == "Bt");
     };
     BTTransformer.prototype.getEnergyStorage = function () {
         return 128;
     };
-    BTTransformer.prototype.redstone = function (signal) {
-        this.data.electric_mode = signal.power > 0;
-    };
-    BTTransformer.prototype.energyReceive = function (type, amount, voltage) {
-        if ((type == "Bt" && !this.data.electric_mode) || (type == "Eu" && this.data.electric_mode)) {
-            var add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
-            this.data.energy += add;
-            return add;
-        }
-        return 0;
-    };
     BTTransformer.prototype.energyTick = function (type, src) {
         var output = this.data.energy;
-        if (type == "Bt" && this.data.electric_mode) {
-            this.data.energy += src.add(output) - output;
-        }
-        if (type == "Eu" && !this.data.electric_mode) {
-            this.data.energy += src.add(output) - output;
+        if (output > 0) {
+            this.data.energy -= src.addPacket(this.data.electric_mode ? "Bt" : "Eu", output);
         }
     };
+    BTTransformer.prototype.redstone = function (signal) {
+        var mode = signal.power > 0;
+        if (this.data.electric_mode != mode) {
+            this.data.electric_mode = mode;
+            this.rebuildGrid();
+        }
+    };
+    BTTransformer.prototype.rebuildGrid = function () {
+        this.energyNode.resetConnections();
+        EnergyGridBuilder.buildGridForTile(this);
+    };
+    BTTransformer.prototype.onItemUse = function () {
+        return true;
+    };
     return BTTransformer;
-}());
-MachineRegistry.registerPrototype(BlockID.bt_transformer, new BTTransformer());
+}(BlulectricMachine));
+MachineRegistry.registerMachine(BlockID.bt_transformer, new BTTransformer());
 EnergyTileRegistry.addEnergyTypeForId(BlockID.bt_transformer, EU);
 IDRegistry.genItemID("ingotRed");
 Item.createItem("ingotRed", "Red Alloy Ingot", { name: "ingot_red" });
@@ -2672,6 +2705,16 @@ Recipes.addShaped({ id: ItemID.greenSapphireSickle, count: 1, data: 0 }, [
     "  a",
     "ba "
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
+ModAPI.registerAPI("RedCore", {
+    Machine: MachineRegistry,
+    SmelterRecipes: SmelterRecipes,
+    World: OreGeneration,
+    Integration: IntegrationAPI,
+    requireGlobal: function (command) {
+        return eval(command);
+    }
+});
+Logger.Log("RedCore API shared.", "API");
 ModAPI.addAPICallback("RecipeViewer", function (api) {
     var RecipeViewer = api.Core;
     if (RecipeViewer.addListByData) {

@@ -1,3 +1,5 @@
+/// <reference path="./core/MachineBase.ts" />
+
 IDRegistry.genBlockID("rp_smelter");
 Block.createBlock("rp_smelter", [
 	{name: "Smelter", texture: [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], inCreative: true}
@@ -107,8 +109,8 @@ Callback.addCallback("LevelLoaded", function() {
 	MachineRegistry.updateGuiHeader(guiSmelter, "Smelter");
 });
 
-class Smelter
-extends MachineBase {
+class Smelter extends MachineBase {
+	data: this["defaultValues"];
 	defaultValues = {
 		progress: 0,
 		burn: 0,
@@ -119,8 +121,7 @@ extends MachineBase {
 		return guiSmelter;
 	}
 
-	init() {
-		super.init();
+	onInit(): void {
 		StorageInterface.setSlotValidatePolicy(this.container, "slotFuel", function(name, id, amount, data) {
 			return Recipes.getFuelBurnDuration(id, data) > 0;
 		});
@@ -129,7 +130,7 @@ extends MachineBase {
 		});
 	}
 
-	tick() {
+	onTick(): void {
 		StorageInterface.checkHoppers(this);
 
 		let sourceItems = {};
@@ -169,7 +170,7 @@ extends MachineBase {
 		this.container.sendChanges();
 	}
 
-	getFuel(slotName) {
+	getFuel(slotName: string): number {
 		let fuelSlot = this.container.getSlot(slotName);
 		if (fuelSlot.id > 0) {
 			let burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);

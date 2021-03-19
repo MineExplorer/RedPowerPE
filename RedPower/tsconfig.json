@@ -14,13 +14,15 @@
     "dom"
   ],
   "include": [
+    "../declarations/*",
+  ],
+  "files": [
     "dev/header.js",
     "dev/translation.js",
 
-    "dev/api/machine.js",
-    "dev/api/recipe.js",
-    "dev/api/integration.js",
-    "dev/api/red_core.js",
+    "dev/api/MachineRegistry.ts",
+    "dev/api/SmelterRecipes.ts",
+    "dev/api/Integration.ts",
 
     "dev/block/flax.js",
     "dev/block/basalt.js",
@@ -32,13 +34,13 @@
     "dev/block/lamp.js",
     "dev/block/cable.js",
 
-    "dev/machine/smelter.js",
-    "dev/machine/blutricity/solar.js",
-    "dev/machine/blutricity/thermopile.js",
-    "dev/machine/blutricity/furnace.js",
-    "dev/machine/blutricity/btsmelter.js",
-    "dev/machine/blutricity/batbox.js",
-    "dev/machine/blutricity/transformer.js",
+    "dev/machine/smelter.ts",
+    "dev/machine/blutricity/solar.ts",
+    "dev/machine/blutricity/thermopile.ts",
+    "dev/machine/blutricity/furnace.ts",
+    "dev/machine/blutricity/blulectric_smelter.ts",
+    "dev/machine/blutricity/batbox.ts",
+    "dev/machine/blutricity/transformer.ts",
 
     "dev/items/resource.js",
     "dev/items/bags.js",
@@ -55,10 +57,8 @@
     "dev/items/tool/hoe.js",
     "dev/items/tool/sickle.js",
 
+    "dev/api/RedCore.ts",
     "dev/integration/recipe_viewer.js"
-  ],
-  "files": [
-    "../global.d.ts"
   ]
 }
 
