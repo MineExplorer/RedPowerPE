@@ -1,12 +1,6 @@
-IDRegistry.genItemID("handsawDiamond");
-Item.createItem("handsawDiamond", "Diamond Handsaw", {name: "handsaw_diamond"}, {stack: 1});
-Item.setMaxDamage(ItemID.handsawDiamond, 1562);
-
-IDRegistry.genItemID("diamondDrawplate");
-Item.createItem("diamondDrawplate", "Diamond Drawplate", {name: "diamond_drawplate"}, {stack: 1});
-
-IDRegistry.genItemID("woolCard");
-Item.createItem("woolCard", "Wool Card", {name: "wool_card"}, {stack: 1});
+ItemRegistry.createItem("handsawDiamond", {name: "Diamond Handsaw", icon: "handsaw_diamond", stack: 1, maxDamage: 1562, category: ItemCategory.EQUIPMENT});
+ItemRegistry.createItem("diamondDrawplate", {name: "Diamond Drawplate", icon: "diamond_drawplate", stack: 1, category: ItemCategory.EQUIPMENT});
+ItemRegistry.createItem("woolCard", {name: "Wool Card", icon: "wool_card", stack: 1, category: ItemCategory.EQUIPMENT});
 
 Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: ItemID.handsawDiamond, count: 1, data: 0}, [
@@ -49,7 +43,7 @@ Callback.addCallback("PreLoaded", function() {
 function addRecipeWithCraftingTool(result, ingredients, toolID) {
 	ingredients.push({id: toolID, data: -1});
 	Recipes.addShapeless(result, ingredients, function(api, field, result) {
-		for (let i in field) {
+		for (let i = 0; i < field.length; i++) {
 			let item = field[i];
 			if (item.id == toolID) {
 				let maxDamage = Item.getMaxDamage(toolID);

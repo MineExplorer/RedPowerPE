@@ -1,5 +1,4 @@
-IDRegistry.genItemID("lumar");
-Item.createItem("lumar", "Lumar", {name: "lumar"}, {isTech: true});
+ItemRegistry.createItem("lumar", {name: "Lumar", icon: "lumar", inCreative: false});
 
 Item.registerIconOverrideFunction(ItemID.lumar, function(item, name) {
 	return {name: "lumar", meta: item.data}

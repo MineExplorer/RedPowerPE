@@ -21,7 +21,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 IMPORT("BlockEngine");
 IMPORT("flags");
 IMPORT("BaseBlocks");
-IMPORT("ToolLib");
+IMPORT("ToolLib", "ToolLib");
 IMPORT("EnergyNet");
 IMPORT("ChargeItem");
 IMPORT("TileRender");
@@ -282,8 +282,7 @@ var IntegrationAPI;
     }
     IntegrationAPI.registerSeeds = registerSeeds;
 })(IntegrationAPI || (IntegrationAPI = {}));
-IDRegistry.genItemID("flaxSeeds");
-Item.createItem("flaxSeeds", "Flax Seeds", { name: "flax_seeds" });
+ItemRegistry.createItem("flaxSeeds", { name: "Flax Seeds", icon: "flax_seeds" });
 IDRegistry.genBlockID("flax");
 Block.createBlock("flax", [
     { name: "Flax", texture: [["flax", 0]], inCreative: false },
@@ -1976,20 +1975,13 @@ var BTTransformer = /** @class */ (function (_super) {
 }(BlulectricMachine));
 MachineRegistry.registerMachine(BlockID.bt_transformer, new BTTransformer());
 EnergyTileRegistry.addEnergyTypeForId(BlockID.bt_transformer, EU);
-IDRegistry.genItemID("ingotRed");
-Item.createItem("ingotRed", "Red Alloy Ingot", { name: "ingot_red" });
-IDRegistry.genItemID("ingotBlue");
-Item.createItem("ingotBlue", "Blue Alloy Ingot", { name: "ingot_blue" });
-IDRegistry.genItemID("ingotBronze");
-Item.createItem("ingotBronze", "Bronze Ingot", { name: "ingot_bronze" });
-IDRegistry.genItemID("ingotTin");
-Item.createItem("ingotTin", "Tin Ingot", { name: "ingot_tin" });
-IDRegistry.genItemID("ingotCopper");
-Item.createItem("ingotCopper", "Copper Ingot", { name: "ingot_copper" });
-IDRegistry.genItemID("ingotSilver");
-Item.createItem("ingotSilver", "Silver Ingot", { name: "ingot_silver" });
-IDRegistry.genItemID("ingotTungsten");
-Item.createItem("ingotTungsten", "Tungsten Ingot", { name: "ingot_tungsten" });
+ItemRegistry.createItem("ingotRed", { name: "Red Alloy Ingot", icon: "ingot_red" });
+ItemRegistry.createItem("ingotBlue", { name: "Blue Alloy Ingot", icon: "ingot_blue" });
+ItemRegistry.createItem("ingotBronze", { name: "Bronze Ingot", icon: "ingot_bronze" });
+ItemRegistry.createItem("ingotTin", { name: "Tin Ingot", icon: "ingot_tin" });
+ItemRegistry.createItem("ingotCopper", { name: "Copper Ingot", icon: "ingot_copper" });
+ItemRegistry.createItem("ingotSilver", { name: "Silver Ingot", icon: "ingot_silver" });
+ItemRegistry.createItem("ingotTungsten", { name: "Tungsten Ingot", icon: "ingot_tungsten" });
 Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
     ItemID.ingotRed,
     ItemID.ingotBlue,
@@ -1999,15 +1991,11 @@ Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
     ItemID.ingotSilver,
     ItemID.ingotTungsten
 ]);
-IDRegistry.genItemID("nikolite");
-Item.createItem("nikolite", "Nikolite", { name: "nikolite" });
+ItemRegistry.createItem("nikolite", { name: "Nikolite", icon: "nikolite" });
 ChargeItemRegistry.registerFlashItem(ItemID.nikolite, "Bt", 1000, 0);
-IDRegistry.genItemID("gemRuby");
-Item.createItem("gemRuby", "Ruby", { name: "ruby" });
-IDRegistry.genItemID("gemSapphire");
-Item.createItem("gemSapphire", "Sapphire", { name: "sapphire" });
-IDRegistry.genItemID("gemGreenSapphire");
-Item.createItem("gemGreenSapphire", "Green Sapphire", { name: "green_sapphire" });
+ItemRegistry.createItem("gemRuby", { name: "Ruby", icon: "ruby" });
+ItemRegistry.createItem("gemSapphire", { name: "Sapphire", icon: "sapphire" });
+ItemRegistry.createItem("gemGreenSapphire", { name: "Green Sapphire", icon: "green_sapphire" });
 Item.addCreativeGroup("gem", Translation.translate("Gems"), [
     ItemID.gemRuby,
     ItemID.gemSapphire,
@@ -2018,10 +2006,8 @@ Callback.addCallback("PreLoaded", function () {
     Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
     Recipes.addFurnace(BlockID.oreSilver, ItemID.ingotSilver, 0);
 });
-IDRegistry.genItemID("canvas");
-Item.createItem("canvas", "Canvas", { name: "canvas", meta: 0 });
-IDRegistry.genItemID("canvasBag");
-Item.createItem("canvasBag", "Canvas Bag", { name: "canvas_bag", meta: 0 }, { stack: 1 });
+ItemRegistry.createItem("canvas", { name: "Canvas", icon: "canvas" });
+ItemRegistry.createItem("canvasBag", { name: "Canvas Bag", icon: "canvas_bag", stack: 1, category: ItemCategory.EQUIPMENT });
 Item.registerIconOverrideFunction(ItemID.canvasBag, function (item, name) {
     return { name: "canvas_bag", meta: item.data };
 });
@@ -2053,9 +2039,7 @@ for (var i = 1; i < 16; i++) {
         "aaa"
     ], ['x', 351, COLOR_INDEX_TO_DYE_DATA[i], 'a', ItemID.canvas, 0]);
 }
-IDRegistry.genItemID("seedBag");
-Item.createItem("seedBag", "Seed Bag", { name: "seed_bag", meta: 0 }, { stack: 1, isTech: true });
-Item.setMaxDamage(ItemID.seedBag, 576);
+ItemRegistry.createItem("seedBag", { name: "Seed Bag", icon: "seed_bag", stack: 1, maxDamage: 576, category: ItemCategory.EQUIPMENT, inCreative: false });
 Item.addToCreative(ItemID.seedBag, 1, 576);
 Item.registerIconOverrideFunction(ItemID.seedBag, function (item, name) {
     return { name: "seed_bag", meta: (item.data < 576) ? 1 : 0 };
@@ -2244,8 +2228,7 @@ Item.registerUseFunction("seedBag", function (coords, item, block, player) {
         }
     }
 });
-IDRegistry.genItemID("lumar");
-Item.createItem("lumar", "Lumar", { name: "lumar" }, { isTech: true });
+ItemRegistry.createItem("lumar", { name: "Lumar", icon: "lumar", inCreative: false });
 Item.registerIconOverrideFunction(ItemID.lumar, function (item, name) {
     return { name: "lumar", meta: item.data };
 });
@@ -2283,20 +2266,13 @@ for (var data = 0; data < 16; data++) {
         }
     }, true);
 }
-IDRegistry.genItemID("siliconBoule");
-Item.createItem("siliconBoule", "Silicon Boule", { name: "silicon_boule" });
-IDRegistry.genItemID("waferSilicon");
-Item.createItem("waferSilicon", "Silicon Wafer", { name: "wafer_silicon" });
-IDRegistry.genItemID("waferRed");
-Item.createItem("waferRed", "Red-Doped Wafer", { name: "wafer_red" });
-IDRegistry.genItemID("waferBlue");
-Item.createItem("waferBlue", "Blue-Doped Wafer", { name: "wafer_blue" });
-IDRegistry.genItemID("fineCopperWire");
-Item.createItem("fineCopperWire", "Fine Copper Wire", { name: "fine_copper_wire" });
-IDRegistry.genItemID("fineIronWire");
-Item.createItem("fineIronWire", "Fine Iron Wire", { name: "fine_iron_wire" });
-IDRegistry.genItemID("copperCoil");
-Item.createItem("copperCoil", "Copper Coil", { name: "copper_coil" });
+ItemRegistry.createItem("siliconBoule", { name: "Silicon Boule", icon: "silicon_boule" });
+ItemRegistry.createItem("waferSilicon", { name: "Silicon Wafer", icon: "wafer_silicon" });
+ItemRegistry.createItem("waferRed", { name: "Red-Doped Wafer", icon: "wafer_red" });
+ItemRegistry.createItem("waferBlue", { name: "Blue-Doped Wafer", icon: "wafer_blue" });
+ItemRegistry.createItem("fineCopperWire", { name: "Fine Copper Wire", icon: "fine_copper_wire" });
+ItemRegistry.createItem("fineIronWire", { name: "Fine Iron Wire", icon: "fine_iron_wire" });
+ItemRegistry.createItem("copperCoil", { name: "Copper Coil", icon: "copper_coil" });
 Callback.addCallback("PreLoaded", function () {
     addRecipeWithCraftingTool({ id: ItemID.waferSilicon, count: 16, data: 0 }, [{ id: ItemID.siliconBoule, data: 0 }], ItemID.handsawDiamond);
     addRecipeWithCraftingTool({ id: ItemID.fineCopperWire, count: 1, data: 0 }, [{ id: ItemID.ingotCopper, data: 0 }], ItemID.diamondDrawplate);
@@ -2337,21 +2313,16 @@ Callback.addCallback("PreLoaded", function () {
         "cxc"
     ], ['#', 265, 0, 'x', 101, 0, 'c', ItemID.fineCopperWire, 0]);
 });
-IDRegistry.genItemID("btBattery");
-Item.createItem("btBattery", "BT Battery", { name: "bt_battery", meta: 0 }, { stack: 1, isTech: true });
+ItemRegistry.createItem("btBattery", { name: "BT Battery", icon: "bt_battery", stack: 1, inCreative: false });
 ChargeItemRegistry.registerItem(ItemID.btBattery, "Bt", 16000, 100, 0, true);
 Recipes.addShaped({ id: ItemID.btBattery, count: 1, data: Item.getMaxDamage(ItemID.btBattery) }, [
     "xcx",
     "xax",
     "xcx"
 ], ['x', ItemID.nikolite, 0, 'a', ItemID.ingotTin, 0, 'c', ItemID.ingotCopper, 0]);
-IDRegistry.genItemID("handsawDiamond");
-Item.createItem("handsawDiamond", "Diamond Handsaw", { name: "handsaw_diamond" }, { stack: 1 });
-Item.setMaxDamage(ItemID.handsawDiamond, 1562);
-IDRegistry.genItemID("diamondDrawplate");
-Item.createItem("diamondDrawplate", "Diamond Drawplate", { name: "diamond_drawplate" }, { stack: 1 });
-IDRegistry.genItemID("woolCard");
-Item.createItem("woolCard", "Wool Card", { name: "wool_card" }, { stack: 1 });
+ItemRegistry.createItem("handsawDiamond", { name: "Diamond Handsaw", icon: "handsaw_diamond", stack: 1, maxDamage: 1562, category: ItemCategory.EQUIPMENT });
+ItemRegistry.createItem("diamondDrawplate", { name: "Diamond Drawplate", icon: "diamond_drawplate", stack: 1, category: ItemCategory.EQUIPMENT });
+ItemRegistry.createItem("woolCard", { name: "Wool Card", icon: "wool_card", stack: 1, category: ItemCategory.EQUIPMENT });
 Callback.addCallback("PreLoaded", function () {
     Recipes.addShaped({ id: ItemID.handsawDiamond, count: 1, data: 0 }, [
         "rrr",
@@ -2388,7 +2359,7 @@ Callback.addCallback("PreLoaded", function () {
 function addRecipeWithCraftingTool(result, ingredients, toolID) {
     ingredients.push({ id: toolID, data: -1 });
     Recipes.addShapeless(result, ingredients, function (api, field, result) {
-        for (var i in field) {
+        for (var i = 0; i < field.length; i++) {
             var item = field[i];
             if (item.id == toolID) {
                 var maxDamage = Item.getMaxDamage(toolID);
@@ -2402,10 +2373,7 @@ function addRecipeWithCraftingTool(result, ingredients, toolID) {
         }
     });
 }
-IDRegistry.genItemID("athame");
-Item.createItem("athame", "Athame", { name: "athame", meta: 0 }, { stack: 1 });
-ToolAPI.registerSword(ItemID.athame, { level: 0, durability: 50, damage: 3 }, {
-    damage: 0,
+ItemRegistry.createTool("athame", { name: "Athame", icon: "athame", material: { level: 0, durability: 50, damage: 3 } }, {
     onAttack: function (item, mob) {
         this.damage = Entity.getType(mob) == Native.EntityType.ENDERMAN ? 17 : 0;
         return false;
@@ -2425,25 +2393,17 @@ VanillaRecipe.addCraftingRecipe("athame", {
         item: "item:athame"
     }
 }, true);
-IDRegistry.genItemID("rubySword");
-IDRegistry.genItemID("sapphireSword");
-IDRegistry.genItemID("greenSapphireSword");
-Item.createItem("rubySword", "Ruby Sword", { name: "ruby_sword", meta: 0 }, { stack: 1 });
-Item.createItem("sapphireSword", "Sapphire Sword", { name: "sapphire_sword", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphireSword", "Green Sapphire Sword", { name: "green_sapphire_sword", meta: 0 }, { stack: 1 });
+ItemRegistry.addToolMaterial("ruby", { durability: 500, level: 3, efficiency: 8, damage: 3, enchantability: 11, repairMaterial: ItemID.gemRuby });
+ItemRegistry.addToolMaterial("sapphire", { durability: 500, level: 3, efficiency: 8, damage: 2, enchantability: 11, repairMaterial: ItemID.gemSapphire });
+ItemRegistry.addToolMaterial("greenSapphire", { durability: 500, level: 3, efficiency: 8, damage: 2, enchantability: 11, repairMaterial: ItemID.gemGreenSapphire });
+ItemRegistry.createTool("rubySword", { name: "Ruby Sword", icon: "ruby_sword", material: "ruby" }, ToolType.SWORD);
+ItemRegistry.createTool("sapphireSword", { name: "Sapphire Sword", icon: "sapphire_sword", material: "sapphire" }, ToolType.SWORD);
+ItemRegistry.createTool("greenSapphireSword", { name: "Green Sapphire Sword", icon: "green_sapphire_sword", material: "greenSapphire" }, ToolType.SWORD);
 Item.addCreativeGroup("rp_swords", Translation.translate("Swords"), [
     ItemID.rubySword,
     ItemID.sapphireSword,
     ItemID.greenSapphireSword
 ]);
-Item.addRepairItemIds(ItemID.rubySword, [ItemID.gemRuby]);
-Item.addRepairItemIds(ItemID.sapphireSword, [ItemID.gemSapphire]);
-Item.addRepairItemIds(ItemID.greenSapphireSword, [ItemID.gemGreenSapphire]);
-ToolAPI.addToolMaterial("ruby", { durability: 500, level: 3, efficiency: 8, damage: 3, enchantability: 11 });
-ToolAPI.addToolMaterial("sapphire", { durability: 500, level: 3, efficiency: 8, damage: 2, enchantability: 11 });
-ToolLib.setTool(ItemID.rubySword, "ruby", ToolType.sword);
-ToolLib.setTool(ItemID.sapphireSword, "sapphire", ToolType.sword);
-ToolLib.setTool(ItemID.greenSapphireSword, "sapphire", ToolType.sword);
 Recipes.addShaped({ id: ItemID.rubySword, count: 1, data: 0 }, [
     "a",
     "a",
@@ -2459,23 +2419,14 @@ Recipes.addShaped({ id: ItemID.greenSapphireSword, count: 1, data: 0 }, [
     "a",
     "b"
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
-IDRegistry.genItemID("rubyShovel");
-IDRegistry.genItemID("sapphireShovel");
-IDRegistry.genItemID("greenSapphireShovel");
-Item.createItem("rubyShovel", "Ruby Shovel", { name: "ruby_shovel", meta: 0 }, { stack: 1 });
-Item.createItem("sapphireShovel", "Sapphire Shovel", { name: "sapphire_shovel", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphireShovel", "Green Sapphire Shovel", { name: "green_sapphire_shovel", meta: 0 }, { stack: 1 });
+ItemRegistry.createTool("rubyShovel", { name: "Ruby Shovel", icon: "ruby_shovel", material: "ruby" }, ToolType.SHOVEL);
+ItemRegistry.createTool("sapphireShovel", { name: "Sapphire Shovel", icon: "sapphire_shovel", material: "sapphire" }, ToolType.SHOVEL);
+ItemRegistry.createTool("greenSapphireShovel", { name: "Green Sapphire Shovel", icon: "green_sapphire_shovel", material: "greenSapphire" }, ToolType.SHOVEL);
 Item.addCreativeGroup("rp_shovels", Translation.translate("Shovels"), [
     ItemID.rubyShovel,
     ItemID.sapphireShovel,
     ItemID.greenSapphireShovel
 ]);
-Item.addRepairItemIds(ItemID.rubyShovel, [ItemID.gemRuby]);
-Item.addRepairItemIds(ItemID.sapphireShovel, [ItemID.gemSapphire]);
-Item.addRepairItemIds(ItemID.greenSapphireShovel, [ItemID.gemGreenSapphire]);
-ToolLib.setTool(ItemID.rubyShovel, "ruby", ToolType.shovel);
-ToolLib.setTool(ItemID.sapphireShovel, "sapphire", ToolType.shovel);
-ToolLib.setTool(ItemID.greenSapphireShovel, "sapphire", ToolType.shovel);
 Recipes.addShaped({ id: ItemID.rubyShovel, count: 1, data: 0 }, [
     "a",
     "b",
@@ -2491,23 +2442,14 @@ Recipes.addShaped({ id: ItemID.greenSapphireShovel, count: 1, data: 0 }, [
     "b",
     "b"
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
-IDRegistry.genItemID("rubyPickaxe");
-IDRegistry.genItemID("sapphirePickaxe");
-IDRegistry.genItemID("greenSapphirePickaxe");
-Item.createItem("rubyPickaxe", "Ruby Pickaxe", { name: "ruby_pickaxe", meta: 0 }, { stack: 1 });
-Item.createItem("sapphirePickaxe", "Sapphire Pickaxe", { name: "sapphire_pickaxe", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphirePickaxe", "Green Sapphire Pickaxe", { name: "green_sapphire_pickaxe", meta: 0 }, { stack: 1 });
+ItemRegistry.createTool("rubyPickaxe", { name: "Ruby Pickaxe", icon: "ruby_pickaxe", material: "ruby" }, ToolType.PICKAXE);
+ItemRegistry.createTool("sapphirePickaxe", { name: "Sapphire Pickaxe", icon: "sapphire_pickaxe", material: "sapphire" }, ToolType.PICKAXE);
+ItemRegistry.createTool("greenSapphirePickaxe", { name: "Green Sapphire Pickaxe", icon: "green_sapphire_pickaxe", material: "greenSapphire" }, ToolType.PICKAXE);
 Item.addCreativeGroup("rp_pickaxes", Translation.translate("Pickaxes"), [
     ItemID.rubyPickaxe,
     ItemID.sapphirePickaxe,
     ItemID.greenSapphirePickaxe
 ]);
-Item.addRepairItemIds(ItemID.rubyPickaxe, [ItemID.gemRuby]);
-Item.addRepairItemIds(ItemID.sapphirePickaxe, [ItemID.gemSapphire]);
-Item.addRepairItemIds(ItemID.greenSapphirePickaxe, [ItemID.gemGreenSapphire]);
-ToolLib.setTool(ItemID.rubyPickaxe, "ruby", ToolType.pickaxe);
-ToolLib.setTool(ItemID.sapphirePickaxe, "sapphire", ToolType.pickaxe);
-ToolLib.setTool(ItemID.greenSapphirePickaxe, "sapphire", ToolType.pickaxe);
 Recipes.addShaped({ id: ItemID.rubyPickaxe, count: 1, data: 0 }, [
     "aaa",
     " b ",
@@ -2523,23 +2465,14 @@ Recipes.addShaped({ id: ItemID.greenSapphirePickaxe, count: 1, data: 0 }, [
     " b ",
     " b "
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
-IDRegistry.genItemID("rubyAxe");
-IDRegistry.genItemID("sapphireAxe");
-IDRegistry.genItemID("greenSapphireAxe");
-Item.createItem("rubyAxe", "Ruby Axe", { name: "ruby_axe", meta: 0 }, { stack: 1 });
-Item.createItem("sapphireAxe", "Sapphire Axe", { name: "sapphire_axe", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphireAxe", "Green Sapphire Axe", { name: "green_sapphire_axe", meta: 0 }, { stack: 1 });
+ItemRegistry.createTool("rubyAxe", { name: "Ruby Axe", icon: "ruby_axe", material: "ruby" }, ToolType.AXE);
+ItemRegistry.createTool("sapphireAxe", { name: "Sapphire Axe", icon: "sapphire_axe", material: "sapphire" }, ToolType.AXE);
+ItemRegistry.createTool("greenSapphireAxe", { name: "Green Sapphire Axe", icon: "green_sapphire_axe", material: "greenSapphire" }, ToolType.AXE);
 Item.addCreativeGroup("rp_axes", Translation.translate("Axes"), [
     ItemID.rubyAxe,
     ItemID.sapphireAxe,
     ItemID.greenSapphireAxe
 ]);
-Item.addRepairItemIds(ItemID.rubyAxe, [ItemID.gemRuby]);
-Item.addRepairItemIds(ItemID.sapphireAxe, [ItemID.gemSapphire]);
-Item.addRepairItemIds(ItemID.greenSapphireAxe, [ItemID.gemGreenSapphire]);
-ToolLib.setTool(ItemID.rubyAxe, "ruby", ToolType.axe);
-ToolLib.setTool(ItemID.sapphireAxe, "sapphire", ToolType.axe);
-ToolLib.setTool(ItemID.greenSapphireAxe, "sapphire", ToolType.axe);
 Recipes.addShaped({ id: ItemID.rubyAxe, count: 1, data: 0 }, [
     "aa",
     "ab",
@@ -2555,20 +2488,14 @@ Recipes.addShaped({ id: ItemID.greenSapphireAxe, count: 1, data: 0 }, [
     "ab",
     " b"
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
-IDRegistry.genItemID("rubyHoe");
-IDRegistry.genItemID("sapphireHoe");
-IDRegistry.genItemID("greenSapphireHoe");
-Item.createItem("rubyHoe", "Ruby Hoe", { name: "ruby_hoe", meta: 0 }, { stack: 1 });
-Item.createItem("sapphireHoe", "Sapphire Hoe", { name: "sapphire_hoe", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphireHoe", "Green Sapphire Hoe", { name: "green_sapphire_hoe", meta: 0 }, { stack: 1 });
+ItemRegistry.createTool("rubyHoe", { name: "Ruby Hoe", icon: "ruby_hoe", material: "ruby" }, ToolType.HOE);
+ItemRegistry.createTool("sapphireHoe", { name: "Sapphire Hoe", icon: "sapphire_hoe", material: "sapphire" }, ToolType.HOE);
+ItemRegistry.createTool("greenSapphireHoe", { name: "Green Sapphire Hoe", icon: "green_sapphire_hoe", material: "greenSapphire" }, ToolType.HOE);
 Item.addCreativeGroup("rp_hoes", Translation.translate("Hoes"), [
     ItemID.rubyHoe,
     ItemID.sapphireHoe,
     ItemID.greenSapphireHoe
 ]);
-ToolLib.setTool(ItemID.rubyHoe, "ruby", ToolType.hoe);
-ToolLib.setTool(ItemID.greenSapphireHoe, "sapphire", ToolType.hoe);
-ToolLib.setTool(ItemID.sapphireHoe, "sapphire", ToolType.hoe);
 Recipes.addShaped({ id: ItemID.rubyHoe, count: 1, data: 0 }, [
     "aa",
     " b",
@@ -2584,22 +2511,57 @@ Recipes.addShaped({ id: ItemID.greenSapphireHoe, count: 1, data: 0 }, [
     " b",
     " b"
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
-IDRegistry.genItemID("sickleWood");
-IDRegistry.genItemID("sickleStone");
-IDRegistry.genItemID("sickleIron");
-IDRegistry.genItemID("sickleGold");
-IDRegistry.genItemID("sickleDiamond");
-IDRegistry.genItemID("rubySickle");
-IDRegistry.genItemID("sapphireSickle");
-IDRegistry.genItemID("greenSapphireSickle");
-Item.createItem("sickleWood", "Wood Sickle", { name: "sickle", meta: 0 }, { stack: 1 });
-Item.createItem("sickleStone", "Stone Sickle", { name: "sickle", meta: 1 }, { stack: 1 });
-Item.createItem("sickleIron", "Iron Sickle", { name: "sickle", meta: 2 }, { stack: 1 });
-Item.createItem("sickleGold", "Gold Sickle", { name: "sickle", meta: 3 }, { stack: 1 });
-Item.createItem("sickleDiamond", "Diamond Sickle", { name: "sickle", meta: 4 }, { stack: 1 });
-Item.createItem("rubySickle", "Ruby Sickle", { name: "ruby_sickle", meta: 0 }, { stack: 1 });
-Item.createItem("sapphireSickle", "Sapphire Sickle", { name: "sapphire_sickle", meta: 0 }, { stack: 1 });
-Item.createItem("greenSapphireSickle", "Green Sapphire Sickle", { name: "green_sapphire_sickle", meta: 0 }, { stack: 1 });
+var plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
+var ToolSickle = /** @class */ (function (_super) {
+    __extends(ToolSickle, _super);
+    function ToolSickle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ToolSickle.prototype.calcDestroyTime = function (item, coords, block, params, destroyTime) {
+        var material = ToolAPI.getBlockMaterialName(block.id);
+        if (material == "fibre" || material == "plant" || block.id == 30) {
+            return 0;
+        }
+        return destroyTime;
+    };
+    ToolSickle.prototype.onDestroy = function (item, coords, block, player) {
+        var region = WorldRegion.getForActor(player);
+        var x = coords.x, y = coords.y, z = coords.z;
+        var material = ToolAPI.getBlockMaterialName(block.id);
+        if (material == "plant" && plants.indexOf(block.id) == -1) {
+            for (var xx = x - 1; xx <= x + 1; xx++) {
+                for (var yy = y - 1; yy <= y + 1; yy++) {
+                    for (var zz = z - 1; zz <= z + 1; zz++) {
+                        var block_1 = region.getBlock(xx, yy, zz);
+                        if (ToolAPI.getBlockMaterialName(block_1.id) == "plant") {
+                            region.destroyBlock(xx, yy, zz, true);
+                        }
+                    }
+                }
+            }
+        }
+        else if (plants.indexOf(block.id) != -1) {
+            for (var xx = x - 2; xx <= x + 2; xx++) {
+                for (var zz = z - 2; zz <= z + 2; zz++) {
+                    var block_2 = region.getBlock(xx, y, zz);
+                    if (plants.indexOf(block_2.id) != -1) {
+                        region.destroyBlock(xx, y, zz, true);
+                    }
+                }
+            }
+        }
+        return false;
+    };
+    return ToolSickle;
+}(ItemTool));
+ItemRegistry.registerItem(new ToolSickle("sickleWood", "Wood Sickle", { name: "sickle", meta: 0 }, "wood"));
+ItemRegistry.registerItem(new ToolSickle("sickleStone", "Stone Sickle", { name: "sickle", meta: 1 }, "stone"));
+ItemRegistry.registerItem(new ToolSickle("sickleIron", "Iron Sickle", { name: "sickle", meta: 2 }, "iron"));
+ItemRegistry.registerItem(new ToolSickle("sickleGold", "Gold Sickle", { name: "sickle", meta: 3 }, "golden"));
+ItemRegistry.registerItem(new ToolSickle("sickleDiamond", "Diamond Sickle", { name: "sickle", meta: 4 }, "diamond"));
+ItemRegistry.registerItem(new ToolSickle("rubySickle", "Ruby Sickle", "ruby_sickle", "ruby"));
+ItemRegistry.registerItem(new ToolSickle("sapphireSickle", "Sapphire Sickle", "sapphire_sickle", "sapphire"));
+ItemRegistry.registerItem(new ToolSickle("greenSapphireSickle", "Green Sapphire Sickle", "green_sapphire_sickle", "greenSapphire"));
 Item.addCreativeGroup("sickles", Translation.translate("Sickles"), [
     ItemID.sickleWood,
     ItemID.sickleStone,
@@ -2610,61 +2572,6 @@ Item.addCreativeGroup("sickles", Translation.translate("Sickles"), [
     ItemID.sapphireSickle,
     ItemID.greenSapphireSickle
 ]);
-var plants = [31, 37, 38, 59, 83, 106, 141, 142, 175, 244, BlockID.flax];
-ToolType.sickle = {
-    damage: 1,
-    baseDamage: 0,
-    blockTypes: ["fibre"],
-    calcDestroyTime: function (item, coords, block, params, destroyTime, enchant) {
-        var material = ToolAPI.getBlockMaterialName(block.id);
-        if (material == "fibre" || material == "plant" || block.id == 30) {
-            return 0;
-        }
-        return destroyTime;
-    },
-    destroyBlock: function (coords, side, item, block, player) {
-        var region = BlockSource.getDefaultForActor(player);
-        var x = coords.x, y = coords.y, z = coords.z;
-        var material = ToolAPI.getBlockMaterialName(block.id);
-        if (material == "plant" && plants.indexOf(block.id) == -1) {
-            for (var xx = x - 1; xx <= x + 1; xx++) {
-                for (var yy = y - 1; yy <= y + 1; yy++) {
-                    for (var zz = z - 1; zz <= z + 1; zz++) {
-                        var block_1 = region.getBlock(xx, yy, zz);
-                        if (ToolAPI.getBlockMaterialName(block_1.id) == "plant") {
-                            region.destroyBlock(xx, yy, zz, true);
-                            Block.onBlockDestroyed({ x: xx, y: y, z: zz }, block_1, false, player);
-                        }
-                    }
-                }
-            }
-            ToolLib.breakCarriedTool(1);
-        }
-        else if (plants.indexOf(block.id) != -1) {
-            for (var xx = x - 2; xx <= x + 2; xx++) {
-                for (var zz = z - 2; zz <= z + 2; zz++) {
-                    var block_2 = region.getBlock(xx, y, zz);
-                    if (plants.indexOf(block_2.id) != -1) {
-                        region.destroyBlock(xx, y, zz, true);
-                        Block.onBlockDestroyed({ x: xx, y: y, z: zz }, block_2, false, player);
-                        if (Math.random() < 1 / 16 && (block_2.id == 31 && block_2.data == 0 || block_2.id == 175 && (block_2.data == 2 || block_2.data == 10))) {
-                            region.spawnDroppedItem(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
-                        }
-                    }
-                }
-            }
-            ToolLib.breakCarriedTool(1);
-        }
-    }
-};
-ToolLib.setTool(ItemID.sickleWood, "wood", ToolType.sickle);
-ToolLib.setTool(ItemID.sickleStone, "stone", ToolType.sickle);
-ToolLib.setTool(ItemID.sickleIron, "iron", ToolType.sickle);
-ToolLib.setTool(ItemID.sickleGold, "golden", ToolType.sickle);
-ToolLib.setTool(ItemID.sickleDiamond, "diamond", ToolType.sickle);
-ToolLib.setTool(ItemID.rubySickle, "ruby", ToolType.sickle);
-ToolLib.setTool(ItemID.sapphireSickle, "sapphire", ToolType.sickle);
-ToolLib.setTool(ItemID.greenSapphireSickle, "sapphire", ToolType.sickle);
 Recipes.addShaped({ id: ItemID.sickleWood, count: 1, data: 0 }, [
     " a ",
     "  a",

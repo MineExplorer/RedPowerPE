@@ -1,8 +1,6 @@
-IDRegistry.genItemID("canvas");
-Item.createItem("canvas", "Canvas", {name: "canvas", meta: 0});
+ItemRegistry.createItem("canvas", {name: "Canvas", icon: "canvas"});
 
-IDRegistry.genItemID("canvasBag");
-Item.createItem("canvasBag", "Canvas Bag", {name: "canvas_bag", meta: 0}, {stack: 1});
+ItemRegistry.createItem("canvasBag", {name: "Canvas Bag", icon: "canvas_bag", stack: 1, category: ItemCategory.EQUIPMENT});
 Item.registerIconOverrideFunction(ItemID.canvasBag, function(item, name) {
 	return {name: "canvas_bag", meta: item.data};
 });

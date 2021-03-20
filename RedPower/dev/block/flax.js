@@ -1,5 +1,4 @@
-IDRegistry.genItemID("flaxSeeds");
-Item.createItem("flaxSeeds", "Flax Seeds", {name: "flax_seeds"});
+ItemRegistry.createItem("flaxSeeds", {name: "Flax Seeds", icon: "flax_seeds"});
 
 IDRegistry.genBlockID("flax");
 Block.createBlock("flax", [

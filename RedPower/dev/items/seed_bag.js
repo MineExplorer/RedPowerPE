@@ -1,6 +1,4 @@
-IDRegistry.genItemID("seedBag");
-Item.createItem("seedBag", "Seed Bag", {name: "seed_bag", meta: 0}, {stack: 1, isTech: true});
-Item.setMaxDamage(ItemID.seedBag, 576);
+ItemRegistry.createItem("seedBag", {name: "Seed Bag", icon: "seed_bag", stack: 1, maxDamage: 576, category: ItemCategory.EQUIPMENT, inCreative: false});
 Item.addToCreative(ItemID.seedBag, 1, 576);
 
 Item.registerIconOverrideFunction(ItemID.seedBag, function(item, name) {
@@ -172,7 +170,6 @@ Callback.addCallback("LevelLoaded", function() {
 Item.registerNoTargetUseFunction(ItemID.seedBag, function (item, player) {
 	SeedBag.openGuiFor(item, player);
 });
-
 
 let seeds = {295: 59, 391: 141, 392: 142, 458: 244}
 seeds[ItemID.flaxSeeds] = BlockID.flax;
