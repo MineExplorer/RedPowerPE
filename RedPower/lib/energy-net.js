@@ -317,8 +317,7 @@ var EnergyNode = /** @class */ (function () {
         }
         return false;
     };
-    EnergyNode.prototype.init = function () {
-    };
+    EnergyNode.prototype.init = function () { };
     EnergyNode.prototype.tick = function () {
         this.energyIn = this.currentIn;
         this.currentIn = 0;
