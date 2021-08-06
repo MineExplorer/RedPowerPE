@@ -11,6 +11,7 @@ IMPORT("StorageInterface");
 IMPORT("VanillaRecipe");
 
 VanillaRecipe.setResourcePath(__dir__ + "res/");
+VanillaRecipe.setBehaviorPath(__dir__ + "behavior_packs/");
 
 // constants
 const GUI_SCALE = 3.2;
