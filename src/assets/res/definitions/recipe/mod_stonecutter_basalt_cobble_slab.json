@@ -1,0 +1,17 @@
+{
+	"ingredients": [
+		{
+			"item": "minecraft:block_basalt_cobble"
+		}
+	],
+	"result": {
+		"item": "minecraft:block_basalt_slab",
+		"data": 1,
+		"count": 2
+	},
+	"type": "crafting_shapeless",
+	"tags": [
+		"stonecutter"
+	],
+	"priority": 0
+}

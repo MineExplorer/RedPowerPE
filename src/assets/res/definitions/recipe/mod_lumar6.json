@@ -1,0 +1,27 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"XG",
+		"RX"
+	],
+	"key": {
+		"X": {
+			"item": "minecraft:dye",
+			"data": 9
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		},
+		"G": {
+			"item": "minecraft:glowstone_dust"
+		}
+	},
+	"result": {
+		"item": "minecraft:item_lumar",
+		"count": 2,
+		"data": 6
+	},
+	"tags": [
+		"crafting_table"
+	]
+}

@@ -1,0 +1,15 @@
+{
+  "enabled":true,
+  "world_gen":{
+    "marble":33,
+    "basalt":10
+  },
+  "ore_gen":{
+    "copper":true,
+    "tin":true,
+    "silver":true,
+    "tungsten":true,
+    "nikolite":true,
+    "gems":true
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"ingredients": [
+		{
+			"item": "minecraft:block_rp_basalt"
+		}
+	],
+	"result": {
+		"item": "minecraft:block_basalt_brick",
+		"data": 0
+	},
+	"type": "crafting_shapeless",
+	"tags": [
+		"stonecutter"
+	],
+	"priority": 0
+}
