@@ -16,23 +16,23 @@ VanillaRecipe.setBehaviorPath(__dir__ + "assets/behavior_packs/");
 // constants
 const GUI_SCALE = 3.2;
 
-const COLOR_INDEX_TO_DYE_DATA = {
-	0: 19,
-	1: 14,
-	2: 13,
-	3: 12,
-	4: 11,
-	5: 10,
-	6: 9,
-	7: 8,
-	8: 7,
-	9: 6,
-	10: 5,
-	11: 18,
-	12: 17,
-	13: 2,
-	14: 1,
-	15: 16
+const COLOR_INDEX_TO_DYE = {
+	0: "white_dye",
+	1: "orange_dye",
+	2: "magenta_dye",
+	3: "light_blue_dye",
+	4: "yellow_dye",
+	5: "lime_dye",
+	6: "pink_dye",
+	7: "gray_dye",
+	8: "light_gray_dye",
+	9: "cyan_dye",
+	10: "purple_dye",
+	11: "blue_dye",
+	12: "brown_dye",
+	13: "green_dye",
+	14: "red_dye",
+	15: "black_dye"
 }
 
 // API

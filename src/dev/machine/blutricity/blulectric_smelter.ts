@@ -20,13 +20,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-const guiBTSmelter = new UI.StandartWindow({
-	standard: {
-		header: {text: {text: Translation.translate("Blulectric Smelter")}},
-		inventory: {standard: true},
-		background: {standard: true}
-	},
-
+const guiBTSmelter = MachineRegistry.createInventoryWindow("Blulectric Smelter", {
 	drawing: [
 		{type: "bitmap", x: 636, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 425, y: 92, bitmap: "btstorage_small_background", scale: GUI_SCALE},
@@ -42,11 +36,6 @@ const guiBTSmelter = new UI.StandartWindow({
 		"slotResult": {type: "slot", x: 720, y: 136, size: 72},
 	}
 });
-
-Callback.addCallback("LevelLoaded", function() {
-	MachineRegistry.updateGuiHeader(guiBTSmelter, "Blulectric Smelter");
-});
-
 
 class BTSmelter extends ProcessingMachine {
 	getScreenByName() {

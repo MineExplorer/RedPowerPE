@@ -141,8 +141,8 @@ Item.addCreativeGroup("ores", Translation.translate("Ores"), [
 ]);
 
 
-const OreGeneration = {
-	config: {
+namespace OreGeneration {
+	export const config = {
 		oreGenCopper: __config__.getBool("ore_gen.copper"),
 		oreGenTin: __config__.getBool("ore_gen.tin"),
 		oreGenSilver: __config__.getBool("ore_gen.silver"),
@@ -151,15 +151,13 @@ const OreGeneration = {
 		oreGenRuby: __config__.getBool("ore_gen.gems"),
 		oreGenSapphire: __config__.getBool("ore_gen.gems"),
 		oreGenGreenSapphire: __config__.getBool("ore_gen.gems")
-	},
+	}
 
-	randomCoords: function(random, chunkX, chunkZ, minHeight, maxHeight) {
-		minHeight = minHeight || 0;
-		maxHeight = maxHeight || 128;
+	export function randomCoords(random: java.util.Random, chunkX: number, chunkZ: number, minHeight: number = 0, maxHeight: number = 128): Vector {
 		let x = chunkX*16 + random.nextInt(16);
 		let z = chunkZ*16 + random.nextInt(16);
-		let y = random.nextInt(maxHeight - minHeight + 1) + minHeight;
-		return new Vector3(x, y, z);
+		let y = random.nextInt(maxHeight - minHeight + 1) - minHeight;
+		return {x: x, y: y, z: z};
 	}
 }
 

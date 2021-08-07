@@ -20,13 +20,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-const guiBTFurnace = new UI.StandartWindow({
-	standard: {
-		header: {text: {text: Translation.translate("Blulectric Furnace")}},
-		inventory: {standard: true},
-		background: {standard: true}
-	},
-
+const guiBTFurnace = MachineRegistry.createInventoryWindow("Blulectric Furnace", {
 	drawing: [
 		{type: "bitmap", x: 625, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 425, y: 92, bitmap: "btstorage_small_background", scale: GUI_SCALE},
@@ -38,10 +32,6 @@ const guiBTFurnace = new UI.StandartWindow({
 		"slotSource": {type: "slot", x: 536, y: 136, size: 72},
 		"slotResult": {type: "slot", x: 720, y: 136, size: 72},
 	}
-});
-
-Callback.addCallback("LevelLoaded", function() {
-	MachineRegistry.updateGuiHeader(guiBTFurnace, "Blulectric Furnace");
 });
 
 

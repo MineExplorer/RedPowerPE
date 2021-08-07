@@ -81,13 +81,7 @@ ModAPI.addAPICallback("ICore", function(api) {
 });
 
 
-const guiSmelter = new UI.StandartWindow({
-	standard: {
-		header: {text: {text: Translation.translate("Smelter")}},
-		inventory: {standard: true},
-		background: {standard: true}
-	},
-
+const guiSmelter = MachineRegistry.createInventoryWindow("Smelter", {
 	drawing: [
 		{type: "bitmap", x: 636, y: 146, bitmap: "furnace_bar_background", scale: GUI_SCALE},
 		{type: "bitmap", x: 419, y: 150, bitmap: "fire_background", scale: GUI_SCALE}
@@ -105,9 +99,6 @@ const guiSmelter = new UI.StandartWindow({
 	}
 });
 
-Callback.addCallback("LevelLoaded", function() {
-	MachineRegistry.updateGuiHeader(guiSmelter, "Smelter");
-});
 
 class Smelter extends MachineBase {
 	data: this["defaultValues"];

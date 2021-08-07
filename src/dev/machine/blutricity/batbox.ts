@@ -1,3 +1,5 @@
+/// <reference path="../core/BlulectricMachine.ts" />
+
 IDRegistry.genBlockID("rp_batbox");
 Block.createBlock("rp_batbox", [
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0], ["rp_batbox_side", 0]], inCreative: true},
@@ -24,13 +26,7 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 
-const guiBatBox = new UI.StandartWindow({
-	standard: {
-		header: {text: {text: Translation.translate("Battery Box")}},
-		inventory: {standard: true},
-		background: {standard: true}
-	},
-
+const guiBatBox = MachineRegistry.createInventoryWindow("Battery Box", {
 	drawing: [
 		{type: "bitmap", x: 530, y: 75, bitmap: "btstorage_background", scale: GUI_SCALE},
 	],
@@ -43,10 +39,6 @@ const guiBatBox = new UI.StandartWindow({
 	}
 });
 
-Callback.addCallback("LevelLoaded", function() {
-	MachineRegistry.updateGuiHeader(guiBatBox, "Battery Box");
-});
-
 class BatBox extends BlulectricMachine {
 	getScreenByName() {
 		return guiBatBox;
@@ -57,11 +49,11 @@ class BatBox extends BlulectricMachine {
 	}
 
 	onInit(): void {
-		this.container.setSlotAddTransferPolicy("slot1", function(container, name, id, amount, data, extra) {
-			return ChargeItemRegistry.isValidItem(id, "Bt", 0) ? amount : 0;
+		StorageInterface.setSlotValidatePolicy(this.container, "slot1", (_, id) => {
+			return ChargeItemRegistry.isValidItem(id, "Bt", 0);
 		});
-		this.container.setSlotAddTransferPolicy("slot2", function(container, name, id, amount, data, extra) {
-			return ChargeItemRegistry.isValidStorage(id, "Bt", 0) ? amount : 0;
+		StorageInterface.setSlotValidatePolicy(this.container, "slot2", (_, id) => {
+			return ChargeItemRegistry.isValidStorage(id, "Bt", 0)
 		});
 	}
 
@@ -117,9 +109,7 @@ class BatBox extends BlulectricMachine {
 MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
-	let x = coords.relative.x;
-	let y = coords.relative.y;
-	let z = coords.relative.z;
+	let {x, y, z} = coords.relative;
 	region.setBlock(x, y, z, item.id, item.data);
 	let tile = World.addTileEntity(x, y, z, region);
 	if (item.extra) {

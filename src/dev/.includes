@@ -8,7 +8,7 @@ block/basalt.js
 block/marble.js
 block/basalt_slab.js
 block/marble_slab.js
-block/ore.js
+block/ore.ts
 block/resource.js
 block/lamp.js
 block/cable.js
