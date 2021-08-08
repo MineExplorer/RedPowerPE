@@ -20,6 +20,7 @@ machine/blutricity/furnace.ts
 machine/blutricity/blulectric_smelter.ts
 machine/blutricity/batbox.ts
 machine/blutricity/transformer.ts
+machine/world/**
 
 items/resource.ts
 items/bags.ts
@@ -35,6 +36,7 @@ items/tool/pickaxe.ts
 items/tool/axe.ts
 items/tool/hoe.ts
 items/tool/sickle.ts
+items/tool/screwdriver.ts
 
 world/**
 integration/**

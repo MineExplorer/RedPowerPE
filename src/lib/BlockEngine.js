@@ -30,9 +30,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 LIBRARY({
     name: "BlockEngine",
-    version: 3,
+    version: 5,
     shared: false,
     api: "CoreEngine"
+});
+var BlockEngine;
+(function (BlockEngine) {
+    var gameVersion = getMCPEVersion().array;
+    function getGameVersion() {
+        return gameVersion;
+    }
+    BlockEngine.getGameVersion = getGameVersion;
+    function getMainGameVersion() {
+        return gameVersion[1];
+    }
+    BlockEngine.getMainGameVersion = getMainGameVersion;
+    function sendUnlocalizedMessage(client) {
+        var texts = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            texts[_i - 1] = arguments[_i];
+        }
+        client.send("blockengine.clientMessage", { texts: texts });
+    }
+    BlockEngine.sendUnlocalizedMessage = sendUnlocalizedMessage;
+})(BlockEngine || (BlockEngine = {}));
+Network.addClientPacket("blockengine.clientMessage", function (data) {
+    var message = data.texts.map(Translation.translate).join("");
+    Game.message(message);
 });
 var Side;
 (function (Side) {
@@ -458,7 +482,21 @@ var WorldRegion = /** @class */ (function () {
             var pos1 = x1, pos2 = y1;
             return this.listEntitiesInAABB(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, z1, x2);
         }
-        return this.blockSource.listEntitiesInAABB(x1, y1, z1, x2, y2, z2, type, blacklist);
+        var entities = this.blockSource.listEntitiesInAABB(x1, y1, z1, x2, y2, z2, type, blacklist);
+        if ((type == 1 || type == 63) != blacklist) {
+            var players = Network.getConnectedPlayers();
+            var dimension = this.getDimension();
+            for (var _i = 0, players_1 = players; _i < players_1.length; _i++) {
+                var ent = players_1[_i];
+                if (Entity.getDimension(ent) != dimension)
+                    continue;
+                var c = Entity.getPosition(ent);
+                if ((c.x >= x1 && c.x <= x2) && (c.y - 1.62 >= y1 && c.y - 1.62 <= y2) && (c.z >= z1 && c.z <= z2)) {
+                    entities.push(ent);
+                }
+            }
+        }
+        return entities;
     };
     /**
      * Plays standart Minecraft sound on the specified coordinates
@@ -1351,6 +1389,105 @@ var ItemRegistry;
     }
     ItemRegistry.createTool = createTool;
 })(ItemRegistry || (ItemRegistry = {}));
+// By NikolaySavenko (https://github.com/NikolaySavenko)
+var IDConverter;
+(function (IDConverter) {
+    var oldIDPairs = {};
+    function registerOld(stringId, oldId, oldData) {
+        oldIDPairs[stringId] = { id: oldId, data: oldData };
+    }
+    IDConverter.registerOld = registerOld;
+    function getStack(stringId, count, data, extra) {
+        if (count === void 0) { count = 1; }
+        if (data === void 0) { data = 0; }
+        if (extra === void 0) { extra = null; }
+        if (BlockEngine.getMainGameVersion() == 11) {
+            var oldPair = oldIDPairs[stringId];
+            if (oldPair) {
+                return new ItemStack(oldPair.id, count, oldPair.data, extra);
+            }
+        }
+        return new ItemStack(VanillaItemID[stringId] || VanillaBlockID[stringId], count, data, extra);
+    }
+    IDConverter.getStack = getStack;
+    function getIDData(stringId) {
+        if (BlockEngine.getMainGameVersion() == 11) {
+            return oldIDPairs[stringId];
+        }
+        else {
+            return { id: VanillaItemID[stringId] || VanillaBlockID[stringId], data: 0 };
+        }
+    }
+    IDConverter.getIDData = getIDData;
+    function getID(stringId) {
+        if (BlockEngine.getMainGameVersion() == 11)
+            return oldIDPairs[stringId].id;
+        else
+            return VanillaItemID[stringId] || VanillaBlockID[stringId];
+    }
+    IDConverter.getID = getID;
+    function getData(stringId) {
+        if (BlockEngine.getMainGameVersion() == 11)
+            return oldIDPairs[stringId].data;
+        else
+            return 0;
+    }
+    IDConverter.getData = getData;
+})(IDConverter || (IDConverter = {}));
+/// <reference path="IDConverter.ts" />
+IDConverter.registerOld("charcoal", VanillaItemID.coal, 1);
+IDConverter.registerOld("oak_boat", 333, 0);
+IDConverter.registerOld("spruce_boat", 333, 1);
+IDConverter.registerOld("birch_boat", 333, 2);
+IDConverter.registerOld("jungle_boat", 333, 3);
+IDConverter.registerOld("acacia_boat", 333, 4);
+IDConverter.registerOld("dark_oak_boat", 333, 5);
+IDConverter.registerOld("milk_bucket", 325, 1);
+IDConverter.registerOld("water_bucket", 325, 8);
+IDConverter.registerOld("lava_bucket", 325, 10);
+IDConverter.registerOld("ink_sac", 351, 0);
+IDConverter.registerOld("red_dye", 351, 1);
+IDConverter.registerOld("green_dye", 351, 2);
+IDConverter.registerOld("cocoa_beans", 351, 3);
+IDConverter.registerOld("lapis_lazuli", 351, 4);
+IDConverter.registerOld("purple_dye", 351, 5);
+IDConverter.registerOld("cyan_dye", 351, 6);
+IDConverter.registerOld("light_gray_dye", 351, 7);
+IDConverter.registerOld("gray_dye", 351, 8);
+IDConverter.registerOld("pink_dye", 351, 9);
+IDConverter.registerOld("lime_dye", 351, 10);
+IDConverter.registerOld("yellow_dye", 351, 11);
+IDConverter.registerOld("light_blue_dye", 351, 12);
+IDConverter.registerOld("magenta_dye", 351, 13);
+IDConverter.registerOld("orange_dye", 351, 14);
+IDConverter.registerOld("bone_meal", 351, 15);
+IDConverter.registerOld("black_dye", 351, 16);
+IDConverter.registerOld("brown_dye", 351, 17);
+IDConverter.registerOld("blue_dye", 351, 18);
+IDConverter.registerOld("white_dye", 351, 19);
+IDConverter.registerOld("cooked_cod", VanillaItemID.cooked_fish, 0);
+IDConverter.registerOld("cod", VanillaItemID.fish, 0);
+IDConverter.registerOld("tropical_fish", VanillaItemID.clownfish, 0);
+IDConverter.registerOld("melon_slice", VanillaItemID.melon, 0);
+IDConverter.registerOld("leather_horse_armor", VanillaItemID.horsearmorleather, 0);
+IDConverter.registerOld("iron_horse_armor", VanillaItemID.horsearmoriron, 0);
+IDConverter.registerOld("golden_horse_armor", VanillaItemID.horsearmorgold, 0);
+IDConverter.registerOld("diamond_horse_armor", VanillaItemID.horsearmordiamond, 0);
+IDConverter.registerOld("mutton", VanillaItemID.muttonraw, 0);
+IDConverter.registerOld("cooked_mutton", VanillaItemID.muttoncooked, 0);
+IDConverter.registerOld("totem_of_undying", VanillaItemID.totem, 0);
+IDConverter.registerOld("music_disc_13", VanillaItemID.record_13, 0);
+IDConverter.registerOld("music_disc_cat", VanillaItemID.record_cat, 0);
+IDConverter.registerOld("music_disc_blocks", VanillaItemID.record_blocks, 0);
+IDConverter.registerOld("music_disc_chirp", VanillaItemID.record_chirp, 0);
+IDConverter.registerOld("music_disc_far", VanillaItemID.record_far, 0);
+IDConverter.registerOld("music_disc_mall", VanillaItemID.record_mall, 0);
+IDConverter.registerOld("music_disc_mellohi", VanillaItemID.record_mellohi, 0);
+IDConverter.registerOld("music_disc_stal", VanillaItemID.record_stal, 0);
+IDConverter.registerOld("music_disc_strad", VanillaItemID.record_strad, 0);
+IDConverter.registerOld("music_disc_ward", VanillaItemID.record_ward, 0);
+IDConverter.registerOld("music_disc_11", VanillaItemID.record_11, 0);
+IDConverter.registerOld("music_disc_wait", VanillaItemID.record_wait, 0);
 var TileEntityBase = /** @class */ (function () {
     function TileEntityBase() {
         var _a;
@@ -1706,4 +1843,5 @@ EXPORT("Side", Side);
 EXPORT("ItemRegistry", ItemRegistry);
 EXPORT("LiquidItemRegistry", LiquidItemRegistry);
 EXPORT("EntityCustomData", EntityCustomData);
+EXPORT("IDConverter", IDConverter);
 EXPORT("BlockEngine", BlockEngine);
