@@ -57,6 +57,7 @@ Item.addCreativeGroup("rp_lamp_inverted", Translation.translate("Inverted Lamps"
 Block.registerDropFunction("rp_lamp", function(coords, blockID, blockData, level) {
 	return [];
 });
+
 Block.registerDropFunction("rp_lamp_inverted", function(coords, blockID, blockData, level) {
 	return [];
 });
@@ -77,34 +78,34 @@ Callback.addCallback("PreLoaded", function() {
 	}
 });
 
-class TileEntityLamp {
-	constructor(isInverted) {
+class TileEntityLamp extends TileEntityBase {
+	constructor(isInverted: boolean) {
+		super();
 		this.defaultValues = {
 			inverted: isInverted
 		}
 	}
 
-	getBlockID(isActive) {
+	getBlockID(isActive: boolean): number {
 		return isActive ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
 	}
 
-	redstone(signal) {
-		let region = this.blockSource;
-		let active = (!this.data.inverted == signal.power > 0);
+	onRedstoneUpdate(power: number): void {
+		let active = (!this.data.inverted == power > 0);
 		let blockID = this.getBlockID(active);
 		if (this.blockID != blockID) {
 			this.selfDestroy();
-			let blockData = region.getBlockData(this.x, this.y, this.z);
-			region.setBlock(this.x, this.y, this.z, blockID, blockData);
-			let tile = World.addTileEntity(this.x, this.y, this.z, region);
+			let blockData = this.region.getBlockData(this);
+			this.region.setBlock(this, blockID, blockData);
+			let tile = this.region.addTileEntity(this);
 			tile.data.inverted = this.data.inverted;
 		}
 	}
 
-	destroyBlock(coords, player) {
+	destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void {
 		let blockID = this.getBlockID(this.data.inverted);
-		let blockData = this.blockSource.getBlockData(coords.x, coords.y, coords.z);
-		this.blockSource.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
+		let blockData = this.region.getBlockData(coords);
+		this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 }
 

@@ -44,17 +44,17 @@ Block.registerNeighbourChangeFunction("flax", function(coords, block, changeCoor
 });
 
 Item.registerUseFunction("flaxSeeds", function(coords, item, block, player) {
-	let region = BlockSource.getDefaultForActor(player);
+	let region = WorldRegion.getForActor(player);
 	if (block.id == 60 && coords.side == 1 && region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
 		region.setBlock(coords.x, coords.y + 1, coords.z, BlockID.flax, 0);
 		if (Game.isItemSpendingAllowed(player)) {
             Entity.setCarriedItem(player, item.id, item.count - 1, 0);
         }
-        World.playSound(coords.x, coords.y + 1, coords.z, "dig.grass", 1, 0.8);
+        region.playSound(coords.x, coords.y + 1, coords.z, "dig.grass", 1, 0.8);
 	}
 });
 
-function checkFarmland(x, y, z, region) {
+function checkFarmland(x: number, y: number, z: number, region: BlockSource) {
 	let block = region.getBlock(x, y, z);
 	if (block.id == 60) {
 		if (block.data < 7) {

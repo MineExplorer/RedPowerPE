@@ -19,25 +19,35 @@ Item.registerNameOverrideFunction(ItemID.lumar, function(item, name) {
 	return Translation.translate(LumarNameEn[item.data]);
 });
 
-for (let data = 0; data < 16; data++) {
-	VanillaRecipe.addCraftingRecipe("lumar" + data, {
-	  type: "shaped",
-	  pattern: [
-	    "XG",
-	    "RX"
-	  ],
-	  key: {
-	    "X": {
-	      item: "dye",
-	      data: COLOR_INDEX_TO_DYE_DATA[data]
-	    },
-	    "R": { item: "redstone" },
-	    "G": { item: "glowstone_dust" }
-	  },
-	  result: {
-		item: "item:lumar",
-		count: 2,
-	    data: data
-	  }
+function getDye(index: number) {
+	if (BlockEngine.getMainGameVersion() == 11) {
+		return {
+			item: "dye",
+			data: COLOR_INDEX_TO_DYE_DATA[index]
+		}
+	}
+	return {
+		item: COLOR_INDEX_TO_DYE[index],
+		data: 0
+	}
+}
+
+for (let index = 0; index < 16; index++) {
+	VanillaRecipe.addCraftingRecipe("lumar" + index, {
+		type: "shaped",
+		pattern: [
+			"XG",
+			"RX"
+		],
+		key: {
+			"X": getDye(index),
+			"R": { item: "redstone" },
+			"G": { item: "glowstone_dust" }
+		},
+		result: {
+			item: "item:lumar",
+			count: 2,
+			data: index
+		}
 	}, true);
 }

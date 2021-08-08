@@ -10,8 +10,8 @@ IMPORT("BackpackAPI");
 IMPORT("StorageInterface");
 IMPORT("VanillaRecipe");
 
-VanillaRecipe.setResourcePath(__dir__ + "assets/res/");
-VanillaRecipe.setBehaviorPath(__dir__ + "assets/behavior_packs/");
+VanillaRecipe.setResourcePath(__dir__ + "assets/res/"); // for MC 1.11 recipes
+VanillaRecipe.setBehaviorPath(__dir__ + "assets/behavior_packs/"); // for MC 1.16 recipes
 
 // constants
 const GUI_SCALE = 3.2;
@@ -35,8 +35,28 @@ const COLOR_INDEX_TO_DYE = {
 	15: "black_dye"
 }
 
+/** @deprecated for MC 1.11 only */
+const COLOR_INDEX_TO_DYE_DATA = {
+	0: 19,
+	1: 14,
+	2: 13,
+	3: 12,
+	4: 11,
+	5: 10,
+	6: 9,
+	7: 8,
+	8: 7,
+	9: 6,
+	10: 5,
+	11: 18,
+	12: 17,
+	13: 2,
+	14: 1,
+	15: 16
+}
+
 // API
-function randomInt(min, max) {
+function randomInt(min: number, max: number) {
 	return Math.floor(min + Math.random() * (max - min + 1));
 }
 

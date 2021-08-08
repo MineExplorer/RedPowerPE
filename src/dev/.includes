@@ -1,17 +1,17 @@
-header.js
-translation.js
+header.ts
+translation.ts
 
 api/**
 
-block/flax.js
-block/basalt.js
-block/marble.js
+block/flax.ts
+block/basalt.ts
+block/marble.ts
 block/basalt_slab.js
 block/marble_slab.js
 block/ore.ts
 block/resource.js
-block/lamp.js
-block/cable.js
+block/lamp.ts
+block/cable.ts
 
 machine/smelter.ts
 machine/blutricity/solar.ts
@@ -22,9 +22,9 @@ machine/blutricity/batbox.ts
 machine/blutricity/transformer.ts
 
 items/resource.ts
-items/bags.js
+items/bags.ts
 items/seed_bag.js
-items/lumar.js
+items/lumar.ts
 items/components.ts
 items/battery.ts
 items/tool/crafting.ts
@@ -36,6 +36,7 @@ items/tool/axe.ts
 items/tool/hoe.ts
 items/tool/sickle.ts
 
-integration/recipe_viewer.js
+world/**
+integration/**
 
 RedCore.ts

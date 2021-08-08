@@ -1,7 +1,8 @@
 ModAPI.registerAPI("RedCore", {
 	Machine: MachineRegistry,
 	SmelterRecipes: SmelterRecipes,
-	World: OreGeneration,
+	World: WorldDecorator,
+	Config: RedConfig,
 	Integration: IntegrationAPI,
 	requireGlobal: function(command: string) {
 		return eval(command);
