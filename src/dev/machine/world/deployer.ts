@@ -24,27 +24,50 @@ const guiDeployer = MachineRegistry.createInventoryWindow("Deployer", {
 });
 
 class Deployer extends TileEntityBase {
+    isTechClick: boolean;
+
+    getScreenName() {
+        return this.isTechClick ? null : "main";
+    }
+
     getScreenByName() {
 		return guiDeployer;
 	}
 
     activate(): void {
+        if (!this.region) return;
         for (let i = 0; i < 9; i++) {
             let slot = this.container.getSlot("slot" + i);
             if (slot.id != 0) {
+                let side = this.region.getBlockData(this) ^ 1;
+                let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
                 if (ItemRegistry.isBlock(slot.id)) {
-                    let side = this.region.getBlockData(this) ^ 1;
-                    let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
                     if (this.region.getBlockId(coords) == 0) {
-                        this.region.setBlock(coords, slot.id, slot.data);
-                        slot.setSlot(slot.id, slot.count - 1, slot.data);
-                        slot.validate();
-                        this.container.sendChanges();
+                        var place = {x: this.x, y: this.y, z: this.z, side: side};
+                        this.invokeItemUseOn(place as any, slot, Player.get());
+                        if (this.region.getBlockId(coords) != 0) {
+                            slot.setSlot(slot.id, slot.count - 1, slot.data);
+                            slot.validate();
+                            this.container.sendChanges();
+                        }
+                        Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                         break;
                     }
-                } else {
-                    // TODO
+                } else if (!IDRegistry.getNameByID(slot.id)) {
+                    if (this.region.getBlockId(coords) == 0) {
+                        var place = {x: this.x, y: this.y, z: this.z, side: side};
+                    } else {
+                        var place = {...coords, side: side ^ 1}
+                    }
+                    try {
+                        this.invokeItemUseOn(place as any, slot, Player.get());
+                        if (slot.id == VanillaItemID.water_bucket) slot.id = VanillaItemID.bucket;
+                    } catch (e) {
+                        Game.message(e);
+                    }
+                    Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                 }
+                break;
             }
         }
     }
@@ -52,6 +75,23 @@ class Deployer extends TileEntityBase {
     onRedstoneUpdate(power: number): void {
         if (power > 0) {
             this.activate();
+        }
+    }
+
+    invokeItemUseOn(coords: Callback.ItemUseCoordinates, item: ItemInstance, entity: number): void {
+        coords.vec ??= {
+            x: (coords.x || 0) + .5,
+            y: (coords.y || 0) + .5,
+            z: (coords.z || 0) + .5
+        };
+        coords.side ??= 0;
+        coords.relative ??= World.getRelativeCoords(coords.x, coords.y, coords.z, coords.side);
+        let block = this.region.getBlock(coords.x, coords.y, coords.z);
+        this.isTechClick = true;
+        Callback.invokeCallback("ItemUse", coords, item, block, false, entity);
+        this.isTechClick = false;
+        if (!ModAPI.requireGlobal("MCSystem.isDefaultPrevented()")) {
+            Item.invokeItemUseOn(coords, item, true, entity);
         }
     }
 }

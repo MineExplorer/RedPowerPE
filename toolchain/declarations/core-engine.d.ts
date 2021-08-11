@@ -6117,6 +6117,8 @@ declare namespace Item {
      */
     function addCreativeGroup(name: string, displayedName: string, ids: number[]): void
 
+    function invokeItemUseOn(coords: Callback.ItemUseCoordinates, item: ItemInstance, noModCallback: boolean, entity: number): void
+
     /**
      * @deprecated Should not be used in new mods, consider using [[Item]] 
      * properties setters instead

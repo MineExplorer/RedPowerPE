@@ -1,5 +1,5 @@
-ItemRegistry.createItem("rp_screwdriver", {name: "Screwdriver", icon: "rp_screwdriver", maxDamage: 200});
-ItemRegistry.createItem("sonic_screwdriver", {name: "Sonic Screwdriver", icon: "sonic_screwdriver"});
+ItemRegistry.createItem("rp_screwdriver", {name: "Screwdriver", icon: "rp_screwdriver", maxDamage: 200, stack: 1});
+ItemRegistry.createItem("sonic_screwdriver", {name: "Sonic Screwdriver", icon: "sonic_screwdriver", stack: 1, inCreative: false});
 ChargeItemRegistry.registerItem(ItemID.sonic_screwdriver, "Bt", 16000, 100, 0, true); // 400
 
 VanillaRecipe.addCraftingRecipe("rp_screwdriver", {
