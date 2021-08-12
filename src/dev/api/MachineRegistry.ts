@@ -8,6 +8,7 @@ namespace MachineRegistry {
 	export function registerPrototype(id: number, Prototype: TileEntity.TileEntityPrototype) {
 		machineIDs[id] = true;
 		Block.setDestroyTime(id, 3.25);
+		ToolAPI.registerBlockMaterial(id, "stone", 1);
 		TileEntity.registerPrototype(id, Prototype);
 	}
 
@@ -40,5 +41,26 @@ namespace MachineRegistry {
 		});
 
 		return gui;
+	}
+
+	const screwdrivers = {};
+
+	export function registerScrewdriver(id: number, properties: IScrewdriver) {
+		screwdrivers[id] = properties;
+	}
+
+	export function getScrewdriverData(id: number): IScrewdriver {
+		return screwdrivers[id];
+	}
+
+	export function isScrewdriver(item: ItemInstance): boolean {
+		let screwdriver = getScrewdriverData(item.id);
+		return screwdriver?.canBeUsed(item);
+	}
+
+	export function useScrewdriver(item: ItemInstance): void {
+		let screwdriver = getScrewdriverData(item.id);
+		
+		
 	}
 }

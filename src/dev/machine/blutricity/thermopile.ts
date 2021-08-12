@@ -4,7 +4,6 @@ IDRegistry.genBlockID("rp_thermopile");
 Block.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rp_thermopile, "stone", 1);
 Block.setDestroyLevel("rp_thermopile", 1);
 
 Callback.addCallback("PreLoaded", function() {

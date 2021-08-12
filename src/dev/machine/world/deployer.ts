@@ -1,6 +1,9 @@
+/// <reference path="../core/RotatableMachine.ts" />
+
 IDRegistry.genBlockID("rp_deployer");
 Block.createBlock("rp_deployer", [
 	{name: "Deployer", texture: [["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: true},
+	{name: "Deployer", texture: [["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: true},
 ], "stone");
 
 Recipes.addShaped({id: BlockID.rp_deployer, count: 1, data: 0}, [
@@ -23,7 +26,7 @@ const guiDeployer = MachineRegistry.createInventoryWindow("Deployer", {
 	}
 });
 
-class Deployer extends TileEntityBase {
+class Deployer extends RotatableMachine {
     isTechClick: boolean;
 
     getScreenName() {
@@ -88,8 +91,11 @@ class Deployer extends TileEntityBase {
         coords.relative ??= World.getRelativeCoords(coords.x, coords.y, coords.z, coords.side);
         let block = this.region.getBlock(coords.x, coords.y, coords.z);
         this.isTechClick = true;
+        let func = Game.isItemSpendingAllowed;
+        Game.isItemSpendingAllowed = () => false;
         Callback.invokeCallback("ItemUse", coords, item, block, false, entity);
         this.isTechClick = false;
+        Game.isItemSpendingAllowed = func;
         if (!ModAPI.requireGlobal("MCSystem.isDefaultPrevented()")) {
             Item.invokeItemUseOn(coords, item, true, entity);
         }

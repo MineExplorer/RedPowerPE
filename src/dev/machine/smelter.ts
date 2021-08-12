@@ -4,7 +4,6 @@ IDRegistry.genBlockID("rp_smelter");
 Block.createBlock("rp_smelter", [
 	{name: "Smelter", texture: [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rp_smelter, "stone", 1);
 Block.setDestroyLevel(BlockID.rp_smelter, 1);
 
 TileRenderer.setStandardModelWithRotation(BlockID.rp_smelter, 2, [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]]);

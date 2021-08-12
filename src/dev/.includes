@@ -37,6 +37,7 @@ items/tool/axe.ts
 items/tool/hoe.ts
 items/tool/sickle.ts
 items/tool/screwdriver.ts
+items/tool/sonic_screwdriver.ts
 
 world/**
 integration/**

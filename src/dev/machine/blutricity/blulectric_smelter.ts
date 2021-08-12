@@ -4,7 +4,6 @@ IDRegistry.genBlockID("bt_smelter");
 Block.createBlock("bt_smelter", [
 	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.bt_smelter, "stone", 1);
 Block.setDestroyLevel(BlockID.bt_smelter, 1);
 
 TileRenderer.setStandardModelWithRotation(BlockID.bt_smelter, 2, [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]]);

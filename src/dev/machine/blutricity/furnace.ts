@@ -4,7 +4,6 @@ IDRegistry.genBlockID("bt_furnace");
 Block.createBlock("bt_furnace", [
 	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.bt_furnace, "stone", 1);
 Block.setDestroyLevel(BlockID.bt_furnace, 1);
 
 TileRenderer.setStandardModelWithRotation(BlockID.bt_furnace, 2, [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]]);

@@ -12,7 +12,6 @@ Block.createBlock("rp_batbox", [
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 7], ["rp_batbox_side", 7], ["rp_batbox_side", 7], ["rp_batbox_side", 7]], inCreative: false},
 	{name: "Battery Box", texture: [["rp_machine_bottom", 0], ["rp_batbox_top", 0], ["rp_batbox_side", 8], ["rp_batbox_side", 8], ["rp_batbox_side", 8], ["rp_batbox_side", 8]], inCreative: true}
 ], "stone");
-ToolAPI.registerBlockMaterial(BlockID.rp_batbox, "stone", 1);
 Block.registerDropFunction("rp_batbox", function(coords, blockID, blockData, level) {
 	return [];
 });

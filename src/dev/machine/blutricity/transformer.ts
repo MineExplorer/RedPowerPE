@@ -4,7 +4,6 @@ IDRegistry.genBlockID("bt_transformer");
 Block.createBlock("bt_transformer", [
 	{name: "Blutricity Transformer", texture: [["bt_transformer_bottom", 0], ["bt_transformer_top", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 1], ["bt_transformer_side", 1]], inCreative: true}
 ], "opaque");
-ToolAPI.registerBlockMaterial(BlockID.bt_transformer, "stone", 1);
 Block.setDestroyLevel("bt_transformer", 1);
 
 Callback.addCallback("PreLoaded", function() {
