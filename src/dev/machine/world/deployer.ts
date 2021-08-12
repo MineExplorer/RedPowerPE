@@ -1,10 +1,15 @@
-/// <reference path="../core/RotatableMachine.ts" />
+/// <reference path="../core/RedstoneMachine.ts" />
 
 IDRegistry.genBlockID("rp_deployer");
 Block.createBlock("rp_deployer", [
-	{name: "Deployer", texture: [["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: true},
-	{name: "Deployer", texture: [["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: true},
+	{name: "Deployer", texture: [["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 1], ["deployer_side", 1], ["deployer_side", 5], ["deployer_side", 5]], inCreative: false},
+	{name: "Deployer", texture: [["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 4], ["deployer_side", 4]], inCreative: true},
+	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: false},
+	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: false},
+	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_top", 1], ["rp_block_bottom", 1]], inCreative: false},
+	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["rp_block_bottom", 1], ["deployer_top", 1]], inCreative: false},
 ], "stone");
+BlockRegistry.setDestroyLevel(BlockID.rp_deployer, 1);
 
 Recipes.addShaped({id: BlockID.rp_deployer, count: 1, data: 0}, [
 	"cxc",
@@ -26,7 +31,7 @@ const guiDeployer = MachineRegistry.createInventoryWindow("Deployer", {
 	}
 });
 
-class Deployer extends RotatableMachine {
+class Deployer extends RedstoneMachine {
     isTechClick: boolean;
 
     getScreenName() {
@@ -38,11 +43,11 @@ class Deployer extends RotatableMachine {
 	}
 
     activate(): void {
-        if (!this.region) return;
+        super.activate();
         for (let i = 0; i < 9; i++) {
             let slot = this.container.getSlot("slot" + i);
             if (slot.id != 0) {
-                let side = this.region.getBlockData(this) ^ 1;
+                let side = this.getFacing();
                 let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
                 if (ItemRegistry.isBlock(slot.id)) {
                     if (this.region.getBlockId(coords) == 0) {
@@ -72,12 +77,6 @@ class Deployer extends RotatableMachine {
                 }
                 break;
             }
-        }
-    }
-
-    onRedstoneUpdate(power: number): void {
-        if (power > 0) {
-            this.activate();
         }
     }
 

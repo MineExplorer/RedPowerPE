@@ -8,7 +8,7 @@ namespace MachineRegistry {
 	export function registerPrototype(id: number, Prototype: TileEntity.TileEntityPrototype) {
 		machineIDs[id] = true;
 		Block.setDestroyTime(id, 3.25);
-		ToolAPI.registerBlockMaterial(id, "stone", 1);
+		ToolAPI.registerBlockMaterial(id, "stone", 1, true);
 		TileEntity.registerPrototype(id, Prototype);
 	}
 

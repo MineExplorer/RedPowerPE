@@ -2,6 +2,7 @@ IDRegistry.genBlockID("rp_igniter");
 Block.createBlock("rp_igniter", [
 	{name: "Igniter", texture: [["rp_block_bottom", 0], ["igniter_top", 0], ["igniter_side", 1], ["igniter_side", 1], ["igniter_side", 0], ["igniter_side", 0]], inCreative: true},
 ], "stone");
+BlockRegistry.setDestroyLevel(BlockID.rp_igniter, 1);
 
 Recipes.addShaped({id: BlockID.rp_igniter, count: 1, data: 0}, [
 	"nxn",

@@ -19,7 +19,7 @@ BlockRegistry.registerDrop("rp_basalt", function(coords, blockID, blockData, lev
     return [[BlockID.rp_basalt, 1, 0]];
   }
   return [[BlockID.basaltCobble, 1, 0]];
-});
+}, 1);
 
 IDRegistry.genBlockID("basaltCobble");
 Block.createBlock("basaltCobble", [
