@@ -2,7 +2,6 @@
 IMPORT("BlockEngine");
 IMPORT("flags");
 IMPORT("BaseBlocks");
-IMPORT("ToolLib", "ToolLib");
 IMPORT("EnergyNet");
 IMPORT("ChargeItem");
 IMPORT("TileRender");

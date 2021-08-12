@@ -10,5 +10,5 @@ Block.createBlock("basaltBrickStairs", [
 	renderlayer: 2
 });
 ToolAPI.registerBlockMaterial(BlockID.basaltBrickStairs, "stone", 1, true);
-Block.setDestroyLevel("basaltBrickStairs", 1);
+BlockRegistry.setDestroyLevel("basaltBrickStairs", 1);
 */

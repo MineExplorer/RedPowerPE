@@ -9,7 +9,7 @@ block/marble.ts
 block/basalt_slab.js
 block/marble_slab.js
 block/ore.ts
-block/resource.js
+block/resource.ts
 block/lamp.ts
 block/cable.ts
 

@@ -4,7 +4,7 @@ IDRegistry.genBlockID("rp_thermopile");
 Block.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
 ], "stone");
-Block.setDestroyLevel("rp_thermopile", 1);
+BlockRegistry.setDestroyLevel("rp_thermopile", 1);
 
 Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: BlockID.rp_thermopile, count: 1, data: 0}, [

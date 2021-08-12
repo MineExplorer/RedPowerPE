@@ -4,7 +4,7 @@ IDRegistry.genBlockID("bt_transformer");
 Block.createBlock("bt_transformer", [
 	{name: "Blutricity Transformer", texture: [["bt_transformer_bottom", 0], ["bt_transformer_top", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 0], ["bt_transformer_side", 1], ["bt_transformer_side", 1]], inCreative: true}
 ], "opaque");
-Block.setDestroyLevel("bt_transformer", 1);
+BlockRegistry.setDestroyLevel("bt_transformer", 1);
 
 Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: BlockID.bt_transformer, count: 1, data: 0}, [

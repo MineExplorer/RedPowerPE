@@ -14,24 +14,19 @@ Block.createBlock("rp_basalt", [
 	{name: "Basalt", texture: [["rp_basalt", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.rp_basalt, "stone", 1, true);
-Block.registerDropFunction("rp_basalt", function(coords, blockID, blockData, level, enchant) {
-	if (level > 0) {
-		if (enchant.silk) {
-			return [[BlockID.rp_basalt, 1, 0]];
-		}
-		return [[BlockID.basaltCobble, 1, 0]];
-	}
-	return [];
-}, 1);
-ToolLib.addBlockDropOnExplosion("rp_basalt");
+BlockRegistry.registerDrop("rp_basalt", function(coords, blockID, blockData, level, enchant) {
+  if (enchant.silk) {
+    return [[BlockID.rp_basalt, 1, 0]];
+  }
+  return [[BlockID.basaltCobble, 1, 0]];
+});
 
 IDRegistry.genBlockID("basaltCobble");
 Block.createBlock("basaltCobble", [
 	{name: "Basalt Cobble", texture: [["rp_basalt_cobble", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltCobble, "stone", 1, true);
-Block.setDestroyLevel("basaltCobble", 1);
-ToolLib.addBlockDropOnExplosion("basaltCobble");
+BlockRegistry.setDestroyLevel("basaltCobble", 1);
 
 IDRegistry.genBlockID("basaltBrick");
 Block.createBlock("basaltBrick", [
@@ -39,24 +34,19 @@ Block.createBlock("basaltBrick", [
 	{name: "Chiseled Basalt Brick", texture: [["rp_basalt_chiseled", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltBrick, "stone", 1, true);
-Block.setDestroyLevel("basaltBrick", 1);
-ToolLib.addBlockDropOnExplosion("basaltBrick");
+BlockRegistry.setDestroyLevel("basaltBrick", 1);
 
 IDRegistry.genBlockID("basaltPaver");
 Block.createBlock("basaltPaver", [
 	{name: "Basalt Paver", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltPaver, "stone", 1, true);
-Block.registerDropFunction("basaltPaver", function(coords, blockID, blockData, level, enchant) {
-	if (level > 0) {
-		if (enchant.silk) {
-			return [[blockID, 1, 0]];
-		}
-		return [[BlockID.basaltCobble, 1, 0]];
-	}
-	return [];
+BlockRegistry.registerDrop("basaltPaver", function(coords, blockID, blockData, level, enchant) {
+  if (enchant.silk) {
+    return [[blockID, 1, 0]];
+  }
+  return [[BlockID.basaltCobble, 1, 0]];
 }, 1);
-ToolLib.addBlockDropOnExplosion("basaltPaver");
 
 Item.addCreativeGroup("basalt", Translation.translate("Basalt"), [
 	BlockID.rp_basalt,
