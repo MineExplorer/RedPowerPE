@@ -63,4 +63,30 @@ namespace MachineRegistry {
 		
 		
 	}
+	
+	export function createBlockWithRotation(stringID: string, params: {name: string, texture: [string,  number][]}, blockType?: string | Block.SpecialType, hasVertical?: boolean): void {
+        let texture = params.texture;
+        let textures = [
+			[texture[3], texture[2], texture[0], texture[1], texture[4], texture[5]],
+			[texture[2], texture[3], texture[1], texture[0], texture[5], texture[4]],
+			[texture[0], texture[1], texture[3], texture[2], texture[5], texture[4]],
+			[texture[0], texture[1], texture[2], texture[3], texture[4], texture[5]],
+			[texture[0], texture[1], texture[4], texture[5], texture[3], texture[2]],
+			[texture[0], texture[1], texture[5], texture[4], texture[2], texture[3]]
+		];
+		let textures_base = [
+			[["top", 0], ["bottom", 0], ["side", 0], ["side", 0], ["side", 1], ["side", 2]],
+			[["bottom", 0], ["top", 0], ["side", 0], ["side", 0], ["side", 1], ["side", 2]],
+			[["side", 0], ["side", 0], ["top", 0], ["bottom", 0], ["side", 0], ["side", 0]],
+			[["side", 0], ["side", 0], ["bottom", 0], ["top", 0], ["side", 0], ["side", 0]],
+			[["side", 0], ["side", 0], ["side", 0], ["side", 0], ["top", 0], ["bottom", 0]],
+			[["side", 0], ["side", 0], ["side", 0], ["side", 0], ["bottom", 0], ["top", 0]],
+		]
+		let variations = [];
+		for (let i = 0; i < textures.length; i++) {
+			variations.push({name: params.name, texture: textures[i], inCreative: i == 1});
+		}
+		Block.createBlock(stringID, variations, blockType);
+        BlockRegistry.setRotationFunction(stringID, hasVertical);
+    }
 }
