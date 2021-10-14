@@ -803,6 +803,10 @@ declare namespace Block {
 
 	function registerNeighbourChangeFunctionForID(id: number, func: NeighbourChangeFunction): void;
 
+	function registerEntityStepOnFunction(id: string | number, func: EntityStepOnFunction): void;
+
+	function registerEntityStepOnFunctionForID(id: number, func: EntityStepOnFunction): void;
+
 	/**
 	 * @returns whether the block of given id can contain liquid inside
 	 */
@@ -967,7 +971,7 @@ declare namespace Block {
 		 * ]
 		 * ```
 		 */
-		texture:[string,  number][]
+		texture: [string, number][]
 
 		/**
 		 * If true, block variation will be added to creative inventory
@@ -994,6 +998,10 @@ declare namespace Block {
 
 	interface EntityInsideFunction {
 		(blockCoords: Vector, block: Tile, entity: number): void
+	}
+
+	interface EntityStepOnFunction {
+		(coords: Vector, block: Tile, entity: number): void
 	}
 
 	/**
@@ -1856,11 +1864,11 @@ declare namespace Callback {
 
     function addCallback(name: "CustomDimensionTransfer", func: CustomDimensionTransferFunction): void;
 
-    function addCallback(name: "BlockEventEntityInside", func: BlockEventEntityInsideFunction): void;
+    function addCallback(name: "BlockEventEntityInside", func: Block.EntityInsideFunction): void;
 
-    function addCallback(name: "BlockEventEntityStepOn", func: BlockEventEntityStepOnFunction): void;
+    function addCallback(name: "BlockEventEntityStepOn", func: Block.EntityStepOnFunction): void;
 
-    function addCallback(name: "BlockEventNeighbourChange", func: BlockEventNeighbourChangeFunction): void;
+    function addCallback(name: "BlockEventNeighbourChange", func: Block.NeighbourChangeFunction): void;
 
     function addCallback(name: "ConnectingToHost", func: ConnectingToHostFunction): void;
 
@@ -2349,27 +2357,6 @@ declare namespace Callback {
      */
     interface CustomDimensionTransferFunction {
     	(entity: number, from: number, to: number): void
-    }
-
-    /**
-     * Function used in "BlockEventEntityInside" callback
-     */
-    interface BlockEventEntityInsideFunction {
-        (coords: Vector, block: Tile, entity: number): void
-    }
-
-    /**
-     * Function used in "BlockEventEntityStepOn" callback
-     */
-    interface BlockEventEntityStepOnFunction {
-        (coords: Vector, block: Tile, entity: number): void
-    }
-
-    /**
-     * Function used in "BlockEventNeighbourChange" callback
-     */
-    interface BlockEventNeighbourChangeFunction {
-        (coords: Vector, block: Tile, changedCoords: Vector, world: BlockSource): void
     }
 
     /**
@@ -6205,7 +6192,7 @@ declare namespace Item {
      * @param data no longer supported, do not use this parameter
      * @returns true, if an item with such id exists, false otherwise
      */
-    function isValid(id: number, data: number): boolean;
+    function isValid(id: number, data?: number): boolean;
 
     /**
      * Adds item to creative inventory

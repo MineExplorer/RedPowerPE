@@ -1,14 +1,10 @@
 /// <reference path="../core/RedstoneMachine.ts" />
 
 IDRegistry.genBlockID("rp_deployer");
-Block.createBlock("rp_deployer", [
-	{name: "Deployer", texture: [["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 1], ["deployer_side", 1], ["deployer_side", 5], ["deployer_side", 5]], inCreative: false},
-	{name: "Deployer", texture: [["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 4], ["deployer_side", 4]], inCreative: true},
-	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_top", 0], ["rp_block_bottom", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: false},
-	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["rp_block_bottom", 0], ["deployer_top", 0], ["deployer_side", 1], ["deployer_side", 1]], inCreative: false},
-	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_top", 1], ["rp_block_bottom", 1]], inCreative: false},
-	{name: "Deployer", texture: [["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["deployer_side", 0], ["rp_block_bottom", 1], ["deployer_top", 1]], inCreative: false},
-], "stone");
+MachineRegistry.createBlockWithRotation("rp_deployer", "Deployer", {
+    default: {top: "deployer_top", bottom: "rp_block_bottom", side: "deployer_side", side2: "deployer_side2"},
+    active: {top: "deployer_top_active", bottom: "rp_block_bottom", side: "deployer_side", side2: "deployer_side2"}
+}, "stone");
 BlockRegistry.setDestroyLevel(BlockID.rp_deployer, 1);
 
 Recipes.addShaped({id: BlockID.rp_deployer, count: 1, data: 0}, [

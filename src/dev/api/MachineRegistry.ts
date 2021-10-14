@@ -58,35 +58,31 @@ namespace MachineRegistry {
 		return screwdriver?.canBeUsed(item);
 	}
 
-	export function useScrewdriver(item: ItemInstance): void {
-		let screwdriver = getScrewdriverData(item.id);
-		
-		
-	}
-	
-	export function createBlockWithRotation(stringID: string, params: {name: string, texture: [string,  number][]}, blockType?: string | Block.SpecialType, hasVertical?: boolean): void {
-        let texture = params.texture;
-        let textures = [
-			[texture[3], texture[2], texture[0], texture[1], texture[4], texture[5]],
-			[texture[2], texture[3], texture[1], texture[0], texture[5], texture[4]],
-			[texture[0], texture[1], texture[3], texture[2], texture[5], texture[4]],
-			[texture[0], texture[1], texture[2], texture[3], texture[4], texture[5]],
-			[texture[0], texture[1], texture[4], texture[5], texture[3], texture[2]],
-			[texture[0], texture[1], texture[5], texture[4], texture[2], texture[3]]
-		];
-		let textures_base = [
-			[["top", 0], ["bottom", 0], ["side", 0], ["side", 0], ["side", 1], ["side", 2]],
-			[["bottom", 0], ["top", 0], ["side", 0], ["side", 0], ["side", 1], ["side", 2]],
-			[["side", 0], ["side", 0], ["top", 0], ["bottom", 0], ["side", 0], ["side", 0]],
-			[["side", 0], ["side", 0], ["bottom", 0], ["top", 0], ["side", 0], ["side", 0]],
-			[["side", 0], ["side", 0], ["side", 0], ["side", 0], ["top", 0], ["bottom", 0]],
-			[["side", 0], ["side", 0], ["side", 0], ["side", 0], ["bottom", 0], ["top", 0]],
+	type BlockTexture = {top: string, bottom: string, side: string, side2?: string};
+
+	function getTextureArray(texture: BlockTexture): [string, number][][] {
+		texture.side2 ??= texture.side;
+		return [
+			[[texture.top, 0], [texture.bottom, 0], [texture.side, 1], [texture.side, 1], [texture.side2, 1], [texture.side2, 1]],
+			[[texture.bottom, 0], [texture.top, 0], [texture.side, 0], [texture.side, 0], [texture.side2, 0], [texture.side2, 0]],
+			[[texture.side, 0], [texture.side, 0], [texture.top, 0], [texture.bottom, 0], [texture.side2, 2], [texture.side2, 3]],
+			[[texture.side, 1], [texture.side, 1], [texture.bottom, 0], [texture.top, 0], [texture.side2, 3], [texture.side2, 2]],
+			[[texture.side, 2], [texture.side, 2], [texture.side2, 3], [texture.side2, 2], [texture.top, 0], [texture.bottom, 0]],
+			[[texture.side, 3], [texture.side, 3], [texture.side2, 2], [texture.side2, 3], [texture.bottom, 0], [texture.top, 0]],
 		]
+	}
+
+	export function createBlockWithRotation(stringID: string, name: string, texture: {default: BlockTexture, active: BlockTexture}, blockType?: string | Block.SpecialType): void {
+		let textures = getTextureArray(texture.default);
 		let variations = [];
 		for (let i = 0; i < textures.length; i++) {
-			variations.push({name: params.name, texture: textures[i], inCreative: i == 1});
+			variations.push({name: name, texture: textures[i], inCreative: i == 1});
+		}
+		textures = getTextureArray(texture.active);
+		for (let i = 0; i < textures.length; i++) {
+			variations.push({name: name, texture: textures[i], inCreative: false});
 		}
 		Block.createBlock(stringID, variations, blockType);
-        BlockRegistry.setRotationFunction(stringID, hasVertical);
+        BlockRegistry.setRotationFunction(stringID, true);
     }
 }
