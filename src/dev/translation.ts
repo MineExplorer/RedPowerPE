@@ -113,22 +113,22 @@ Translation.addTranslation("Copper Coil", {ru: "Медная катушка"});
 Translation.addTranslation("BT Battery", {ru: "Батарея"});
 
 // Lumar
-Translation.addTranslation("White Lumar", {ru: "Белый светодиод"});
-Translation.addTranslation("Orange Lumar", {ru: "Оранжевый светодиод"});
-Translation.addTranslation("Magenta Lumar", {ru: "Пурпурный светодиод"});
-Translation.addTranslation("Light Blue Lumar", {ru: "Голубой светодиод"});
-Translation.addTranslation("Yellow Lumar", {ru: "Жёлтый светодиод"});
-Translation.addTranslation("Lime Lumar", {ru: "Лаймовый светодиод"});
-Translation.addTranslation("Pink Lumar", {ru: "Розовый светодиод"});
-Translation.addTranslation("Gray Lumar", {ru: "Серый светодиод"});
-Translation.addTranslation("Light Gray Lumar", {ru: "Светло-серый светодиод"});
-Translation.addTranslation("Cyan Lumar", {ru: "Бирюзовый светодиод"});
-Translation.addTranslation("Purple Lumar", {ru: "Фиолетовый светодиод"});
-Translation.addTranslation("Blue Lumar", {ru: "Синий светодиод"});
-Translation.addTranslation("Brown Lumar", {ru: "Коричневый светодиод"});
-Translation.addTranslation("Green Lumar", {ru: "Зелёный светодиод"});
-Translation.addTranslation("Red Lumar", {ru: "Красный светодиод"});
-Translation.addTranslation("Black Lumar", {ru: "Чёрный светодиод"});
+Translation.addTranslation("White Lumar", {ru: "Белая светопыль"});
+Translation.addTranslation("Orange Lumar", {ru: "Оранжевая светопыль"});
+Translation.addTranslation("Magenta Lumar", {ru: "Пурпурный светопыль"});
+Translation.addTranslation("Light Blue Lumar", {ru: "Голубая светопыль"});
+Translation.addTranslation("Yellow Lumar", {ru: "Жёлтая светопыль"});
+Translation.addTranslation("Lime Lumar", {ru: "Лаймовая светопыль"});
+Translation.addTranslation("Pink Lumar", {ru: "Розовая светопыль"});
+Translation.addTranslation("Gray Lumar", {ru: "Серая светопыль"});
+Translation.addTranslation("Light Gray Lumar", {ru: "Светло-серая светопыль"});
+Translation.addTranslation("Cyan Lumar", {ru: "Бирюзовая светопыль"});
+Translation.addTranslation("Purple Lumar", {ru: "Фиолетовая светопыль"});
+Translation.addTranslation("Blue Lumar", {ru: "Синяя светопыль"});
+Translation.addTranslation("Brown Lumar", {ru: "Коричневая светопыль"});
+Translation.addTranslation("Green Lumar", {ru: "Зелёная светопыль"});
+Translation.addTranslation("Red Lumar", {ru: "Красная светопыль"});
+Translation.addTranslation("Black Lumar", {ru: "Чёрная светопыль"});
 
 // Tools
 Translation.addTranslation("Diamond Handsaw", {ru: "Алмазная ножовка"});
@@ -174,7 +174,7 @@ Translation.addTranslation("Mineral Blocks", {ru: "Минеральный бло
 Translation.addTranslation("Slabs", {ru: "Плиты"});
 Translation.addTranslation("Lamps", {ru: "Лампы"});
 Translation.addTranslation("Inverted Lamps", {ru: "Инвертированные лампы"});
-Translation.addTranslation("Lumar", {ru: "Светодиоды"});
+Translation.addTranslation("Lumar", {ru: "Цветная светопыль"});
 Translation.addTranslation("Ingots", {ru: "Слитки"});
 Translation.addTranslation("Gems", {ru: "Драгоценные камни"});
 Translation.addTranslation("Swords", {ru: "Мечи"});
