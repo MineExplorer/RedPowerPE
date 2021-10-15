@@ -1,4 +1,4 @@
-/// <reference path="../core/BlulectricMachine.ts" />
+/// <reference path="../type/BlulectricMachine.ts" />
 
 IDRegistry.genBlockID("rp_batbox");
 Block.createBlock("rp_batbox", [

@@ -1,4 +1,4 @@
-/// <reference path="../core/RedstoneMachine.ts" />
+/// <reference path="../type/RedstoneMachine.ts" />
 
 IDRegistry.genBlockID("rp_block_breaker");
 MachineRegistry.createBlockWithRotation("rp_block_breaker", "Block Breaker", {

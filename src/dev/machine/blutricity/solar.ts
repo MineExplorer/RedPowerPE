@@ -1,4 +1,4 @@
-/// <reference path="../core/BlulectricMachine.ts" />
+/// <reference path="../type/BlulectricMachine.ts" />
 
 IDRegistry.genBlockID("rp_solar");
 Block.createBlock("rp_solar", [

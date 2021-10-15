@@ -1,4 +1,4 @@
-/// <reference path="../core/ProcessingMachine.ts" />
+/// <reference path="../type/ProcessingMachine.ts" />
 
 IDRegistry.genBlockID("bt_furnace");
 Block.createBlock("bt_furnace", [

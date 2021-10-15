@@ -1,4 +1,4 @@
-/// <reference path="../core/BlulectricMachine.ts" />
+/// <reference path="../type/BlulectricMachine.ts" />
 
 IDRegistry.genBlockID("bt_transformer");
 Block.createBlock("bt_transformer", [

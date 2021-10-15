@@ -1,4 +1,4 @@
-/// <reference path="../core/RedstoneMachine.ts" />
+/// <reference path="../type/RedstoneMachine.ts" />
 
 IDRegistry.genBlockID("rp_igniter");
 MachineRegistry.createBlockWithRotation("rp_igniter", "Igniter", {

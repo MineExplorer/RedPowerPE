@@ -112,6 +112,24 @@ Translation.addTranslation("Copper Coil", {ru: "Медная катушка"});
 
 Translation.addTranslation("BT Battery", {ru: "Батарея"});
 
+// Lumar
+Translation.addTranslation("White Lumar", {ru: "Белый светодиод"});
+Translation.addTranslation("Orange Lumar", {ru: "Оранжевый светодиод"});
+Translation.addTranslation("Magenta Lumar", {ru: "Пурпурный светодиод"});
+Translation.addTranslation("Light Blue Lumar", {ru: "Голубой светодиод"});
+Translation.addTranslation("Yellow Lumar", {ru: "Жёлтый светодиод"});
+Translation.addTranslation("Lime Lumar", {ru: "Лаймовый светодиод"});
+Translation.addTranslation("Pink Lumar", {ru: "Розовый светодиод"});
+Translation.addTranslation("Gray Lumar", {ru: "Серый светодиод"});
+Translation.addTranslation("Light Gray Lumar", {ru: "Светло-серый светодиод"});
+Translation.addTranslation("Cyan Lumar", {ru: "Бирюзовый светодиод"});
+Translation.addTranslation("Purple Lumar", {ru: "Фиолетовый светодиод"});
+Translation.addTranslation("Blue Lumar", {ru: "Синий светодиод"});
+Translation.addTranslation("Brown Lumar", {ru: "Коричневый светодиод"});
+Translation.addTranslation("Green Lumar", {ru: "Зелёный светодиод"});
+Translation.addTranslation("Red Lumar", {ru: "Красный светодиод"});
+Translation.addTranslation("Black Lumar", {ru: "Чёрный светодиод"});
+
 // Tools
 Translation.addTranslation("Diamond Handsaw", {ru: "Алмазная ножовка"});
 Translation.addTranslation("Diamond Drawplate", {ru: "Алмазная волока"});

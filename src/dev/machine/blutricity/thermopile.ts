@@ -1,4 +1,4 @@
-/// <reference path="../core/BlulectricMachine.ts" />
+/// <reference path="../type/BlulectricMachine.ts" />
 
 IDRegistry.genBlockID("rp_thermopile");
 Block.createBlockWithRotation("rp_thermopile", [

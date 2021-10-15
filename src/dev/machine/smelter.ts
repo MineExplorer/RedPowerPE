@@ -1,4 +1,4 @@
-/// <reference path="./core/MachineBase.ts" />
+/// <reference path="./type/MachineBase.ts" />
 
 IDRegistry.genBlockID("rp_smelter");
 Block.createBlock("rp_smelter", [
