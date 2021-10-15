@@ -14,11 +14,15 @@ Recipes.addShaped({id: BlockID.rp_block_breaker, count: 1, data: 0}, [
 ], ['#', VanillaBlockID.piston, 0, 'c', VanillaBlockID.cobblestone, 0, 'r', VanillaItemID.redstone, 0, 'x', VanillaItemID.iron_pickaxe, 0]);
 
 class BlockBreaker extends RedstoneMachine {
-	activate() {
+	getScreenName(): string {
+		return null;
+	}
+
+	activate(): void {
 		super.activate();
 		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
 		if (this.region.getBlockId(coords) != 0) {
-			let result = this.blockSource.breakBlockForJsResult(coords.x, coords.y, coords.z, -1, new ItemStack(VanillaItemID.iron_pickaxe, 1, 0));
+			let result = this.region.breakBlockForJsResult(coords, -1, new ItemStack(VanillaItemID.iron_pickaxe, 1, 0));
 			if (result.items.length > 0) {
 				this.dropItems(result.items);
 			}
@@ -32,8 +36,8 @@ class BlockBreaker extends RedstoneMachine {
 		for (let item of items) {
 			if (container) container.addItem(item);
 			if (item.count > 0) {
-				let ent = this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, item);
-				Entity.setVelocity(ent, dir.x / 5, dir.y / 5, dir.z / 5);
+				let ent = this.region.dropItem(coords.x + .5 + dir.x/2, coords.y + .5 + dir.y/2, coords.z + .5 + dir.z/2, item);
+				Entity.setVelocity(ent, dir.x / 4, dir.y / 4, dir.z / 4);
 			}
 		}
 	}

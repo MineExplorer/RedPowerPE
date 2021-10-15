@@ -73,6 +73,10 @@ Translation.addTranslation("Red Inverted Lamp", {ru: "Красная инвер�
 Translation.addTranslation("Black Inverted Lamp", {ru: "Чёрная инвертированная лампа"});
 
 // Machines
+Translation.addTranslation("Block Breaker", {ru: "Разрушитель блоков"});
+Translation.addTranslation("Deployer", {ru: "Установщик"});
+Translation.addTranslation("Igniter", {ru: "Воспламенитель"});
+
 Translation.addTranslation("Smelter", {ru: "Плавильная печь"});
 Translation.addTranslation("Blulectric Smelter", {ru: "Блутрическая плавильная печь"});
 Translation.addTranslation("Blulectric Furnace", {ru: "Блутрическая печь"});

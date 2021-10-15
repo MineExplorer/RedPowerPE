@@ -14,6 +14,10 @@ Recipes.addShaped({id: BlockID.rp_igniter, count: 1, data: 0}, [
 ], ['#', VanillaBlockID.piston, 0, 'c', VanillaBlockID.cobblestone, 0, 'n', VanillaBlockID.netherrack, 0, 'r', VanillaItemID.redstone, 0, 'x', VanillaItemID.flint_and_steel, 0]);
 
 class Igniter extends RedstoneMachine {
+	getScreenName(): string {
+		return null;
+	}
+
 	activate() {
 		super.activate();
 		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
