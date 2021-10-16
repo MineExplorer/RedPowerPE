@@ -100,7 +100,8 @@ Block.setRandomTickCallback(BlockID.flax, function(x, y, z, id, data, region) {
 // bone meal use
 Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player) {
 	let region = BlockSource.getDefaultForActor(player);
-	if (item.id == 351 && item.data == 15 && block.id == BlockID.flax && block.data < 4) {
+	let boneMeal = IDConverter.getIDData("bone_meal");
+	if (item.id == boneMeal.id && item.data == boneMeal.data && block.id == BlockID.flax && block.data < 4) {
 		block.data += randomInt(2, 3);
 		if (block.data < 4) {
 			region.setBlock(coords.x, coords.y, coords.z, block.id, block.data);
@@ -109,7 +110,9 @@ Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player
 			region.setBlock(coords.x, coords.y, coords.z, block.id, 4);
 			region.setBlock(coords.x, coords.y + 1, coords.z, block.id, 5);
 		}
-		Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
+		if (Game.isItemSpendingAllowed(player)) {
+			Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
+		}
 		for (let i = 0; i < 16; i++) {
 			let px = coords.x + Math.random();
 			let pz = coords.z + Math.random();

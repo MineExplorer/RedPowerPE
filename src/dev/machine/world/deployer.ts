@@ -36,6 +36,7 @@ const blockItems = [
     VanillaBlockID.frame,
     VanillaBlockID.flower_pot,
     VanillaItemID.comparator,
+    VanillaItemID.banner,
     VanillaBlockID.campfire,
     VanillaBlockID.soul_campfire,
     VanillaBlockID.chain,
@@ -62,19 +63,10 @@ const blockItems = [
     VanillaItemID.pumpkin_seeds,
     VanillaItemID.beetroot_seeds,
     VanillaBlockID.nether_wart,
+    ItemID.flaxSeeds
 ];
 
-function registeAsBlockItem(id: number): void {
-    blockItems.push(id);
-}
-
 class Deployer extends RedstoneMachine {
-    isTechClick: boolean;
-
-    getScreenName() {
-        return this.isTechClick ? null : "main";
-    }
-
     getScreenByName() {
 		return guiDeployer;
 	}
@@ -94,15 +86,18 @@ class Deployer extends RedstoneMachine {
 
     activate(): void {
         super.activate();
+        let side = this.getFacing();
+        let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
+        let ent = this.region.spawnEntity(this.x, this.y, this.z, EEntityType.ARROW);
+        let angle = Entity.getLookAt(ent, coords.x, coords.y, coords.z);
+        Entity.setLookAngle(ent, angle.yaw, angle.pitch);
         for (let i = 0; i < 9; i++) {
             let slot = this.container.getSlot("slot" + i);
             if (slot.id != 0) {
-                let side = this.getFacing();
-                let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
                 if (this.isBlockItem(slot.id)) {
                     if (this.isEmptyBlock(coords)) {
                         let place = this.getUseCoords(coords, side);
-                        this.invokeItemUseOn(place as any, slot, Player.get());
+                        this.invokeItemUseOn(place as any, slot, ent);
                         if (!this.isEmptyBlock(coords)) {
                             this.decreaseItem(slot);
                             this.container.sendChanges();
@@ -110,27 +105,25 @@ class Deployer extends RedstoneMachine {
                             break;
                         }
                     }
-                } else if (!IDRegistry.getNameByID(slot.id)) {
+                } else {
                     let place = this.getUseCoords(coords, side, slot);
-                    let block = this.region.getBlock(place);
-                    let extraBlock = this.region.getExtraBlock(place);
                     try {
-                        this.invokeItemUseOn(place as any, slot, Player.get());
-                        this.useItem(place, slot, block, extraBlock);
+                        this.useItem(coords, place, slot, ent);
+                        Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                     } catch (e) {
                         Game.message(e);
                     }
-                    Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                     break;
                 }
             }
         }
+        Entity.remove(ent);
     }
 
     getUseCoords(coords: Vector, facing: number, item?: ItemInstance): BlockPosition {
         if (this.isEmptyBlock(coords, item)) {
-            let blockID = this.region.getBlockId(coords.x, coords.y - 1, coords.z);
-            if (!(blockID == 0 || blockID >= 8 && blockID <= 11)) {
+            let blockId = this.region.getBlockId(coords.x, coords.y - 1, coords.z)
+            if (Block.isSolid(blockId) || blockId == VanillaTileID.farmland) {
                 return {x: coords.x, y: coords.y - 1, z: coords.z, side: 1};
             }
             return {x: this.x, y: this.y, z: this.z, side: facing};
@@ -138,42 +131,48 @@ class Deployer extends RedstoneMachine {
         return {...coords, side: facing ^ 1}
     }
 
-    useItem(coords: BlockPosition, slot: ItemContainerSlot, block: BlockState, extraBlock: BlockState): void {
-        switch (slot.id) {
-            case VanillaItemID.water_bucket:
-            case VanillaItemID.lava_bucket:
-            case VanillaItemID.cod_bucket:
-            case VanillaItemID.salmon_bucket:
-            case VanillaItemID.pufferfish_bucket:
-            case VanillaItemID.tropical_fish_bucket:
-                var blockId = this.region.getExtraBlock(coords).id || this.region.getBlockId(coords);
-                if (blockId >= 8 || blockId <= 11) {
-                    slot.setSlot(VanillaItemID.bucket, 1, 0);
+    useItem(coords: Vector, place: BlockPosition, slot: ItemContainerSlot, ent: number): void {
+        let block = this.region.getBlock(coords);
+        let extraBlock = this.region.getExtraBlock(coords);
+        let stringId = ItemRegistry.getVanillaStringID(slot.id);
+        Game.message(stringId);
+        if (stringId.endsWith("spawn_egg")) {
+            this.invokeItemUseOn(place, slot, ent);
+            this.decreaseItem(slot);
+        }
+        else if (stringId.endsWith("_bucket")) {
+            this.invokeItemUseOn(place, slot, ent);
+            let blockId = this.region.getExtraBlock(coords).id || this.region.getBlockId(coords);
+            if (blockId >= 8 && blockId <= 11 || block.id >= 8 && block.id <= 11) {
+                slot.setSlot(VanillaItemID.bucket, 1, 0);
+            }
+        }
+        else if (stringId == "bucket") {
+            let blockId = extraBlock.id || block.id;
+            if (blockId >= 8 && blockId <= 11) {
+                this.invokeItemUseOn(place, slot, ent);
+                this.decreaseItem(slot);
+                this.addItem((blockId <= 9) ? VanillaItemID.water_bucket : VanillaItemID.lava_bucket, 1, 0);
+            }
+        }
+        else if (stringId == "glass_bottle") {
+            if (block.id == 8 || block.id == 9) {
+                this.decreaseItem(slot);
+                this.addItem(VanillaItemID.potion, 1, 0);
+            }
+        }
+        else if (stringId == "flint_and_steel") {
+            this.invokeItemUseOn(place, slot, ent);
+            if (this.region.getBlockId(coords) == VanillaTileID.fire) {
+                slot.data++;
+                if (slot.data >= Item.getMaxDamage(slot.id)) {
+                    slot.setSlot(0, 0, 0);
                 }
-                break;
-            case VanillaItemID.bucket:
-                var blockId = extraBlock.id || block.id;
-                if (blockId == 8 || blockId == 9) {
-                    this.decreaseItem(slot);
-                    this.addItem(VanillaItemID.water_bucket, 1, 0);
-                }
-                if (blockId == 10 || blockId == 11) {
-                    this.decreaseItem(slot);
-                    this.addItem(VanillaItemID.lava_bucket, 1, 0);
-                }
-                break;
-            case VanillaItemID.glass_bottle:
-                if (block.id == 8 || block.id == 9) {
-                    this.decreaseItem(slot);
-                    this.addItem(VanillaItemID.potion, 1, 0);
-                }
-                break;
-            // TODO: spawn eggs, minecarts, banners
-            /*default:
-                //Callback.invokeCallback("ItemDispensed", coords, slot, this.blockSource);
-                slot.setSlot(slot.id, slot.count - 1, slot.data, slot.extra);
-                slot.validate();
-                break;*/
+            }
+        }
+        else {
+            this.invokeItemUseOn(place, slot, ent);
+            return;
         }
         this.container.sendChanges();
     }
@@ -196,8 +195,8 @@ class Deployer extends RedstoneMachine {
         this.region.dropItem(this.x + .5 + dir.x/2, this.y + .5 + dir.y/2, this.z + .5 + dir.z/2, id, count, data);
     }
 
-    invokeItemUseOn(coords: Callback.ItemUseCoordinates, item: ItemInstance, entity: number): void {
-        let dir = World.getVectorByBlockSide(this.getFacing());
+    invokeItemUseOn(coords: any, item: ItemContainerSlot, entity: number): void {
+        let dir = World.getVectorByBlockSide(coords.side);
         coords.vec ??= {
             x: coords.x + .5 + dir.x/2,
             y: coords.y + .5 + dir.y/2,
@@ -205,15 +204,18 @@ class Deployer extends RedstoneMachine {
         };
         coords.relative ??= World.getRelativeCoords(coords.x, coords.y, coords.z, coords.side);
         let block = this.region.getBlock(coords.x, coords.y, coords.z);
-        this.isTechClick = true;
+        let useItem = false;
         let func = Game.isItemSpendingAllowed;
-        Game.isItemSpendingAllowed = () => false;
+        Game.isItemSpendingAllowed = function() {
+            useItem = true;
+            return false;
+        }
         Callback.invokeCallback("ItemUse", coords, item, block, false, entity);
-        this.isTechClick = false;
         Game.isItemSpendingAllowed = func;
-        //if (!ModAPI.requireGlobal("MCSystem.isDefaultPrevented()")) {
-            Item.invokeItemUseOn(coords, item, true, entity);
-        //}
+        Item.invokeItemUseOn(coords, item, true, entity);
+        if (useItem) {
+            this.decreaseItem(item);
+        }
     }
 }
 
