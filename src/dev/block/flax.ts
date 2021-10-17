@@ -1,4 +1,4 @@
-ItemRegistry.createItem("flaxSeeds", {name: "Flax Seeds", icon: "flax_seeds"});
+ItemRegistry.createItem("flaxSeeds", {name: "Flax Seeds", icon: "flax_seeds", category: ItemCategory.NATURE});
 
 IDRegistry.genBlockID("flax");
 Block.createBlock("flax", [

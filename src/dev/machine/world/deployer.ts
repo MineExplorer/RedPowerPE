@@ -191,8 +191,8 @@ class Deployer extends RedstoneMachine {
                 return;
             }
         }
-        let dir = World.getVectorByBlockSide(this.getFacing());
-        this.region.dropItem(this.x + .5 + dir.x/2, this.y + .5 + dir.y/2, this.z + .5 + dir.z/2, id, count, data);
+        let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
+        this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, id, count, data);
     }
 
     invokeItemUseOn(coords: any, item: ItemContainerSlot, entity: number): void {

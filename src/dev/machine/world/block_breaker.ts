@@ -30,14 +30,15 @@ class BlockBreaker extends RedstoneMachine {
 	}
 
 	dropItems(items: ItemInstance[]): void {
-		let dir = StorageInterface.directionsBySide[this.getFacing()^1];
-		let coords = {x: this.x + dir.x, y: this.y + dir.y, z: this.z + dir.z};
+		let side = this.getFacing()^1;
+		let dir = World.getVectorByBlockSide(side);
+		let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
 		let container = StorageInterface.getStorage(this.blockSource, coords.x, coords.y, coords.z);
 		for (let item of items) {
 			if (container) container.addItem(item);
 			if (item.count > 0) {
-				let ent = this.region.dropItem(coords.x + .5 + dir.x/2, coords.y + .5 + dir.y/2, coords.z + .5 + dir.z/2, item);
-				Entity.setVelocity(ent, dir.x / 4, dir.y / 4, dir.z / 4);
+				let ent = this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, item);
+				Entity.setVelocity(ent, dir.x / 5, dir.y / 5, dir.z / 5);
 			}
 		}
 	}
