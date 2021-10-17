@@ -74,128 +74,61 @@ Callback.addCallback("PostLoaded", function() {
 		"xxx",
 		"xxx"
 	], ['x', ItemID.ingotCopper, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.ingotTin, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockSilver, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.ingotSilver, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockNikolite, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.nikolite, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockSapphire, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.gemSapphire, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockGreenSapphire, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.gemGreenSapphire, 0]);
-	
+
 	Recipes.addShaped({id: BlockID.blockRuby, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
 		"xxx"
 	], ['x', ItemID.gemRuby, 0]);
-	
-	VanillaRecipe.addCraftingRecipe("ingot_copper", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockCopper" }
-	  ],
-	  result: {
-	    item: "item:ingotCopper",
-	    count: 9
-	  }
-	}, true);
-	
-	VanillaRecipe.addCraftingRecipe("ingot_tin", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockTin" }
-	  ],
-	  result: {
-	    item: "item:ingotTin",
-	    count: 9
-	  }
-	}, true);
-	
-	/*VanillaRecipe.addCraftingRecipe("ingot_bronze", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockBronze" }
-	  ],
-	  result: {
-	    item: "item:ingotBronze",
-	    count: 9
-	  }
-	}, true);*/
-	
-	VanillaRecipe.addCraftingRecipe("ingot_silver", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockSilver" }
-	  ],
-	  result: {
-	    item: "item:ingotSilver",
-	    count: 9
-	  }
-	}, true);
-	
-	VanillaRecipe.addCraftingRecipe("nikolite", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockNikolite" }
-	  ],
-	  result: {
-	    item: "item:nikolite",
-	    count: 9
-	  }
-	}, true);
-	
-	VanillaRecipe.addCraftingRecipe("gem_ruby", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockRuby" }
-	  ],
-	  result: {
-	    item: "item:gemRuby",
-	    count: 9
-	  }
-	}, true);
-	
-	VanillaRecipe.addCraftingRecipe("gem_sapphire", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockSapphire" }
-	  ],
-	  result: {
-	    item: "item:gemSapphire",
-	    count: 9
-	  }
-	}, true);
-	
-	VanillaRecipe.addCraftingRecipe("gem_green_sapphire", {
-	  type: "shapeless",
-	  ingredients: [
-	    { item: "block:blockGreenSapphire" }
-	  ],
-	  result: {
-	    item: "item:gemGreenSapphire",
-	    count: 9
-	  }
-	}, true);
+
+	function addResourceUnpackRecipe(recipeName: string, blockID: string, itemID: string, count: number): void {
+		VanillaRecipe.addCraftingRecipe(recipeName, {
+			type: "shapeless",
+			ingredients: [
+			  { item: "block:" + blockID }
+			],
+			result: {
+			  item: "item:" + itemID,
+			  count: 9
+			}
+		}, true);
+	}
+
+	addResourceUnpackRecipe("ingot_copper", "blockCopper", "ingotCopper", 9);
+	addResourceUnpackRecipe("ingot_tin", "blockTin", "ingotTin", 9);
+	addResourceUnpackRecipe("ingot_silver", "blockSilver", "ingotSilver", 9);
+	addResourceUnpackRecipe("nikolite", "blockNikolite", "nikolite", 9);
+	addResourceUnpackRecipe("gem_ruby", "blockRuby", "gemRuby", 9);
+	addResourceUnpackRecipe("gem_sapphire", "blockSapphire", "gemSapphire", 9);
+	addResourceUnpackRecipe("gem_green_sapphire", "blockGreenSapphire", "gemGreenSapphire", 9);
 });
