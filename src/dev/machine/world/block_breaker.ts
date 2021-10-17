@@ -21,7 +21,8 @@ class BlockBreaker extends RedstoneMachine {
 	activate(): void {
 		super.activate();
 		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
-		if (this.region.getBlockId(coords) != 0) {
+		let blockID = this.region.getBlockId(coords);
+		if (blockID != 0 && ToolAPI.getBlockMaterialName(blockID) != "unbreaking") {
 			let result = this.region.breakBlockForJsResult(coords, -1, new ItemStack(VanillaItemID.iron_pickaxe, 1, 0));
 			if (result.items.length > 0) {
 				this.dropItems(result.items);

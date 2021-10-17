@@ -68,6 +68,10 @@ const blockItems = [
 
 class Deployer extends RedstoneMachine {
     getScreenByName() {
+        if (BlockEngine.getMainGameVersion() == 11) {
+            Game.message("This machine doesn't work on Minecraft 1.11");
+            return null;
+        }
 		return guiDeployer;
 	}
 
@@ -141,9 +145,8 @@ class Deployer extends RedstoneMachine {
             this.decreaseItem(slot);
         }
         else if (stringId.endsWith("_bucket")) {
-            this.invokeItemUseOn(place, slot, ent);
-            let blockId = this.region.getExtraBlock(coords).id || this.region.getBlockId(coords);
-            if (blockId >= 8 && blockId <= 11 || block.id >= 8 && block.id <= 11) {
+            if (Block.canContainLiquid(block.id) || block.id >= 8 && block.id <= 11) {
+                this.invokeItemUseOn(place, slot, ent);
                 slot.setSlot(VanillaItemID.bucket, 1, 0);
             }
         }
