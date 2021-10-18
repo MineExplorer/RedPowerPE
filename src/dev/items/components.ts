@@ -13,15 +13,11 @@ Callback.addCallback("PreLoaded", function() {
 	addRecipeWithCraftingTool({id: ItemID.fineIronWire, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.diamondDrawplate);
 
 	VanillaRecipe.addCraftingRecipe("fine_copper_wire", {
-		type: "shaped",
-		tags: ["crafting_table"],
-		pattern: [
-			"AX",
+		type: "shapeless",
+		ingredients: [
+		  { item: "item:ingotCopper" },
+		  { item: "item:diamondDrawplate" }
 		],
-		key: {
-		  "A": { item: "item:ingotCopper" },
-		  "X": { item: "item:diamondDrawplate" }
-		},
 		result: [
 		  { item: "item:fineCopperWire" },
 		  { item: "item:diamondDrawplate" }
@@ -29,15 +25,11 @@ Callback.addCallback("PreLoaded", function() {
 	});
 
 	VanillaRecipe.addCraftingRecipe("fine_iron_wire", {
-		type: "shaped",
-		tags: ["crafting_table"],
-		pattern: [
-			"AX",
+		type: "shapeless",
+		ingredients: [
+		  { item: "iron_ingot" },
+		  { item: "item:diamondDrawplate" }
 		],
-		key: {
-		  "A": { item: "iron_ingot" },
-		  "X": { item: "item:diamondDrawplate" }
-		},
 		result: [
 		  { item: "item:fineIronWire" },
 		  { item: "item:diamondDrawplate" }

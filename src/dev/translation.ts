@@ -138,6 +138,8 @@ Translation.addTranslation("Black Lumar", {ru: "Чёрная светопыль"
 Translation.addTranslation("Diamond Handsaw", {ru: "Алмазная ножовка"});
 Translation.addTranslation("Diamond Drawplate", {ru: "Алмазная волока"});
 Translation.addTranslation("Wool Card", {ru: "Чесалка"});
+Translation.addTranslation("Screwdriver", {ru: "Отвёртка"});
+Translation.addTranslation("Sonic Screwdriver", {ru: "Звуковая отвёртка"});
 
 Translation.addTranslation("Athame", {ru: "Атам"});
 
