@@ -49,8 +49,7 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_marble_slab", {
 VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick_slab", {
   ingredients: [
     {
-      item: "block:marbleBrick",
-      data: 0
+      item: "block:marbleBrick"
     }
   ],
   result: {

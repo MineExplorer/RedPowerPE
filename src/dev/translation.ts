@@ -119,7 +119,7 @@ Translation.addTranslation("BT Battery", {ru: "Батарея"});
 // Lumar
 Translation.addTranslation("White Lumar", {ru: "Белая светопыль"});
 Translation.addTranslation("Orange Lumar", {ru: "Оранжевая светопыль"});
-Translation.addTranslation("Magenta Lumar", {ru: "Пурпурный светопыль"});
+Translation.addTranslation("Magenta Lumar", {ru: "Пурпурная светопыль"});
 Translation.addTranslation("Light Blue Lumar", {ru: "Голубая светопыль"});
 Translation.addTranslation("Yellow Lumar", {ru: "Жёлтая светопыль"});
 Translation.addTranslation("Lime Lumar", {ru: "Лаймовая светопыль"});
