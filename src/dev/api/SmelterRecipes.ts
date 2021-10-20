@@ -1,20 +1,39 @@
 namespace SmelterRecipes {
-	type RecipeFormat = {result: {id: number, count: number, data?: number}, input: {id: number, count: number}[]};
+	export type RecipeFormat = {result: ItemInstance, input: ItemInstance[]};
 
-	let recipeData: RecipeFormat[] = [];
+	export let recipeData: RecipeFormat[] = [];
 
-	export function addRecipe(result: RecipeFormat["result"], input: RecipeFormat["input"]): void {
-		recipeData.push({input: input, result: result});
+	export function addRecipe(result: {id: number, count: number, data?: number}, input: {id: number, count: number, data?: number}[]): void {
+		result.data ??= 0;
+		for (let item of input) {
+			item.data ??= -1;
+		}
+		recipeData.push({input: input as ItemInstance[], result: result as ItemInstance});
 	}
 
-	export function getRecipe(input: object): RecipeFormat {
-		for (let i in recipeData) {
-			let recipe = recipeData[i];
+	export function getInput(container: ItemContainer): ItemInstance[] {
+		let inputItems: ItemInstance[] = [];
+		for (let i = 1; i <= 4; i++) {
+			let slot = container.getSlot("slotSource" + i);
+			if (slot.id > 0) {
+				inputItems.push(new ItemStack(slot));
+			}
+		}
+		return inputItems;
+	}
+
+	export function getRecipe(inputItems: ItemInstance[]): RecipeFormat {
+		if (inputItems.length == 0) return null;
+		for (let recipe of recipeData) {
 			let valid = true;
-			for (let j in recipe.input) {
-				let source = recipe.input[j];
-				let count = input[source.id];
-				if (!count || count < source.count) {
+			for (let item of recipe.input) {
+				let count = 0;
+				for (let slot of inputItems) {
+					if (item.id == slot.id && (item.data == -1 || item.data == slot.data)) {
+						count += slot.count;
+					}
+				}
+				if (count < item.count) {
 					valid = false;
 					break;
 				}
@@ -23,15 +42,16 @@ namespace SmelterRecipes {
 				return recipe;
 			}
 		}
+		return null;
 	}
 
 	export function performRecipe(recipe: RecipeFormat, container: ItemContainer) {
 		let resultSlot = container.getSlot("slotResult");
-		for (let i in recipe.input) {
-			let count = recipe.input[i].count;
-			for (let j = 1; j <= 4; j++) {
-				let slot = container.getSlot("slotSource" + j);
-				if (slot.id == recipe.input[i].id) {
+		for (let item of recipe.input) {
+			let count = item.count;
+			for (let i = 1; i <= 4; i++) {
+				let slot = container.getSlot("slotSource" + i);
+				if (item.id == slot.id && (item.data == -1 || item.data == slot.data)) {
 					let dc = Math.min(count, slot.count);
 					count -= dc;
 					slot.setSlot(slot.id, slot.count - dc, slot.data);
@@ -39,7 +59,7 @@ namespace SmelterRecipes {
 				}
 			}
 		}
-		resultSlot.setSlot(recipe.result.id, resultSlot.count + recipe.result.count, recipe.result.data || 0);
+		resultSlot.setSlot(recipe.result.id, resultSlot.count + recipe.result.count, recipe.result.data);
 		container.validateAll();
 	}
 }

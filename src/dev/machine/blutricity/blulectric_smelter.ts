@@ -26,7 +26,11 @@ const guiBTSmelter = MachineRegistry.createInventoryWindow("Blulectric Smelter",
 	],
 
 	elements: {
-		"progressScale": {type: "scale", x: 636, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE},
+		"progressScale": {type: "scale", x: 636, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE, clicker: {
+			onClick: () => {
+				RecipeViewer && RecipeViewer.RecipeTypeRegistry.openRecipePage("rp_smelter");
+			}}
+		},
 		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_small_scale", scale: GUI_SCALE},
 		"slotSource1": {type: "slot", x: 502, y: 112},
 		"slotSource2": {type: "slot", x: 562, y: 112},
@@ -44,19 +48,11 @@ class BTSmelter extends ProcessingMachine {
 	onTick(): void {
 		super.onTick();
 
-		let sourceItems = {};
-		for (let i = 1; i <= 4; i++) {
-			let slot = this.container.getSlot("slotSource" + i);
-			if (slot.id > 0 && slot.data==0) {
-				sourceItems[slot.id] = sourceItems[slot.id] || 0;
-				sourceItems[slot.id] += slot.count;
-			}
-		}
-
-		let recipe = SmelterRecipes.getRecipe(sourceItems);
+		const input = SmelterRecipes.getInput(this.container);
+		const recipe = SmelterRecipes.getRecipe(input);
 		let newActive = false;
 		if (recipe) {
-			let resultSlot = this.container.getSlot("slotResult");
+			const resultSlot = this.container.getSlot("slotResult");
 			if (resultSlot.id == recipe.result.id && resultSlot.count + recipe.result.count <= 64 || resultSlot.id == 0) {
 				if (this.data.energy >= 4) {
 					this.data.energy -= 4;
