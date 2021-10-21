@@ -8,6 +8,7 @@ block/basalt.ts
 block/marble.ts
 block/basalt_slab.js
 block/marble_slab.js
+block/stairs.ts
 block/ore.ts
 block/resource.ts
 block/lamp.ts
