@@ -1,3 +1,12 @@
+Block.createSpecialType({
+	base: 1,
+	destroytime: 1.5,
+	explosionres: 100,
+	renderlayer: 2,
+	translucency: 0,
+	sound: "stone"
+}, "basalt_slab");
+
 IDRegistry.genBlockID("basaltSlab");
 IDRegistry.genBlockID("doubleBasaltSlab");
 
@@ -5,13 +14,7 @@ BaseBlocks.createSlab("basaltSlab", [
   {name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
   {name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
   {name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true}
-], {
-	base: 1,
-	destroytime: 1.5,
-	explosionres: 100,
-	renderlayer: 2,
-	translucency: 0
-}, BlockID.doubleBasaltSlab);
+], "basalt_slab", BlockID.doubleBasaltSlab);
 ToolAPI.registerBlockMaterial(BlockID.basaltSlab, "stone", 1, true);
 
 BaseBlocks.createDoubleSlab("doubleBasaltSlab", [
