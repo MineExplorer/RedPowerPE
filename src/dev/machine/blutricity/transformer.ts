@@ -21,8 +21,7 @@ namespace TransformerRender {
 		[1/8, 1/8, 1/16, 7/8, 7/8, 15/16],
 		[0, 1/8, 3/8, 1, 1, 5/8]
 	]
-	let render = TileRenderer.createBlockModel(BlockID.bt_transformer, 0, modelBoxes);
-	BlockRenderer.setStaticICRender(BlockID.bt_transformer, 0, render);
+	TileRenderer.setStaticModel(BlockID.bt_transformer, 0, modelBoxes);
 	TileRenderer.setCollisionShape(BlockID.bt_transformer, 0, modelBoxes);
 }
 
