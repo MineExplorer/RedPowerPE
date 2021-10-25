@@ -1,7 +1,6 @@
 /// <reference path="../type/ProcessingMachine.ts" />
 
-IDRegistry.genBlockID("bt_smelter");
-Block.createBlock("bt_smelter", [
+BlockRegistry.createBlock("bt_smelter", [
 	{name: "Blulectric Smelter", texture: [["rp_machine_bottom", 0], ["bt_smelter_top", 0], ["bt_smelter_side", 0], ["bt_smelter_front", 0], ["bt_smelter_side", 0], ["bt_smelter_side", 0]], inCreative: true}
 ], "stone");
 BlockRegistry.setDestroyLevel(BlockID.bt_smelter, 1);

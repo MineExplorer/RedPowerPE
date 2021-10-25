@@ -9,36 +9,31 @@ Block.createSpecialType({
 	sound: "stone"
 }, "ore");
 
-IDRegistry.genBlockID("oreCopper");
-Block.createBlock("oreCopper", [
+BlockRegistry.createBlock("oreCopper", [
 	{name: "Copper Ore", texture: [["ore_copper", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreCopper, "stone", 2, true);
 BlockRegistry.setDestroyLevel("oreCopper", 2);
 
-IDRegistry.genBlockID("oreTin");
-Block.createBlock("oreTin", [
+BlockRegistry.createBlock("oreTin", [
 	{name: "Tin Ore", texture: [["ore_tin", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
 BlockRegistry.setDestroyLevel("oreTin", 2);
 
-IDRegistry.genBlockID("oreSilver");
-Block.createBlock("oreSilver", [
+BlockRegistry.createBlock("oreSilver", [
 	{name: "Silver Ore", texture: [["ore_silver", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreSilver, "stone", 3, true);
 BlockRegistry.setDestroyLevel("oreSilver", 3);
 
-IDRegistry.genBlockID("oreTungsten");
-Block.createBlock("oreTungsten", [
+BlockRegistry.createBlock("oreTungsten", [
 	{name: "Tungsten Ore", texture: [["ore_tungsten", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreTungsten, "stone", 3, true);
 BlockRegistry.setDestroyLevel("oreTungsten", 3);
 
-IDRegistry.genBlockID("oreNikolite");
-Block.createBlock("oreNikolite", [
+BlockRegistry.createBlock("oreNikolite", [
 	{name: "Nikolite Ore", texture: [["ore_nikolite", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreNikolite, "stone", 3, true);
@@ -55,8 +50,7 @@ BlockRegistry.registerDrop("oreNikolite", function(coords, blockID, blockData, l
 	return drop;
 }, 3);
 
-IDRegistry.genBlockID("oreRuby");
-Block.createBlock("oreRuby", [
+BlockRegistry.createBlock("oreRuby", [
 	{name: "Ruby Ore", texture: [["ore_ruby", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreRuby, "stone", 3, true);
@@ -73,8 +67,7 @@ BlockRegistry.registerDrop("oreRuby", function(coords, blockID, blockData, level
 	return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
 }, 3);
 
-IDRegistry.genBlockID("oreSapphire");
-Block.createBlock("oreSapphire", [
+BlockRegistry.createBlock("oreSapphire", [
 	{name: "Sapphire Ore", texture: [["ore_sapphire", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreSapphire, "stone", 3, true);
@@ -91,8 +84,7 @@ BlockRegistry.registerDrop("oreSapphire", function(coords, blockID, blockData, l
 	return ToolAPI.fortuneDropModifier(drop, enchant.fortune);
 }, 3);
 
-IDRegistry.genBlockID("oreGreenSapphire");
-Block.createBlock("oreGreenSapphire", [
+BlockRegistry.createBlock("oreGreenSapphire", [
 	{name: "Sapphire Ore", texture: [["ore_green_sapphire", 0]], inCreative: true}
 ], "ore");
 ToolAPI.registerBlockMaterial(BlockID.oreGreenSapphire, "stone", 3, true);

@@ -37,14 +37,28 @@ Block.createSpecialType({
 BlockRegistry.createStairs("marbleStairs", [
 	{name: "Marble Stairs", texture: [["rp_marble", 0]], inCreative: true}
 ], "marble_stairs");
-ToolAPI.registerBlockMaterial(BlockID.marbleBrickStairs, "stone", 1, true);
-BlockRegistry.setDestroyLevel("marbleBrickStairs", 1);
+ToolAPI.registerBlockMaterial(BlockID.marbleStairs, "stone", 1, true);
+BlockRegistry.setDestroyLevel("marbleStairs", 1);
 
 BlockRegistry.createStairs("marbleBrickStairs", [
 	{name: "Marble Brick Stairs", texture: [["rp_marble_brick", 0]], inCreative: true}
 ], "marble_stairs");
 ToolAPI.registerBlockMaterial(BlockID.marbleBrickStairs, "stone", 1, true);
 BlockRegistry.setDestroyLevel("marbleBrickStairs", 1);
+
+Item.addCreativeGroup("rpStairs", Translation.translate("Stairs"), [
+	BlockID.basaltStairs,
+	BlockID.basaltCobbleStairs,
+	BlockID.basaltBrickStairs,
+	BlockID.marbleStairs,
+	BlockID.marbleBrickStairs
+]);
+
+Recipes.addShaped({id: BlockID.basaltStairs, count: 4, data: 1}, [
+	"x  ",
+	"xx ",
+	"xxx"
+], ['x', BlockID.rp_basalt, 0]);
 
 Recipes.addShaped({id: BlockID.basaltCobbleStairs, count: 4, data: 1}, [
 	"x  ",
@@ -57,6 +71,12 @@ Recipes.addShaped({id: BlockID.basaltBrickStairs, count: 4, data: 1}, [
 	"xx ",
 	"xxx"
 ], ['x', BlockID.basaltBrick, 0]);
+
+Recipes.addShaped({id: BlockID.marbleStairs, count: 4, data: 1}, [
+	"x  ",
+	"xx ",
+	"xxx"
+], ['x', BlockID.rp_marble, 0]);
 
 Recipes.addShaped({id: BlockID.marbleBrickStairs, count: 4, data: 1}, [
 	"x  ",

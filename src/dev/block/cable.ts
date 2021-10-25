@@ -4,8 +4,7 @@ Block.createSpecialType({
 	renderlayer: 3,
 }, "cable");
 
-IDRegistry.genBlockID("blueWire");
-Block.createBlock("blueWire", [
+BlockRegistry.createBlock("blueWire", [
 	{name: "Blue Alloy Wire", texture: [["blue_wire", 0]], inCreative: true}
 ], "cable");
 

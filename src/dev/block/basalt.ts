@@ -9,8 +9,7 @@ Block.createSpecialType({
 	sound: "stone"
 }, "basalt");
 
-IDRegistry.genBlockID("rp_basalt");
-Block.createBlock("rp_basalt", [
+BlockRegistry.createBlock("rp_basalt", [
 	{name: "Basalt", texture: [["rp_basalt", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.rp_basalt, "stone", 1, true);
@@ -21,23 +20,20 @@ BlockRegistry.registerDrop("rp_basalt", function(coords, blockID, blockData, lev
   return [[BlockID.basaltCobble, 1, 0]];
 }, 1);
 
-IDRegistry.genBlockID("basaltCobble");
-Block.createBlock("basaltCobble", [
+BlockRegistry.createBlock("basaltCobble", [
 	{name: "Basalt Cobble", texture: [["rp_basalt_cobble", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltCobble, "stone", 1, true);
 BlockRegistry.setDestroyLevel("basaltCobble", 1);
 
-IDRegistry.genBlockID("basaltBrick");
-Block.createBlock("basaltBrick", [
+BlockRegistry.createBlock("basaltBrick", [
 	{name: "Basalt Brick", texture: [["rp_basalt_brick", 0]], inCreative: true},
 	{name: "Chiseled Basalt Brick", texture: [["rp_basalt_chiseled", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltBrick, "stone", 1, true);
 BlockRegistry.setDestroyLevel("basaltBrick", 1);
 
-IDRegistry.genBlockID("basaltPaver");
-Block.createBlock("basaltPaver", [
+BlockRegistry.createBlock("basaltPaver", [
 	{name: "Basalt Paver", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt");
 ToolAPI.registerBlockMaterial(BlockID.basaltPaver, "stone", 1, true);

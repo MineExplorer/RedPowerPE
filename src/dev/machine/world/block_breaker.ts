@@ -1,6 +1,5 @@
 /// <reference path="../type/RedstoneMachine.ts" />
 
-IDRegistry.genBlockID("rp_block_breaker");
 MachineRegistry.createBlockWithRotation("rp_block_breaker", "Block Breaker", {
 	default: {top: "block_breaker_top", bottom: "block_breaker_bottom", side: "block_breaker_side"},
 	active: {top: "block_breaker_top_active", bottom: "block_breaker_bottom", side: "block_breaker_side_active"}
@@ -45,4 +44,6 @@ class BlockBreaker extends RedstoneMachine {
 	}
 }
 
-TileEntity.registerPrototype(BlockID.rp_block_breaker, new BlockBreaker());
+if (BlockEngine.getMainGameVersion() >= 16) {
+	MachineRegistry.registerPrototype(BlockID.rp_block_breaker, new BlockBreaker());
+}

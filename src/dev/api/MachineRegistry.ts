@@ -7,7 +7,7 @@ namespace MachineRegistry {
 
 	export function registerPrototype(id: number, Prototype: TileEntity.TileEntityPrototype) {
 		machineIDs[id] = true;
-		Block.setDestroyTime(id, 3.25);
+		Block.setDestroyTime(id, 3);
 		ToolAPI.registerBlockMaterial(id, "stone", 1, true);
 		TileEntity.registerPrototype(id, Prototype);
 	}
@@ -76,13 +76,15 @@ namespace MachineRegistry {
 		let textures = getTextureArray(texture.default);
 		let variations = [];
 		for (let i = 0; i < textures.length; i++) {
-			variations.push({name: name, texture: textures[i], inCreative: i == 1});
+			variations.push({name: name, texture: textures[i], inCreative: i == 0});
 		}
-		textures = getTextureArray(texture.active);
-		for (let i = 0; i < textures.length; i++) {
-			variations.push({name: name, texture: textures[i], inCreative: false});
+		let activeTextures = getTextureArray(texture.active);
+		for (let i = 0; i < activeTextures.length; i++) {
+			variations.push({name: name, texture: activeTextures[i], inCreative: false});
 		}
+		let numericID = IDRegistry.genBlockID(stringID);
 		Block.createBlock(stringID, variations, blockType);
         BlockRegistry.setRotationFunction(stringID, true);
+		TileRenderer.setHandAndUiModel(numericID, 0, textures[1]);
     }
 }

@@ -1,7 +1,6 @@
 /// <reference path="../type/ProcessingMachine.ts" />
 
-IDRegistry.genBlockID("bt_furnace");
-Block.createBlock("bt_furnace", [
+BlockRegistry.createBlock("bt_furnace", [
 	{name: "Blulectric Furnace", texture: [["rp_machine_bottom", 0], ["bt_furnace_top", 0], ["bt_furnace_side", 0], ["bt_furnace_front", 0], ["bt_furnace_side", 0], ["bt_furnace_side", 0]], inCreative: true}
 ], "stone");
 BlockRegistry.setDestroyLevel(BlockID.bt_furnace, 1);

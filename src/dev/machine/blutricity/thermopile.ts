@@ -1,7 +1,6 @@
 /// <reference path="../type/BlulectricMachine.ts" />
 
-IDRegistry.genBlockID("rp_thermopile");
-Block.createBlockWithRotation("rp_thermopile", [
+BlockRegistry.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
 ], "stone");
 BlockRegistry.setDestroyLevel("rp_thermopile", 1);

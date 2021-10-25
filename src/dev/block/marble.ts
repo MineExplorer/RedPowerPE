@@ -9,15 +9,13 @@ Block.createSpecialType({
 	sound: "stone"
 }, "stone");
 
-IDRegistry.genBlockID("rp_marble");
-Block.createBlock("rp_marble", [
+BlockRegistry.createBlock("rp_marble", [
 	{name: "Marble", texture: [["rp_marble", 0]], inCreative: true},
 ], "stone");
 ToolAPI.registerBlockMaterial(BlockID.rp_marble, "stone", 1, true);
 BlockRegistry.setDestroyLevel("rp_marble", 1);
 
-IDRegistry.genBlockID("marbleBrick");
-Block.createBlock("marbleBrick", [
+BlockRegistry.createBlock("marbleBrick", [
 	{name: "Marble Brick", texture: [["rp_marble_brick", 0]], inCreative: true}
 ], "stone");
 ToolAPI.registerBlockMaterial(BlockID.marbleBrick, "stone", 1, true);

@@ -1,7 +1,6 @@
 /// <reference path="./type/MachineBase.ts" />
 
-IDRegistry.genBlockID("rp_smelter");
-Block.createBlock("rp_smelter", [
+BlockRegistry.createBlock("rp_smelter", [
 	{name: "Smelter", texture: [["rp_smelter", 0], ["rp_smelter", 0], ["rp_smelter_side", 0], ["rp_smelter_front", 0], ["rp_smelter_side", 0], ["rp_smelter_side", 0]], inCreative: true}
 ], "stone");
 BlockRegistry.setDestroyLevel(BlockID.rp_smelter, 1);
@@ -116,6 +115,7 @@ class Smelter extends MachineBase {
 	}
 
 	onInit(): void {
+		super.onInit();
 		StorageInterface.setSlotValidatePolicy(this.container, "slotFuel", function(name, id, amount, data) {
 			return Recipes.getFuelBurnDuration(id, data) > 0;
 		});

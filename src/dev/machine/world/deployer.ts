@@ -1,6 +1,5 @@
 /// <reference path="../type/RedstoneMachine.ts" />
 
-IDRegistry.genBlockID("rp_deployer");
 MachineRegistry.createBlockWithRotation("rp_deployer", "Deployer", {
     default: {top: "deployer_top", bottom: "rp_block_bottom", side: "deployer_side", side2: "deployer_side2"},
     active: {top: "deployer_top_active", bottom: "rp_block_bottom", side: "deployer_side", side2: "deployer_side2"}
@@ -68,10 +67,6 @@ const blockItems = [
 
 class Deployer extends RedstoneMachine {
     getScreenByName() {
-        if (BlockEngine.getMainGameVersion() == 11) {
-            Game.message("This machine doesn't work on Minecraft 1.11");
-            return null;
-        }
 		return guiDeployer;
 	}
 
@@ -105,7 +100,7 @@ class Deployer extends RedstoneMachine {
                         if (!this.isEmptyBlock(coords)) {
                             this.decreaseItem(slot);
                             this.container.sendChanges();
-                            Game.message(`Placed block on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
+                            //Game.message(`Placed block on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                             break;
                         }
                     }
@@ -113,7 +108,7 @@ class Deployer extends RedstoneMachine {
                     let place = this.getUseCoords(coords, side, slot);
                     try {
                         this.useItem(coords, place, slot, ent);
-                        Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
+                        //Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
                     } catch (e) {
                         Game.message(e);
                     }
@@ -139,7 +134,7 @@ class Deployer extends RedstoneMachine {
         let block = this.region.getBlock(coords);
         let extraBlock = this.region.getExtraBlock(coords);
         let stringId = ItemRegistry.getVanillaStringID(slot.id);
-        Game.message(stringId);
+        //Game.message(JSON.stringify(block.getNamedStatesScriptable()));
         if (stringId.endsWith("spawn_egg")) {
             this.invokeItemUseOn(place, slot, ent);
             this.decreaseItem(slot);
@@ -173,10 +168,7 @@ class Deployer extends RedstoneMachine {
                 }
             }
         }
-        else {
-            this.invokeItemUseOn(place, slot, ent);
-            return;
-        }
+        else return;
         this.container.sendChanges();
     }
 
@@ -222,4 +214,6 @@ class Deployer extends RedstoneMachine {
     }
 }
 
-TileEntity.registerPrototype(BlockID.rp_deployer, new Deployer());
+if (BlockEngine.getMainGameVersion() >= 16) {
+    MachineRegistry.registerPrototype(BlockID.rp_deployer, new Deployer());
+}

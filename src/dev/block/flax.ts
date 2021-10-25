@@ -1,7 +1,6 @@
 ItemRegistry.createItem("flaxSeeds", {name: "Flax Seeds", icon: "flax_seeds", category: ItemCategory.NATURE});
 
-IDRegistry.genBlockID("flax");
-Block.createBlock("flax", [
+BlockRegistry.createBlock("flax", [
 	{name: "Flax", texture: [["flax", 0]], inCreative: false},
 	{name: "Flax", texture: [["flax", 1]], inCreative: false},
 	{name: "Flax", texture: [["flax", 2]], inCreative: false},

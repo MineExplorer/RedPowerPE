@@ -1,7 +1,6 @@
 /// <reference path="../type/BlulectricMachine.ts" />
 
-IDRegistry.genBlockID("rp_solar");
-Block.createBlock("rp_solar", [
+BlockRegistry.createBlock("rp_solar", [
 	{name: "Solar Panel", texture: [["rp_machine_bottom", 0], ["rp_solar", 0], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1]], inCreative: true}
 ], "stone_slab");
 BlockRegistry.setDestroyLevel("rp_solar", 1);

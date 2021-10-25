@@ -1,5 +1,4 @@
-IDRegistry.genBlockID("rp_lamp");
-Block.createBlock("rp_lamp", [
+BlockRegistry.createBlock("rp_lamp", [
 	{name: "White Lamp", texture: [["rp_lamp", 0]], inCreative: true},
 	{name: "Orange Lamp", texture: [["rp_lamp", 1]], inCreative: true},
 	{name: "Magenta Lamp", texture: [["rp_lamp", 2]], inCreative: true},
@@ -19,8 +18,7 @@ Block.createBlock("rp_lamp", [
 ], "opaque");
 Block.setDestroyTime(BlockID.rp_lamp, 2);
 
-IDRegistry.genBlockID("rp_lamp_inverted");
-Block.createBlock("rp_lamp_inverted", [
+BlockRegistry.createBlock("rp_lamp_inverted", [
 	{name: "White Inverted Lamp", texture: [["rp_lamp_on", 0]], inCreative: true},
 	{name: "Orange Inverted Lamp", texture: [["rp_lamp_on", 1]], inCreative: true},
 	{name: "Magenta Inverted Lamp", texture: [["rp_lamp_on", 2]], inCreative: true},

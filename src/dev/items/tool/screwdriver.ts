@@ -43,4 +43,4 @@ VanillaRecipe.addCraftingRecipe("rp_screwdriver", {
     result: {
         item: "item:rp_screwdriver"
     }
-});
+}, true);

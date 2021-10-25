@@ -37,6 +37,12 @@ Translation.addTranslation("Basalt Brick Slab", {ru: "Плита из базал
 Translation.addTranslation("Marble Slab", {ru: "Мраморная плита"});
 Translation.addTranslation("Marble Brick Slab", {ru: "Плита из мраморного кирпича"});
 
+Translation.addTranslation("Basalt Stairs", {ru: "Ступени из базальта"});
+Translation.addTranslation("Basalt Cobble Stairs", {ru: "Ступени из базальтового булыжника"});
+Translation.addTranslation("Basalt Brick Stairs", {ru: "Ступени из базальтового кирпича"});
+Translation.addTranslation("Marble Stairs", {ru: "Ступени из мрамора"});
+Translation.addTranslation("Marble Brick Stairs", {ru: "Ступени из мраморного кирпича"});
+
 // Lamps
 Translation.addTranslation("White Lamp", {ru: "Белая лампа"});
 Translation.addTranslation("Orange Lamp", {ru: "Оранжевая лампа"});
@@ -178,6 +184,7 @@ Translation.addTranslation("Seed Bag", {ru: "Мешочек для семян"})
 Translation.addTranslation("Ores", {ru: "Руды"});
 Translation.addTranslation("Mineral Blocks", {ru: "Минеральный блоки"});
 Translation.addTranslation("Slabs", {ru: "Плиты"});
+Translation.addTranslation("Stairs", {ru: "Ступени"});
 Translation.addTranslation("Lamps", {ru: "Лампы"});
 Translation.addTranslation("Inverted Lamps", {ru: "Инвертированные лампы"});
 Translation.addTranslation("Lumar", {ru: "Цветная светопыль"});

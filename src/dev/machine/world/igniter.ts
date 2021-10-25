@@ -1,6 +1,5 @@
 /// <reference path="../type/RedstoneMachine.ts" />
 
-IDRegistry.genBlockID("rp_igniter");
 MachineRegistry.createBlockWithRotation("rp_igniter", "Igniter", {
 	default: {top: "igniter_top", bottom: "rp_block_bottom", side: "igniter_side", side2: "igniter_side2"},
 	active: {top: "igniter_top_active", bottom: "rp_block_bottom", side: "igniter_side", side2: "igniter_side2"},
@@ -36,4 +35,4 @@ class Igniter extends RedstoneMachine {
 	}
 }
 
-TileEntity.registerPrototype(BlockID.rp_igniter, new Igniter());
+MachineRegistry.registerPrototype(BlockID.rp_igniter, new Igniter());

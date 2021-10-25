@@ -1,39 +1,38 @@
-class MachineBase
-extends TileEntityBase {
-	getFacing() {
-		return this.region.getBlockData(this);
+class MachineBase extends TileEntityBase {
+	getFacing(): number {
+		return this.blockSource.getBlockData(this.x, this.y, this.z);
 	}
 
-	setActive(isActive: boolean) {
-		if (this.networkData.getBoolean("isActive") !== isActive) {
-			this.networkData.putBoolean("isActive", isActive);
+	setActive(isActive: boolean): void {
+		if (this.networkData.getBoolean("active") !== isActive) {
+			this.networkData.putBoolean("active", isActive);
 			this.networkData.sendChanges();
 		}
 	}
 
 	onInit(): void {
 		this.networkData.putInt("blockId", this.blockID);
-		this.networkData.putInt("blockData", this.getFacing());
+		this.networkData.putInt("facing", this.getFacing());
 		this.networkData.sendChanges();
 	}
 
-	clientLoad() {
+	clientLoad(): void {
 		this.renderModel();
 		this.networkData.addOnDataChangedListener((data, isExternal) => {
 			this.renderModel();
 		});
 	}
 
-	clientUnload() {
+	clientUnload(): void {
 		BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 	}
 
 	@BlockEngine.Decorators.ClientSide
-	renderModel() {
-		if (this.networkData.getBoolean("isActive")) {
+	renderModel(): void {
+		if (this.networkData.getBoolean("active")) {
 			let blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
-			let blockData = this.networkData.getInt("blockData");
-			TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, blockData);
+			let facing = this.networkData.getInt("facing");
+			TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, facing);
 		} else {
 			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);
 		}

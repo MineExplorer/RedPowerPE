@@ -15,6 +15,7 @@ class ProcessingMachine extends BlulectricMachine {
 	}
 
 	onInit(): void {
+		super.onInit();
 		this.container.setSlotAddTransferPolicy("slotResult", function() {
 			return 0;
 		});
