@@ -84,6 +84,10 @@ class TileEntityLamp extends TileEntityBase {
 		}
 	}
 
+	getScreenName(): string {
+		return null;
+	}
+
 	getBlockID(isActive: boolean): number {
 		return isActive ? BlockID.rp_lamp_inverted : BlockID.rp_lamp;
 	}
