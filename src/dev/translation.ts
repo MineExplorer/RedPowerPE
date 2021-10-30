@@ -29,12 +29,12 @@ Translation.addTranslation("Basalt", {ru: "Базальт"});
 Translation.addTranslation("Basalt Cobble", {ru: "Базальтовый булыжник"});
 Translation.addTranslation("Basalt Brick", {ru: "Базальтовый кирпич"});
 Translation.addTranslation("Chiseled Basalt Brick", {ru: "Резной базальтовый кирпич"});
-Translation.addTranslation("Basalt Paver", {ru: "Базальтовая плитка"});
+Translation.addTranslation("Basalt Paver", {ru: "Гладкий базальт"});
 
 Translation.addTranslation("Basalt Slab", {ru: "Базальтовая плита"});
 Translation.addTranslation("Basalt Cobble Slab", {ru: "Плита из базальтового булыжника"});
 Translation.addTranslation("Basalt Brick Slab", {ru: "Плита из базальтового кирпича"});
-Translation.addTranslation("Basalt Paver Slab", {ru: "Плита из базальтовой плитки"});
+Translation.addTranslation("Basalt Paver Slab", {ru: "Плита из гладкого базальта"});
 Translation.addTranslation("Marble Slab", {ru: "Мраморная плита"});
 Translation.addTranslation("Marble Brick Slab", {ru: "Плита из мраморного кирпича"});
 
