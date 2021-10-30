@@ -34,13 +34,14 @@ Translation.addTranslation("Basalt Paver", {ru: "Базальтовая плит
 Translation.addTranslation("Basalt Slab", {ru: "Базальтовая плита"});
 Translation.addTranslation("Basalt Cobble Slab", {ru: "Плита из базальтового булыжника"});
 Translation.addTranslation("Basalt Brick Slab", {ru: "Плита из базальтового кирпича"});
+Translation.addTranslation("Basalt Paver Slab", {ru: "Плита из базальтовой плитки"});
 Translation.addTranslation("Marble Slab", {ru: "Мраморная плита"});
 Translation.addTranslation("Marble Brick Slab", {ru: "Плита из мраморного кирпича"});
 
-Translation.addTranslation("Basalt Stairs", {ru: "Ступени из базальта"});
+Translation.addTranslation("Basalt Stairs", {ru: "Базальтовые ступени"});
 Translation.addTranslation("Basalt Cobble Stairs", {ru: "Ступени из базальтового булыжника"});
 Translation.addTranslation("Basalt Brick Stairs", {ru: "Ступени из базальтового кирпича"});
-Translation.addTranslation("Marble Stairs", {ru: "Ступени из мрамора"});
+Translation.addTranslation("Marble Stairs", {ru: "Мраморные ступени"});
 Translation.addTranslation("Marble Brick Stairs", {ru: "Ступени из мраморного кирпича"});
 
 // Lamps

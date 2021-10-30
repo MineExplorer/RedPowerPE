@@ -2543,6 +2543,27 @@ declare class Config {
 
     /**
      * @param name option name, supports multi-layer calls, separated by '.'
+     * @return number config value specified in config or 0 if no value was
+     * specified
+     */
+     getInteger(name: string): number;
+
+    /**
+     * @param name option name, supports multi-layer calls, separated by '.'
+     * @return number config value specified in config or 0 if no value was
+     * specified
+     */
+    getFloat(name: string): number;
+
+    /**
+     * @param name option name, supports multi-layer calls, separated by '.'
+     * @return number config value specified in config or 0 if no value was
+     * specified
+     */
+    getDouble(name: string): number;
+
+    /**
+     * @param name option name, supports multi-layer calls, separated by '.'
      * @return string config value specified in config or null if no value was
      * specified
      */
@@ -10998,6 +11019,9 @@ declare namespace RenderMesh {
         setTextureCoordinates(floatArray: number[]): void;
         setVertices(floatArray: number[]): void;
     }
+}
+declare namespace Resources {
+	function addRuntimePack(type: string, name: string): string;
 }
 /**
  * Module used to save data between world sessions

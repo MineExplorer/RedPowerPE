@@ -3,7 +3,7 @@
 		"info": {
 			"name": "RedPower",
 			"author": "Mine Explorer",
-			"version": "prerelease 5",
+			"version": "prerelease 5.1",
 			"description": "Pocket version of RedPower 2 for PC",
 			"icon": "src/icon.png"
 		},

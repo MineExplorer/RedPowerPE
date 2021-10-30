@@ -13,7 +13,8 @@ IDRegistry.genBlockID("doubleBasaltSlab");
 BaseBlocks.createSlab("basaltSlab", [
   {name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
   {name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
-  {name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true}
+  {name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},
+  {name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt_slab", BlockID.doubleBasaltSlab);
 ToolAPI.registerBlockMaterial(BlockID.basaltSlab, "stone", 1, true);
 
@@ -21,6 +22,7 @@ BaseBlocks.createDoubleSlab("doubleBasaltSlab", [
 	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: false},
 	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: false},
 	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: false},
+	{name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: false}
 ], "basalt", BlockID.basaltSlab);
 ToolAPI.registerBlockMaterial(BlockID.doubleBasaltSlab, "stone", 1, true);
 
@@ -35,6 +37,10 @@ Recipes.addShaped({id: BlockID.basaltSlab, count: 6, data: 1}, [
 Recipes.addShaped({id: BlockID.basaltSlab, count: 6, data: 2}, [
 	"xxx"
 ], ['x', BlockID.basaltBrick, 0]);
+
+Recipes.addShaped({id: BlockID.basaltSlab, count: 6, data: 3}, [
+	"xxx"
+], ['x', BlockID.basaltPaver, 0]);
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_slab", {
   ingredients: [
@@ -72,3 +78,13 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_slab", {
   }
 });
 
+VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_paver_slab", {
+  ingredients: [
+    { item: "block:basaltPaver" }
+  ],
+  result: {
+    item: "block:basaltSlab",
+    data: 3,
+    count: 2
+  }
+});

@@ -54,31 +54,31 @@ Item.addCreativeGroup("rpStairs", Translation.translate("Stairs"), [
 	BlockID.marbleBrickStairs
 ]);
 
-Recipes.addShaped({id: BlockID.basaltStairs, count: 4, data: 1}, [
+Recipes.addShaped({id: BlockID.basaltStairs, count: 4, data: 0}, [
 	"x  ",
 	"xx ",
 	"xxx"
 ], ['x', BlockID.rp_basalt, 0]);
 
-Recipes.addShaped({id: BlockID.basaltCobbleStairs, count: 4, data: 1}, [
+Recipes.addShaped({id: BlockID.basaltCobbleStairs, count: 4, data: 0}, [
 	"x  ",
 	"xx ",
 	"xxx"
 ], ['x', BlockID.basaltCobble, 0]);
 
-Recipes.addShaped({id: BlockID.basaltBrickStairs, count: 4, data: 1}, [
+Recipes.addShaped({id: BlockID.basaltBrickStairs, count: 4, data: 0}, [
 	"x  ",
 	"xx ",
 	"xxx"
 ], ['x', BlockID.basaltBrick, 0]);
 
-Recipes.addShaped({id: BlockID.marbleStairs, count: 4, data: 1}, [
+Recipes.addShaped({id: BlockID.marbleStairs, count: 4, data: 0}, [
 	"x  ",
 	"xx ",
 	"xxx"
 ], ['x', BlockID.rp_marble, 0]);
 
-Recipes.addShaped({id: BlockID.marbleBrickStairs, count: 4, data: 1}, [
+Recipes.addShaped({id: BlockID.marbleBrickStairs, count: 4, data: 0}, [
 	"x  ",
 	"xx ",
 	"xxx"
