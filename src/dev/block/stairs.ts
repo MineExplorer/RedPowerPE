@@ -86,9 +86,7 @@ Recipes.addShaped({id: BlockID.marbleBrickStairs, count: 4, data: 1}, [
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_cobble_stairs", {
 	ingredients: [
-	  {
-		item: "block:basaltCobble"
-	  }
+	  { item: "block:basaltCobble" }
 	],
 	result: {
 	  item: "block:basaltCobbleStairs"
@@ -109,9 +107,7 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_stairs", {
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick_stairs", {
 	ingredients: [
-	  {
-		item: "block:marbleBrick"
-	  }
+	  { item: "block:marbleBrick" }
 	],
 	result: {
 	  item: "block:marbleBrickStairs"
