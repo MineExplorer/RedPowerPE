@@ -23,8 +23,7 @@ Callback.addCallback("PreLoaded", function() {
 
 	addRecipeWithCraftingTool({id: VanillaItemID.string, count: 4, data: 0}, [{id: 35, data: -1}], ItemID.woolCard);
 
-	VanillaRecipe.addCraftingRecipe("string_from_wool", {
-		type: "shapeless",
+	VanillaRecipe.addShapelessRecipe("string_from_wool", {
 		ingredients: [
 		  { item: "wool" },
 		  { item: "item:woolCard" }

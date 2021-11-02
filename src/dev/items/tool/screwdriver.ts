@@ -29,8 +29,7 @@ implements IScrewdriver {
 
 ItemRegistry.registerItem(new ToolScrewdriver("rp_screwdriver", "Screwdriver", "rp_screwdriver", 200));
 
-VanillaRecipe.addCraftingRecipe("rp_screwdriver", {
-    type: "shaped",
+VanillaRecipe.addShapedRecipe("rp_screwdriver", {
     tags: ["crafting_table"],
     pattern: [
         "A ",

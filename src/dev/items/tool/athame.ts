@@ -5,8 +5,7 @@ ItemRegistry.createTool("athame", {name: "Athame", icon: "athame", material: {le
   }
 });
 
-VanillaRecipe.addCraftingRecipe("athame", {
-  type: "shaped",
+VanillaRecipe.addShapedRecipe("athame", {
   pattern: [
     "X",
     "#"

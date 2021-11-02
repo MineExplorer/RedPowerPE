@@ -31,8 +31,7 @@ function getDye(index: number) {
 }
 
 for (let index = 0; index < 16; index++) {
-	VanillaRecipe.addCraftingRecipe("lumar" + index, {
-		type: "shaped",
+	VanillaRecipe.addShapedRecipe("lumar" + index, {
 		pattern: [
 			"XG",
 			"RX"

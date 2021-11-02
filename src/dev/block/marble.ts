@@ -21,8 +21,7 @@ BlockRegistry.createBlock("marbleBrick", [
 ToolAPI.registerBlockMaterial(BlockID.marbleBrick, "stone", 1, true);
 BlockRegistry.setDestroyLevel("marbleBrick", 1);
 
-VanillaRecipe.addCraftingRecipe("marble_brick", {
-  type: "shaped",
+VanillaRecipe.addShapedRecipe("marble_brick", {
   pattern: [
     "XX",
     "XX"

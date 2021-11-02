@@ -53,8 +53,7 @@ Item.addCreativeGroup("basalt", Translation.translate("Basalt"), [
 
 Recipes.addFurnace(BlockID.basaltCobble, BlockID.rp_basalt, 0);
 
-VanillaRecipe.addCraftingRecipe("basalt_brick", {
-  type: "shaped",
+VanillaRecipe.addShapedRecipe("basalt_brick", {
   pattern: [
     "XX",
     "XX"
@@ -69,8 +68,7 @@ VanillaRecipe.addCraftingRecipe("basalt_brick", {
   }
 }, true);
 
-VanillaRecipe.addCraftingRecipe("basalt_paver", {
-  type: "shapeless",
+VanillaRecipe.addShapelessRecipe("basalt_paver", {
   tags: ["crafting_table", "stonecutter"],
   ingredients: [
     { item: "block:rp_basalt" }
