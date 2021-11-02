@@ -70,6 +70,10 @@ class Deployer extends RedstoneMachine {
 		return guiDeployer;
 	}
 
+    onTick(): void {
+        StorageInterface.checkHoppers(this);
+    }
+
     isBlockItem(itemID: number): boolean {
         if (ItemRegistry.isBlock(itemID)) {
             return true;
