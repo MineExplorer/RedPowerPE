@@ -30,8 +30,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 LIBRARY({
     name: "BlockEngine",
-    version: 6,
-    shared: false,
+    version: 7,
+    shared: true,
     api: "CoreEngine"
 });
 var EntityGetYaw = ModAPI.requireGlobal("Entity.getYaw");
@@ -953,7 +953,7 @@ var BlockModeler;
     }
     BlockModeler.createStairsRenderModel = createStairsRenderModel;
     function setInventoryModel(blockID, model, data) {
-        if (data === void 0) { data = -1; }
+        if (data === void 0) { data = 0; }
         ItemModel.getFor(blockID, data).setHandModel(model);
         ItemModel.getFor(blockID, data).setUiModel(model);
     }
@@ -1411,6 +1411,7 @@ var ItemCommon = /** @class */ (function (_super) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
         _this.item = Item.createItem(_this.stringID, _this.name, _this.icon, { isTech: !inCreative });
+        _this.inCreative = inCreative;
         _this.setCategory(ItemCategory.ITEMS);
         return _this;
     }
@@ -1422,6 +1423,7 @@ var ItemFood = /** @class */ (function (_super) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
         _this.item = Item.createFoodItem(_this.stringID, _this.name, _this.icon, { food: food, isTech: !inCreative });
+        _this.inCreative = inCreative;
         _this.setCategory(ItemCategory.ITEMS);
         return _this;
     }
@@ -1441,6 +1443,7 @@ var ItemThrowable = /** @class */ (function (_super) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
         _this.item = Item.createThrowableItem(_this.stringID, _this.name, _this.icon, { isTech: !inCreative });
+        _this.inCreative = inCreative;
         _this.setCategory(ItemCategory.ITEMS);
         Item.registerThrowableFunctionForID(_this.id, function (projectile, item, target) {
             _this.onProjectileHit(projectile, item, target);
@@ -1465,6 +1468,7 @@ var ItemArmor = /** @class */ (function (_super) {
             texture: _this.texture,
             isTech: !inCreative
         });
+        _this.inCreative = inCreative;
         _this.setCategory(ItemCategory.EQUIPMENT);
         if (params.material)
             _this.setMaterial(params.material);
@@ -1807,36 +1811,34 @@ var ItemRegistry;
     }
     ItemRegistry.registerItemFuncs = registerItemFuncs;
     function createItem(stringID, params) {
-        var _a;
-        var numericID = IDRegistry.genItemID(stringID);
-        var inCreative = (_a = params.inCreative) !== null && _a !== void 0 ? _a : true;
-        var icon;
-        if (typeof params.icon == "string")
-            icon = { name: params.icon };
-        else
-            icon = params.icon;
+        var item = getInstanceOf(stringID);
+        var inCreative = !(item === null || item === void 0 ? void 0 : item.inCreative) && params.inCreative;
         if (params.type == "food") {
-            Item.createFoodItem(stringID, params.name, icon, { food: params.food, stack: params.stack || 64, isTech: !inCreative });
+            item = new ItemFood(stringID, params.name, params.icon, params.food, inCreative);
         }
         else if (params.type == "throwable") {
-            Item.createThrowableItem(stringID, params.name, icon, { stack: params.stack || 64, isTech: !inCreative });
+            item = new ItemThrowable(stringID, params.name, params.icon, inCreative);
         }
         else {
-            Item.createItem(stringID, params.name, icon, { stack: params.stack || 64, isTech: !inCreative });
+            item = new ItemCommon(stringID, params.name, params.icon, inCreative);
         }
-        Item.setCategory(numericID, params.category || ItemCategory.ITEMS);
+        item.setCategory(params.category || ItemCategory.ITEMS);
+        if (params.stack)
+            item.setMaxStack(params.stack);
         if (params.maxDamage)
-            Item.setMaxDamage(numericID, params.maxDamage);
+            item.setMaxDamage(params.maxDamage);
         if (params.handEquipped)
-            Item.setToolRender(numericID, true);
+            item.setHandEquipped(true);
         if (params.allowedInOffhand)
-            Item.setAllowedInOffhand(numericID, true);
+            item.allowInOffHand();
         if (params.glint)
-            Item.setGlint(numericID, true);
+            item.setGlint(true);
         if (params.enchant)
-            Item.setEnchantType(numericID, params.enchant.type, params.enchant.value);
+            item.setEnchantType(params.enchant.type, params.enchant.value);
         if (params.rarity)
-            setRarity(numericID, params.rarity);
+            item.setRarity(params.rarity);
+        items[item.id] = item;
+        return item;
     }
     ItemRegistry.createItem = createItem;
     ;
