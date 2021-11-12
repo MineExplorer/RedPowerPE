@@ -29,7 +29,7 @@ Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: 0}, [
 ], ['a', ItemID.canvas, 0]);
 
 for (let i = 1; i < 16; i++) {
-	let dye = IDConverter.getIDData(COLOR_INDEX_TO_DYE[i]);
+	const dye = IDConverter.getIDData(COLOR_INDEX_TO_DYE[i]);
 	Recipes.addShaped({id: ItemID.canvasBag, count: 1, data: i}, [
 		"aaa",
 		"axa",

@@ -93,20 +93,20 @@ class TileEntityLamp extends TileEntityBase {
 	}
 
 	onRedstoneUpdate(power: number): void {
-		let active = (!this.data.inverted == power > 0);
-		let blockID = this.getBlockID(active);
+		const active = (!this.data.inverted == power > 0);
+		const blockID = this.getBlockID(active);
 		if (this.blockID != blockID) {
 			this.selfDestroy();
-			let blockData = this.region.getBlockData(this);
+			const blockData = this.region.getBlockData(this);
 			this.region.setBlock(this, blockID, blockData);
-			let tile = this.region.addTileEntity(this);
+			const tile = this.region.addTileEntity(this);
 			tile.data.inverted = this.data.inverted;
 		}
 	}
 
 	destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void {
-		let blockID = this.getBlockID(this.data.inverted);
-		let blockData = this.region.getBlockData(coords);
+		const blockID = this.getBlockID(this.data.inverted);
+		const blockData = this.region.getBlockData(coords);
 		this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
 	}
 }

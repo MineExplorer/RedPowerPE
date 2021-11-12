@@ -14,7 +14,7 @@ class RedstoneMachine extends TileEntityBase {
     }
 
     onItemUse(coords: Callback.ItemUseCoordinates, item: ItemStack, player: number): boolean {
-        let screwdriver = MachineRegistry.getScrewdriverData(item.id);
+        const screwdriver = MachineRegistry.getScrewdriverData(item.id);
         if (screwdriver?.canBeUsed(item)) {
             screwdriver.useItem(item, player);
             this.setFacing((this.getFacing() + 1) % 6);
@@ -24,13 +24,13 @@ class RedstoneMachine extends TileEntityBase {
     }
 
     activate(): void {
-        let block = this.region.getBlock(this);
+        const block = this.region.getBlock(this);
         this.region.setBlock(this, block.id, block.data + 6);
         this.data.activated = true;
     }
 
     deactivate(): void {
-        let block = this.region.getBlock(this);
+        const block = this.region.getBlock(this);
         this.region.setBlock(this, block.id, block.data - 6);
         this.data.activated = false;
     }

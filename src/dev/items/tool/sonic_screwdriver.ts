@@ -1,4 +1,5 @@
-class ToolSonicScrewdriver extends ItemCommon {
+class ToolSonicScrewdriver extends ItemCommon
+implements IScrewdriver {
     energyPerUse = 40;
 
     constructor() {
@@ -14,7 +15,7 @@ class ToolSonicScrewdriver extends ItemCommon {
     }
 
     useItem(item: ItemStack, player: number): void {
-        let energyStored = ChargeItemRegistry.getEnergyStored(item);
+        const energyStored = ChargeItemRegistry.getEnergyStored(item);
         ChargeItemRegistry.setEnergyStored(item, energyStored - this.energyPerUse);
         Entity.setCarriedItem(player, item.id, 1, item.data, item.extra);
     }

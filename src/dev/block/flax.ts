@@ -30,7 +30,7 @@ Block.registerDropFunction("flax", function(coords, blockID, blockData, level, e
 });
 
 Callback.addCallback("DestroyBlock", function(coords, block, player) {
-	let region = BlockSource.getDefaultForActor(player);
+	const region = BlockSource.getDefaultForActor(player);
 	if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
 		region.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, ItemID.flaxSeeds, 1, 0);
 	}
@@ -43,7 +43,7 @@ Block.registerNeighbourChangeFunction("flax", function(coords, block, changeCoor
 });
 
 Item.registerUseFunction("flaxSeeds", function(coords, item, block, player) {
-	let region = WorldRegion.getForActor(player);
+	const region = WorldRegion.getForActor(player);
 	if (block.id == 60 && coords.side == 1 && region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
 		region.setBlock(coords.x, coords.y + 1, coords.z, BlockID.flax, 0);
 		if (Game.isItemSpendingAllowed(player)) {
@@ -54,7 +54,7 @@ Item.registerUseFunction("flaxSeeds", function(coords, item, block, player) {
 });
 
 function checkFarmland(x: number, y: number, z: number, region: BlockSource) {
-	let block = region.getBlock(x, y, z);
+	const block = region.getBlock(x, y, z);
 	if (block.id == 60) {
 		if (block.data < 7) {
 			return 0.25;
@@ -66,7 +66,7 @@ function checkFarmland(x: number, y: number, z: number, region: BlockSource) {
 
 Block.setRandomTickCallback(BlockID.flax, function(x, y, z, id, data, region) {
 	if (data < 5) {
-		let block = region.getBlock(x, y-1, z)
+		const block = region.getBlock(x, y-1, z)
 		if (block.id != 60) {
 			region.destroyBlock(x, y, z, true);
 		}
@@ -80,7 +80,7 @@ Block.setRandomTickCallback(BlockID.flax, function(x, y, z, id, data, region) {
 			points += checkFarmland(x+1, y, z-1, region);
 			points += checkFarmland(x+1, y, z, region);
 			points += checkFarmland(x+1, y, z+1, region);
-			let chance = 1/(Math.floor(50/points) + 1);
+			const chance = 1/(Math.floor(50/points) + 1);
 			if (Math.random() < chance) {
 				if (data < 3) {
 					region.setBlock(x, y, z, id, data + 1);
@@ -98,8 +98,8 @@ Block.setRandomTickCallback(BlockID.flax, function(x, y, z, id, data, region) {
 
 // bone meal use
 Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player) {
-	let region = BlockSource.getDefaultForActor(player);
-	let boneMeal = IDConverter.getIDData("bone_meal");
+	const region = BlockSource.getDefaultForActor(player);
+	const boneMeal = IDConverter.getIDData("bone_meal");
 	if (item.id == boneMeal.id && item.data == boneMeal.data && block.id == BlockID.flax && block.data < 4) {
 		block.data += randomInt(2, 3);
 		if (block.data < 4) {
@@ -113,9 +113,9 @@ Callback.addCallback("ItemUse", function(coords, item, block, isExternal, player
 			Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
 		}
 		for (let i = 0; i < 16; i++) {
-			let px = coords.x + Math.random();
-			let pz = coords.z + Math.random();
-			let py = coords.y + Math.random();
+			const px = coords.x + Math.random();
+			const pz = coords.z + Math.random();
+			const py = coords.y + Math.random();
 			Particles.addFarParticle(Native.ParticleType.happyVillager, px, py, pz, 0, 0, 0);
 		}
 	}

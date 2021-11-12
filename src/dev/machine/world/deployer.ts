@@ -82,24 +82,24 @@ class Deployer extends RedstoneMachine {
     }
 
     isEmptyBlock(coords: Vector, item?: ItemInstance) {
-        let blockID = this.region.getBlockId(coords);
+        const blockID = this.region.getBlockId(coords);
         return blockID == 0 ||
           (!item || item.id != VanillaItemID.bucket && item.id != VanillaItemID.glass_bottle) && blockID >= 8 && blockID <= 11;
     }
 
     activate(): void {
         super.activate();
-        let side = this.getFacing();
-        let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
-        let ent = this.region.spawnEntity(this.x, this.y, this.z, EEntityType.ARROW);
-        let angle = Entity.getLookAt(ent, coords.x, coords.y, coords.z);
+        const side = this.getFacing();
+        const coords = World.getRelativeCoords(this.x, this.y, this.z, side);
+        const ent = this.region.spawnEntity(this.x, this.y, this.z, EEntityType.ARROW);
+        const angle = Entity.getLookAt(ent, coords.x, coords.y, coords.z);
         Entity.setLookAngle(ent, angle.yaw, angle.pitch);
         for (let i = 0; i < 9; i++) {
-            let slot = this.container.getSlot("slot" + i);
+            const slot = this.container.getSlot("slot" + i);
             if (slot.id != 0) {
                 if (this.isBlockItem(slot.id)) {
                     if (this.isEmptyBlock(coords)) {
-                        let place = this.getUseCoords(coords, side);
+                        const place = this.getUseCoords(coords, side);
                         this.invokeItemUseOn(place as any, slot, ent);
                         if (!this.isEmptyBlock(coords)) {
                             this.decreaseItem(slot);
@@ -109,7 +109,7 @@ class Deployer extends RedstoneMachine {
                         }
                     }
                 } else {
-                    let place = this.getUseCoords(coords, side, slot);
+                    const place = this.getUseCoords(coords, side, slot);
                     try {
                         this.useItem(coords, place, slot, ent);
                         //Game.message(`Item use on ${place.x}, ${place.y}, ${place.z}, (${place.side})`);
@@ -125,7 +125,7 @@ class Deployer extends RedstoneMachine {
 
     getUseCoords(coords: Vector, facing: number, item?: ItemInstance): BlockPosition {
         if (this.isEmptyBlock(coords, item)) {
-            let blockId = this.region.getBlockId(coords.x, coords.y - 1, coords.z)
+            const blockId = this.region.getBlockId(coords.x, coords.y - 1, coords.z)
             if (Block.isSolid(blockId) || blockId == VanillaTileID.farmland) {
                 return {x: coords.x, y: coords.y - 1, z: coords.z, side: 1};
             }
@@ -135,9 +135,9 @@ class Deployer extends RedstoneMachine {
     }
 
     useItem(coords: Vector, place: BlockPosition, slot: ItemContainerSlot, ent: number): void {
-        let block = this.region.getBlock(coords);
-        let extraBlock = this.region.getExtraBlock(coords);
-        let stringId = ItemRegistry.getVanillaStringID(slot.id);
+        const block = this.region.getBlock(coords);
+        const extraBlock = this.region.getExtraBlock(coords);
+        const stringId = ItemRegistry.getVanillaStringID(slot.id);
         //Game.message(JSON.stringify(block.getNamedStatesScriptable()));
         if (stringId.endsWith("spawn_egg")) {
             this.invokeItemUseOn(place, slot, ent);
@@ -150,7 +150,7 @@ class Deployer extends RedstoneMachine {
             }
         }
         else if (stringId == "bucket") {
-            let blockId = extraBlock.id || block.id;
+            const blockId = extraBlock.id || block.id;
             if (blockId >= 8 && blockId <= 11) {
                 this.invokeItemUseOn(place, slot, ent);
                 this.decreaseItem(slot);
@@ -184,27 +184,27 @@ class Deployer extends RedstoneMachine {
 
     addItem(id: number, count: number, data: number): void {
         for (let i = 0; i < 9; i++) {
-            let slot = this.container.getSlot("slot" + i);
+            const slot = this.container.getSlot("slot" + i);
             if (slot.id == 0) {
                 slot.setSlot(id, count, data);
                 return;
             }
         }
-        let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
+        const coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
         this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, id, count, data);
     }
 
     invokeItemUseOn(coords: any, item: ItemContainerSlot, entity: number): void {
-        let dir = World.getVectorByBlockSide(coords.side);
+        const dir = World.getVectorByBlockSide(coords.side);
         coords.vec ??= {
             x: coords.x + .5 + dir.x/2,
             y: coords.y + .5 + dir.y/2,
             z: coords.z + .5 + dir.z/2
         };
         coords.relative ??= World.getRelativeCoords(coords.x, coords.y, coords.z, coords.side);
-        let block = this.region.getBlock(coords.x, coords.y, coords.z);
+        const block = this.region.getBlock(coords.x, coords.y, coords.z);
         let useItem = false;
-        let func = Game.isItemSpendingAllowed;
+        const func = Game.isItemSpendingAllowed;
         Game.isItemSpendingAllowed = function() {
             useItem = true;
             return false;

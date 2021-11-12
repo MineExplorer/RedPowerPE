@@ -1,7 +1,7 @@
 namespace SmelterRecipes {
 	export type RecipeFormat = {result: ItemInstance, input: ItemInstance[]};
 
-	export let recipeData: RecipeFormat[] = [];
+	export const recipeData: RecipeFormat[] = [];
 
 	export function addRecipe(result: {id: number, count: number, data?: number}, input: {id: number, count: number, data?: number}[]): void {
 		result.data ??= 0;
@@ -12,9 +12,9 @@ namespace SmelterRecipes {
 	}
 
 	export function getInput(container: ItemContainer): ItemInstance[] {
-		let inputItems: ItemInstance[] = [];
+		const inputItems: ItemInstance[] = [];
 		for (let i = 1; i <= 4; i++) {
-			let slot = container.getSlot("slotSource" + i);
+			const slot = container.getSlot("slotSource" + i);
 			if (slot.id > 0) {
 				inputItems.push(new ItemStack(slot));
 			}
@@ -46,13 +46,13 @@ namespace SmelterRecipes {
 	}
 
 	export function performRecipe(recipe: RecipeFormat, container: ItemContainer) {
-		let resultSlot = container.getSlot("slotResult");
+		const resultSlot = container.getSlot("slotResult");
 		for (let item of recipe.input) {
 			let count = item.count;
 			for (let i = 1; i <= 4; i++) {
-				let slot = container.getSlot("slotSource" + i);
+				const slot = container.getSlot("slotSource" + i);
 				if (item.id == slot.id && (item.data == -1 || item.data == slot.data)) {
-					let dc = Math.min(count, slot.count);
+					const dc = Math.min(count, slot.count);
 					count -= dc;
 					slot.setSlot(slot.id, slot.count - dc, slot.data);
 					slot.validate();

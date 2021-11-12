@@ -39,9 +39,9 @@ function addRecipeWithCraftingTool(result, ingredients, toolID) {
 	ingredients.push({id: toolID, data: -1});
 	Recipes.addShapeless(result, ingredients, function(api, field, result) {
 		for (let i = 0; i < field.length; i++) {
-			let item = field[i];
+			const item = field[i];
 			if (item.id == toolID) {
-				let maxDamage = Item.getMaxDamage(toolID);
+				const maxDamage = Item.getMaxDamage(toolID);
 				if (maxDamage > 0 && item.data++ >= maxDamage) {
 					item.id = item.count = item.data = 0;
 				}

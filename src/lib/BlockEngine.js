@@ -407,13 +407,27 @@ var WorldRegion = /** @class */ (function () {
         }
     };
     WorldRegion.prototype.breakBlockForResult = function (x, y, z, player, item) {
-        if (typeof x === "number") {
+        if (typeof x === "object") {
+            var pos = x;
+            player = y;
+            item = z;
+            return this.breakBlockForResult(pos.x, pos.y, pos.z, player, item);
+        }
+        if (BlockEngine.getMainGameVersion() >= 16) {
             return this.blockSource.breakBlockForJsResult(x, y, z, player, item);
         }
-        var pos = x;
-        player = y;
-        item = z;
-        return this.blockSource.breakBlockForJsResult(pos.x, pos.y, pos.z, player, item);
+        var block = this.blockSource.getBlock(x, y, z);
+        this.blockSource.setBlock(x, y, z, 0, 0);
+        var level = ToolAPI.getToolLevelViaBlock(item.id, block.id);
+        var drop = BlockRegistry.getBlockDrop(x, y, z, block, level, item, this.blockSource);
+        var items = [];
+        if (drop) {
+            for (var _i = 0, drop_2 = drop; _i < drop_2.length; _i++) {
+                var item_1 = drop_2[_i];
+                items.push(new ItemStack(item_1[0], item_1[1], item_1[2], item_1[3]));
+            }
+        }
+        return { items: items, experience: 0 };
     };
     WorldRegion.prototype.getNativeTileEntity = function (x, y, z) {
         if (typeof x === "number") {
@@ -1082,9 +1096,9 @@ var BlockRegistry;
             var item = new ItemStack();
             //@ts-ignore
             var drop = dropFunc(coords, block.id, block.data, 127, enchant, item, region);
-            for (var _i = 0, drop_2 = drop; _i < drop_2.length; _i++) {
-                var item_1 = drop_2[_i];
-                region.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, item_1[0], item_1[1], item_1[2], item_1[3] || null);
+            for (var _i = 0, drop_3 = drop; _i < drop_3.length; _i++) {
+                var item_2 = drop_3[_i];
+                region.spawnDroppedItem(coords.x + .5, coords.y + .5, coords.z + .5, item_2[0], item_2[1], item_2[2], item_2[3] || null);
             }
         });
     }
@@ -1160,8 +1174,8 @@ var BlockRegistry;
         if (id == VanillaTileID.campfire) {
             if (enchant.silk)
                 return [[id, 1, 0]];
-            var item_2 = IDConverter.getIDData("charcoal");
-            return [[item_2.id, 1, item_2.data]];
+            var item_3 = IDConverter.getIDData("charcoal");
+            return [[item_3.id, 1, item_3.data]];
         }
         if (id == VanillaTileID.soul_campfire) {
             if (enchant.silk)
@@ -1316,6 +1330,9 @@ var ItemStack = /** @class */ (function () {
 }());
 var ItemBase = /** @class */ (function () {
     function ItemBase(stringID, name, icon) {
+        this.maxStack = 64;
+        this.maxDamage = 0;
+        this.inCreative = false;
         this.stringID = stringID;
         this.id = IDRegistry.genItemID(stringID);
         this.setName(name || stringID);
@@ -1403,6 +1420,14 @@ var ItemBase = /** @class */ (function () {
     ItemBase.prototype.setRarity = function (rarity) {
         ItemRegistry.setRarity(this.id, rarity);
     };
+    ItemBase.prototype.addDefaultToCreative = function () {
+        var _a;
+        var wasInCreative = (_a = ItemRegistry.getInstanceOf(this.id)) === null || _a === void 0 ? void 0 : _a.inCreative;
+        if (!wasInCreative) {
+            Item.addToCreative(this.id, 1, 0);
+            this.inCreative = true;
+        }
+    };
     return ItemBase;
 }());
 var ItemCommon = /** @class */ (function (_super) {
@@ -1410,9 +1435,10 @@ var ItemCommon = /** @class */ (function (_super) {
     function ItemCommon(stringID, name, icon, inCreative) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
-        _this.item = Item.createItem(_this.stringID, _this.name, _this.icon, { isTech: !inCreative });
-        _this.inCreative = inCreative;
+        _this.item = Item.createItem(_this.stringID, _this.name, _this.icon, { isTech: true });
         _this.setCategory(ItemCategory.ITEMS);
+        if (inCreative)
+            _this.addDefaultToCreative();
         return _this;
     }
     return ItemCommon;
@@ -1422,9 +1448,10 @@ var ItemFood = /** @class */ (function (_super) {
     function ItemFood(stringID, name, icon, food, inCreative) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
-        _this.item = Item.createFoodItem(_this.stringID, _this.name, _this.icon, { food: food, isTech: !inCreative });
-        _this.inCreative = inCreative;
+        _this.item = Item.createFoodItem(_this.stringID, _this.name, _this.icon, { food: food, isTech: true });
         _this.setCategory(ItemCategory.ITEMS);
+        if (inCreative)
+            _this.addDefaultToCreative();
         return _this;
     }
     ItemFood.prototype.onFoodEaten = function (item, food, saturation, player) { };
@@ -1442,9 +1469,10 @@ var ItemThrowable = /** @class */ (function (_super) {
     function ItemThrowable(stringID, name, icon, inCreative) {
         if (inCreative === void 0) { inCreative = true; }
         var _this = _super.call(this, stringID, name, icon) || this;
-        _this.item = Item.createThrowableItem(_this.stringID, _this.name, _this.icon, { isTech: !inCreative });
-        _this.inCreative = inCreative;
+        _this.item = Item.createThrowableItem(_this.stringID, _this.name, _this.icon, { isTech: true });
         _this.setCategory(ItemCategory.ITEMS);
+        if (inCreative)
+            _this.addDefaultToCreative();
         Item.registerThrowableFunctionForID(_this.id, function (projectile, item, target) {
             _this.onProjectileHit(projectile, item, target);
         });
@@ -1466,12 +1494,13 @@ var ItemArmor = /** @class */ (function (_super) {
             armor: _this.defence,
             durability: 0,
             texture: _this.texture,
-            isTech: !inCreative
+            isTech: true
         });
-        _this.inCreative = inCreative;
         _this.setCategory(ItemCategory.EQUIPMENT);
         if (params.material)
             _this.setMaterial(params.material);
+        if (inCreative)
+            _this.addDefaultToCreative();
         ItemArmor.registerListeners(_this.id, _this);
         return _this;
     }
@@ -1681,6 +1710,9 @@ var ItemRegistry;
     var items = {};
     var itemsRarity = {};
     var armorMaterials = {};
+    /**
+     * @returns item type ("block" or "item")
+     */
     function getType(id) {
         return IDRegistry.getIdInfo(id).split(":")[0];
     }
@@ -1693,14 +1725,23 @@ var ItemRegistry;
         return getType(id) == "item";
     }
     ItemRegistry.isItem = isItem;
+    /**
+     * @returns whether item is item from the original game
+     */
     function isVanilla(id) {
         return !IDRegistry.getNameByID(id);
     }
     ItemRegistry.isVanilla = isVanilla;
+    /**
+     * @returns item string id in the game, it differs for custom items
+     */
     function getVanillaStringID(id) {
         return IDRegistry.getIdInfo(id).split(":")[1].split("#")[0];
     }
     ItemRegistry.getVanillaStringID = getVanillaStringID;
+    /**
+     * @returns instance of item class if it exists
+     */
     function getInstanceOf(itemID) {
         var numericID = Item.getNumericId(itemID);
         return items[numericID] || null;
@@ -1708,7 +1749,6 @@ var ItemRegistry;
     ItemRegistry.getInstanceOf = getInstanceOf;
     /**
      * @returns EnumRarity value for item
-     * @param itemID item's id
      */
     function getRarity(itemID) {
         var _a;
@@ -1731,12 +1771,16 @@ var ItemRegistry;
     ItemRegistry.getRarityColor = getRarityColor;
     /**
      * @returns chat color for item's rarity
-     * @param itemID item's id
      */
     function getItemRarityColor(itemID) {
         return getRarityColor(getRarity(itemID));
     }
     ItemRegistry.getItemRarityColor = getItemRarityColor;
+    /**
+     * @param id item id
+     * @param rarity one of EnumRarity values
+     * @param preventNameOverride prevent registration of name override function
+     */
     function setRarity(id, rarity, preventNameOverride) {
         var numericID = Item.getNumericId(id);
         itemsRarity[numericID] = rarity;
@@ -1748,29 +1792,56 @@ var ItemRegistry;
         }
     }
     ItemRegistry.setRarity = setRarity;
+    /**
+     * Creates new armor material with specified parameters
+     * @param name new (or existing) material name
+     * @param material material properties
+     */
     function addArmorMaterial(name, material) {
         armorMaterials[name] = material;
     }
     ItemRegistry.addArmorMaterial = addArmorMaterial;
+    /**
+     * @returns armor material by name
+     */
     function getArmorMaterial(name) {
         return armorMaterials[name];
     }
     ItemRegistry.getArmorMaterial = getArmorMaterial;
+    /**
+     * Registers new tool material in ToolAPI. Some of the tool
+     * materials are already registered:
+     * *wood*, *stone*, *iron*, *golden* and *diamond*
+     * @param name new (or existing) material name
+     * @param material material properties
+     */
     function addToolMaterial(name, material) {
         ToolAPI.addToolMaterial(name, material);
     }
     ItemRegistry.addToolMaterial = addToolMaterial;
+    /**
+     * @returns tool material by name registered in ToolAPI
+     */
     function getToolMaterial(name) {
         //@ts-ignore
         return ToolAPI.toolMaterials[name];
     }
     ItemRegistry.getToolMaterial = getToolMaterial;
+    /**
+     * Registers item instance and it's functions.
+     * @param itemInstance item class instance
+     * @returns item instance back
+     */
     function registerItem(itemInstance) {
         items[itemInstance.id] = itemInstance;
         registerItemFuncs(itemInstance.id, itemInstance);
         return itemInstance;
     }
     ItemRegistry.registerItem = registerItem;
+    /**
+     * Registers all item functions from given object.
+     * @param itemFuncs object which implements ItemBehavior interface
+     */
     function registerItemFuncs(itemID, itemFuncs) {
         if ('onNameOverride' in itemFuncs) {
             Item.registerNameOverrideFunction(itemID, function (item, translation, name) {
@@ -1810,17 +1881,23 @@ var ItemRegistry;
         }
     }
     ItemRegistry.registerItemFuncs = registerItemFuncs;
+    /**
+     * Creates item from given description. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id.
+     * @param params item description
+     * @returns item class instance
+     */
     function createItem(stringID, params) {
-        var item = getInstanceOf(stringID);
-        var inCreative = !(item === null || item === void 0 ? void 0 : item.inCreative) && params.inCreative;
+        var item;
         if (params.type == "food") {
-            item = new ItemFood(stringID, params.name, params.icon, params.food, inCreative);
+            item = new ItemFood(stringID, params.name, params.icon, params.food, params.inCreative);
         }
         else if (params.type == "throwable") {
-            item = new ItemThrowable(stringID, params.name, params.icon, inCreative);
+            item = new ItemThrowable(stringID, params.name, params.icon, params.inCreative);
         }
         else {
-            item = new ItemCommon(stringID, params.name, params.icon, inCreative);
+            item = new ItemCommon(stringID, params.name, params.icon, params.inCreative);
         }
         item.setCategory(params.category || ItemCategory.ITEMS);
         if (params.stack)
@@ -1842,6 +1919,13 @@ var ItemRegistry;
     }
     ItemRegistry.createItem = createItem;
     ;
+    /**
+     * Creates armor item from given description. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id
+     * @param params item and armor parameters
+     * @returns item class instance
+     */
     function createArmor(stringID, params) {
         var item = new ItemArmor(stringID, params.name, params.icon, params, params.inCreative);
         registerItem(item);
@@ -1855,6 +1939,14 @@ var ItemRegistry;
     }
     ItemRegistry.createArmor = createArmor;
     ;
+    /**
+     * Creates tool item and registers it in ToolAPI. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id
+     * @param params object with item parameters and tool material
+     * @param toolData tool parameters and functions
+     * @returns item class instance
+     */
     function createTool(stringID, params, toolData) {
         var item = new ItemTool(stringID, params.name, params.icon, params.material, toolData, params.inCreative);
         registerItem(item);

@@ -19,10 +19,10 @@ class BlockBreaker extends RedstoneMachine {
 
 	activate(): void {
 		super.activate();
-		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
-		let blockID = this.region.getBlockId(coords);
+		const coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
+		const blockID = this.region.getBlockId(coords);
 		if (blockID != 0 && ToolAPI.getBlockMaterialName(blockID) != "unbreaking") {
-			let result = this.region.breakBlockForResult(coords, -1, new ItemStack(VanillaItemID.iron_pickaxe, 1, 0));
+			const result = this.region.breakBlockForResult(coords, -1, new ItemStack(VanillaItemID.iron_pickaxe, 1, 0));
 			if (result.items.length > 0) {
 				this.dropItems(result.items);
 			}
@@ -30,20 +30,18 @@ class BlockBreaker extends RedstoneMachine {
 	}
 
 	dropItems(items: ItemInstance[]): void {
-		let side = this.getFacing()^1;
-		let dir = World.getVectorByBlockSide(side);
-		let coords = World.getRelativeCoords(this.x, this.y, this.z, side);
-		let container = StorageInterface.getStorage(this.blockSource, coords.x, coords.y, coords.z);
+		const side = this.getFacing()^1;
+		const dir = World.getVectorByBlockSide(side);
+		const coords = World.getRelativeCoords(this.x, this.y, this.z, side);
+		const container = StorageInterface.getStorage(this.blockSource, coords.x, coords.y, coords.z);
 		for (let item of items) {
 			if (container) container.addItem(item);
 			if (item.count > 0) {
-				let ent = this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, item);
+				const ent = this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, item);
 				Entity.setVelocity(ent, dir.x / 5, dir.y / 5, dir.z / 5);
 			}
 		}
 	}
 }
 
-if (BlockEngine.getMainGameVersion() >= 16) {
-	MachineRegistry.registerPrototype(BlockID.rp_block_breaker, new BlockBreaker());
-}
+MachineRegistry.registerPrototype(BlockID.rp_block_breaker, new BlockBreaker());

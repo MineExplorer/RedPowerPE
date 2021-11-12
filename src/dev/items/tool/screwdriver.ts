@@ -21,7 +21,7 @@ implements IScrewdriver {
         item.applyDamage(1);
         Entity.setCarriedItem(player, item.id, 1, item.data, item.extra);
 		if (item.id == 0) {
-			let region = WorldRegion.getForActor(player);
+			const region = WorldRegion.getForActor(player);
 			region.playSoundAtEntity(player, "random.break");
 		}
     }

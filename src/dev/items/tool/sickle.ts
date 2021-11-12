@@ -6,7 +6,7 @@ class ToolSickle extends ItemTool {
 	blockTypes: ["fibre"];
 
 	calcDestroyTime(item: ItemInstance, coords: Callback.ItemUseCoordinates, block: Tile, params: {base: number, devider: number, modifier: number}, destroyTime: number): number {
-		let material = ToolAPI.getBlockMaterialName(block.id);
+		const material = ToolAPI.getBlockMaterialName(block.id);
 		if (material == "fibre" || material == "plant" || block.id == 30) {
 			return 0;
 		}
@@ -14,14 +14,14 @@ class ToolSickle extends ItemTool {
 	}
 
 	onDestroy(item: ItemInstance, coords: Callback.ItemUseCoordinates, block: Tile, player: number): boolean {
-		let region = WorldRegion.getForActor(player);
-		let x = coords.x, y = coords.y, z = coords.z;
-		let material = ToolAPI.getBlockMaterialName(block.id);
+		const region = WorldRegion.getForActor(player);
+		const {x, y, z} = coords;
+		const material = ToolAPI.getBlockMaterialName(block.id);
 		if (material == "plant" && plants.indexOf(block.id) == -1) {
 			for (let xx = x - 1; xx <= x + 1; xx++) {
 				for (let yy = y - 1; yy <= y + 1; yy++) {
 					for (let zz = z - 1; zz <= z + 1; zz++) {
-						let block = region.getBlock(xx, yy, zz);
+						const block = region.getBlock(xx, yy, zz);
 						if (ToolAPI.getBlockMaterialName(block.id) == "plant") {
 							region.destroyBlock(xx, yy, zz, true);
 						}
@@ -32,7 +32,7 @@ class ToolSickle extends ItemTool {
 		else if (plants.indexOf(block.id) != -1) {
 			for (let xx = x - 2; xx <= x + 2; xx++) {
 				for (let zz = z - 2; zz <= z + 2; zz++) {
-					let block = region.getBlock(xx, y, zz);
+					const block = region.getBlock(xx, y, zz);
 					if (plants.indexOf(block.id) != -1) {
 						region.destroyBlock(xx, y, zz, true);
 						if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {

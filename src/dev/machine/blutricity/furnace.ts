@@ -45,10 +45,10 @@ class BTFurnace extends ProcessingMachine {
 	onTick(): void {
 		super.onTick();
 
-		let sourceSlot = this.container.getSlot("slotSource");
-		let resultSlot = this.container.getSlot("slotResult");
+		const sourceSlot = this.container.getSlot("slotSource");
+		const resultSlot = this.container.getSlot("slotResult");
 		let newActive = false;
-		let result = Recipes.getFurnaceRecipeResult(sourceSlot.id, sourceSlot.data, "iron");
+		const result = Recipes.getFurnaceRecipeResult(sourceSlot.id, sourceSlot.data, "iron");
 		if (result && (resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0)) {
 			if (this.data.energy >= 4) {
 				this.data.energy -= 4;

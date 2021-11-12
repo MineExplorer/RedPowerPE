@@ -15,7 +15,7 @@ Callback.addCallback("PreLoaded", function() {
 
 namespace TransformerRender {
 	ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
-	let modelBoxes: any = [
+	const modelBoxes: any = [
 		[0, 0, 0, 1, 1/8, 1],
 		[1/8, 1/8, 1/16, 7/8, 7/8, 15/16],
 		[0, 1/8, 3/8, 1, 1, 5/8]
@@ -43,14 +43,14 @@ class BTTransformer extends BlulectricMachine {
 	}
 
 	energyTick(type: string, src: EnergyTileNode): void {
-		let output = this.data.energy;
+		const output = this.data.energy;
 		if (output > 0) {
 			this.data.energy -= src.addPacket(this.data.electric_mode ? "Bt" : "Eu", output);
 		}
 	}
 
 	redstone(signal: {power: number}): void {
-		let mode = signal.power > 0;
+		const mode = signal.power > 0;
 		if (this.data.electric_mode != mode) {
 			this.data.electric_mode = mode;
 			this.rebuildGrid();

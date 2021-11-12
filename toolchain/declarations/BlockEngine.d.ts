@@ -153,7 +153,8 @@ declare class WorldRegion {
     breakBlock(x: number, y: number, z: number, allowDrop: boolean, entity: number, item: ItemInstance): void;
     /**
      * Same as breakBlock, but returns object containing drop and experince.
-     * 1.16 only!
+     * Has reverse compatibility with 1.11 but it doesn't suppot experience and
+     * based on BlockRegistry.getBlockDrop.
      * @param x X coord of the block
      * @param y Y coord of the block
      * @param z Z coord of the block
@@ -608,6 +609,7 @@ declare class ItemBase {
      */
     addRepairItem(itemID: number): void;
     setRarity(rarity: number): void;
+    addDefaultToCreative(): void;
 }
 declare class ItemCommon extends ItemBase {
     constructor(stringID: string, name?: string, icon?: string | Item.TextureData, inCreative?: boolean);
@@ -690,15 +692,26 @@ declare class ItemTool extends ItemCommon implements ToolParams {
     constructor(stringID: string, name: string, icon: string | Item.TextureData, toolMaterial: string | ToolMaterial, toolData?: ToolParams, inCreative?: boolean);
 }
 declare namespace ItemRegistry {
+    /**
+     * @returns item type ("block" or "item")
+     */
     export function getType(id: number): string;
     export function isBlock(id: number): boolean;
     export function isItem(id: number): boolean;
+    /**
+     * @returns whether item is item from the original game
+     */
     export function isVanilla(id: number): boolean;
+    /**
+     * @returns item string id in the game, it differs for custom items
+     */
     export function getVanillaStringID(id: number): string;
+    /**
+     * @returns instance of item class if it exists
+     */
     export function getInstanceOf(itemID: string | number): Nullable<ItemBase>;
     /**
      * @returns EnumRarity value for item
-     * @param itemID item's id
      */
     export function getRarity(itemID: number): number;
     /**
@@ -708,15 +721,46 @@ declare namespace ItemRegistry {
     export function getRarityColor(rarity: number): string;
     /**
      * @returns chat color for item's rarity
-     * @param itemID item's id
      */
     export function getItemRarityColor(itemID: number): string;
+    /**
+     * @param id item id
+     * @param rarity one of EnumRarity values
+     * @param preventNameOverride prevent registration of name override function
+     */
     export function setRarity(id: string | number, rarity: number, preventNameOverride?: boolean): void;
+    /**
+     * Creates new armor material with specified parameters
+     * @param name new (or existing) material name
+     * @param material material properties
+     */
     export function addArmorMaterial(name: string, material: ArmorMaterial): void;
+    /**
+     * @returns armor material by name
+     */
     export function getArmorMaterial(name: string): ArmorMaterial;
+    /**
+     * Registers new tool material in ToolAPI. Some of the tool
+     * materials are already registered:
+     * *wood*, *stone*, *iron*, *golden* and *diamond*
+     * @param name new (or existing) material name
+     * @param material material properties
+     */
     export function addToolMaterial(name: string, material: ToolMaterial): void;
+    /**
+     * @returns tool material by name registered in ToolAPI
+     */
     export function getToolMaterial(name: string): ToolMaterial;
+    /**
+     * Registers item instance and it's functions.
+     * @param itemInstance item class instance
+     * @returns item instance back
+     */
     export function registerItem(itemInstance: ItemBase): ItemBase;
+    /**
+     * Registers all item functions from given object.
+     * @param itemFuncs object which implements ItemBehavior interface
+     */
     export function registerItemFuncs(itemID: string | number, itemFuncs: ItemBase | ItemBehavior): void;
     interface ItemDescription {
         name: string;
@@ -736,6 +780,13 @@ declare namespace ItemRegistry {
         rarity?: number;
         food?: number;
     }
+    /**
+     * Creates item from given description. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id.
+     * @param params item description
+     * @returns item class instance
+     */
     export function createItem(stringID: string, params: ItemDescription): ItemBase;
     interface ArmorDescription extends ArmorParams {
         name: string;
@@ -745,6 +796,13 @@ declare namespace ItemRegistry {
         glint?: boolean;
         rarity?: number;
     }
+    /**
+     * Creates armor item from given description. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id
+     * @param params item and armor parameters
+     * @returns item class instance
+     */
     export function createArmor(stringID: string, params: ArmorDescription): ItemArmor;
     interface ToolDescription {
         name: string;
@@ -755,6 +813,14 @@ declare namespace ItemRegistry {
         glint?: boolean;
         rarity?: number;
     }
+    /**
+     * Creates tool item and registers it in ToolAPI. Automatically generates item id
+     * from given string id.
+     * @param stringID item string id
+     * @param params object with item parameters and tool material
+     * @param toolData tool parameters and functions
+     * @returns item class instance
+     */
     export function createTool(stringID: string, params: ToolDescription, toolData?: ToolParams): ItemTool;
     export {};
 }

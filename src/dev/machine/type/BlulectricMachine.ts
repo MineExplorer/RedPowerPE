@@ -26,7 +26,7 @@ implements EnergyTile {
 	}
 
 	energyReceive(type: string, amount: number, voltage: number): number {
-		let add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+		const add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
 		this.data.energy += add;
 		return add;
 	}
@@ -38,7 +38,7 @@ implements EnergyTile {
 	}
 
 	dischargeSlot(slotName: string) {
-		let amount = this.getEnergyStorage() - this.data.energy;
+		const amount = this.getEnergyStorage() - this.data.energy;
 		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot(slotName), "Eu", amount, 0);
 	}
 }

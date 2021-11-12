@@ -35,7 +35,7 @@ class Thermopile extends BlulectricMachine {
 	}
 
 	calculateHeat(x: number, y: number, z: number): void {
-		let heat = this.getHeatValue(this.region.getBlockId(x, y, z));
+		const heat = this.getHeatValue(this.region.getBlockId(x, y, z));
 		if (heat < 0) this.cold -= heat;
 		else this.heat += heat;
 	}

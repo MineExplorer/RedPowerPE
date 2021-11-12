@@ -30,8 +30,8 @@ class MachineBase extends TileEntityBase {
 	@BlockEngine.Decorators.ClientSide
 	renderModel(): void {
 		if (this.networkData.getBoolean("active")) {
-			let blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
-			let facing = this.networkData.getInt("facing");
+			const blockId = Network.serverToLocalId(this.networkData.getInt("blockId"));
+			const facing = this.networkData.getInt("facing");
 			TileRenderer.mapAtCoords(this.x, this.y, this.z, blockId, facing);
 		} else {
 			BlockRenderer.unmapAtCoords(this.x, this.y, this.z);

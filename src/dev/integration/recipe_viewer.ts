@@ -25,7 +25,7 @@ ModAPI.addAPICallback("RecipeViewer", function(api: typeof RecipeViewer) {
 		getAllList(): RecipePattern[] {
 			const list: RecipePattern[] = [];
 			for (let i in SmelterRecipes.recipeData) {
-				let recipe = SmelterRecipes.recipeData[i];
+				const recipe = SmelterRecipes.recipeData[i];
 				list.push({
 					input: recipe.input,
 					output: [recipe.result]

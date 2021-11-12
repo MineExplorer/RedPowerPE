@@ -157,12 +157,12 @@ class Smelter extends MachineBase {
 	}
 
 	getFuel(slotName: string): number {
-		let fuelSlot = this.container.getSlot(slotName);
+		const fuelSlot = this.container.getSlot(slotName);
 		if (fuelSlot.id > 0) {
-			let burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
+			const burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
 			if (burn) {
 				if (LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)) {
-					let empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
+					const empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
 					fuelSlot.id = empty.id;
 					fuelSlot.data = empty.data;
 					return burn;

@@ -56,17 +56,15 @@ class BatBox extends BlulectricMachine {
 	}
 
 	onTick(): void {
-		let energyStorage = this.getEnergyStorage();
-
 		this.chargeSlot("slot2");
 		this.dischargeSlot("slot1");
 
-		let energyLevel = this.getEnergyLevel();
+		const energyLevel = this.getEnergyLevel();
 		if (!this.remove && energyLevel != this.region.getBlockData(this)) {
 			this.region.setBlock(this, this.blockID, energyLevel);
 		}
-
-		if (this.data.energy == this.getEnergyStorage()) {
+		const energyStorage = this.getEnergyStorage();
+		if (this.data.energy == energyStorage) {
 			this.container.sendEvent("setBatteryIcon", "on");
 		}
 		else {
@@ -82,14 +80,14 @@ class BatBox extends BlulectricMachine {
 	}
 
 	energyTick(type: string, src: EnergyTileNode): void {
-		let output = Math.min(100, this.data.energy);
+		const output = Math.min(100, this.data.energy);
 		this.data.energy += src.add(output) - output;
 	}
 
 	destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void {
 		if (this.data.energy > 0) {
-			let extra = new ItemExtraData().putInt("energy", this.data.energy);
-			let blockData = this.getEnergyLevel();
+			const extra = new ItemExtraData().putInt("energy", this.data.energy);
+			const blockData = this.getEnergyLevel();
 			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
 		} else {
 			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
@@ -107,9 +105,9 @@ class BatBox extends BlulectricMachine {
 MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
-	let {x, y, z} = coords.relative;
+	const {x, y, z} = coords.relative;
 	region.setBlock(x, y, z, item.id, item.data);
-	let tile = World.addTileEntity(x, y, z, region);
+	const tile = World.addTileEntity(x, y, z, region);
 	if (item.extra) {
 		tile.data.energy = item.extra.getInt("energy");
 	}

@@ -19,7 +19,7 @@ class Igniter extends RedstoneMachine {
 
 	activate() {
 		super.activate();
-		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
+		const coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
 		if (this.region.getBlockId(coords) == 0) {
 			this.region.setBlock(coords, VanillaTileID.fire, 0);
 		}
@@ -27,8 +27,8 @@ class Igniter extends RedstoneMachine {
 
 	deactivate() {
 		super.deactivate();
-		let coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
-		let block = this.region.getBlockId(coords)
+		const coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
+		const block = this.region.getBlockId(coords)
 		if (block == VanillaTileID.fire || block == VanillaTileID.portal) {
 			this.region.setBlock(coords, 0, 0);
 		}

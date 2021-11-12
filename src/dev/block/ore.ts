@@ -42,8 +42,8 @@ BlockRegistry.registerDrop("oreNikolite", function(coords, blockID, blockData, l
 		return [[blockID, 1, 0]];
 	}
 	ToolAPI.dropOreExp(coords, 2, 5, enchant.experience);
-	let drop = [];
-	let count = randomInt(4, 5) + randomInt(0, enchant.fortune);
+	const drop = [];
+	const count = randomInt(4, 5) + randomInt(0, enchant.fortune);
 	for (let i = 0; i < count; i++) {
 		drop.push([ItemID.nikolite, 1, 0]);
 	}
@@ -59,8 +59,8 @@ BlockRegistry.registerDrop("oreRuby", function(coords, blockID, blockData, level
 		return [[blockID, 1, 0]];
 	}
 	ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-	let drop = [];
-	let count = randomInt(1, 3);
+	const drop = [];
+	const count = randomInt(1, 3);
 	for (let i = 0; i < count; i++) {
 		drop.push([ItemID.gemRuby, 1, 0]);
 	}
@@ -76,8 +76,8 @@ BlockRegistry.registerDrop("oreSapphire", function(coords, blockID, blockData, l
 		return [[blockID, 1, 0]];
 	}
 	ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-	let drop = [];
-	let count = randomInt(1, 3);
+	const drop = [];
+	const count = randomInt(1, 3);
 	for (let i = 0; i < count; i++) {
 		drop.push([ItemID.gemSapphire, 1, 0]);
 	}
@@ -93,8 +93,8 @@ BlockRegistry.registerDrop("oreGreenSapphire", function(coords, blockID, blockDa
 		return [[blockID, 1, 0]];
 	}
 	ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
-	let drop = [];
-	let count = randomInt(1, 3);
+	const drop = [];
+	const count = randomInt(1, 3);
 	for (let i = 0; i < count; i++) {
 		drop.push([ItemID.gemGreenSapphire, 1, 0]);
 	}
