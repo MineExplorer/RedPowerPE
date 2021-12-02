@@ -27,7 +27,7 @@ const guiBTSmelter = MachineRegistry.createInventoryWindow("Blulectric Smelter",
 	elements: {
 		"progressScale": {type: "scale", x: 636, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE, clicker: {
 			onClick: () => {
-				RecipeViewer && RecipeViewer.RecipeTypeRegistry.openRecipePage("rp_smelter");
+				RecipeViewer?.RecipeTypeRegistry.openRecipePage("rp_smelter");
 			}}
 		},
 		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_small_scale", scale: GUI_SCALE},

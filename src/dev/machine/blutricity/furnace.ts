@@ -27,7 +27,7 @@ const guiBTFurnace = MachineRegistry.createInventoryWindow("Blulectric Furnace",
 	elements: {
 		"progressScale": {type: "scale", x: 625, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE, clicker: {
 			onClick: () => {
-				RecipeViewer && RecipeViewer.RecipeTypeRegistry.openRecipePage("furnace");
+				RecipeViewer?.RecipeTypeRegistry.openRecipePage("furnace");
 			}
 		}},
 		"btScale": {type: "scale", x: 425 + GUI_SCALE, y: 92 + GUI_SCALE, direction: 1, value: 0.5, bitmap: "btstorage_small_scale", scale: GUI_SCALE},

@@ -88,7 +88,7 @@ const guiSmelter = MachineRegistry.createInventoryWindow("Smelter", {
 	elements: {
 		"progressScale": {type: "scale", x: 636, y: 146, direction: 0, value: 0.5, bitmap: "furnace_bar_scale", scale: GUI_SCALE, clicker: {
 			onClick: () => {
-				RecipeViewer && RecipeViewer.RecipeTypeRegistry.openRecipePage("rp_smelter");
+				RecipeViewer?.RecipeTypeRegistry.openRecipePage("rp_smelter");
 			}}
 		},
 		"burningScale": {type: "scale", x: 419, y: 150, direction: 1, value: 0.5, bitmap: "fire_scale", scale: GUI_SCALE},
