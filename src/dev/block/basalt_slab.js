@@ -1,6 +1,6 @@
 Block.createSpecialType({
 	base: 1,
-	destroytime: 1.5,
+	destroytime: 2,
 	explosionres: 100,
 	renderlayer: 2,
 	translucency: 0,
