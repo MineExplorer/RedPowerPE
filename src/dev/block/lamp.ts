@@ -17,6 +17,7 @@ BlockRegistry.createBlock("rp_lamp", [
 	{name: "Black Lamp", texture: [["rp_lamp", 15]], inCreative: true}
 ], "opaque");
 Block.setDestroyTime(BlockID.rp_lamp, 2);
+BlockRegistry.setExplosionResistance(BlockID.rp_lamp, 5);
 
 BlockRegistry.createBlock("rp_lamp_inverted", [
 	{name: "White Inverted Lamp", texture: [["rp_lamp_on", 0]], inCreative: true},

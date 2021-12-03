@@ -7,8 +7,11 @@ declare namespace BlockEngine {
 }
 declare namespace BlockEngine {
     namespace Decorators {
+        /** Client side method decorator for TileEntity */
         function ClientSide(target: TileEntityBase, propertyName: string): void;
+        /** Adds method as network event in TileEntity */
         function NetworkEvent(side: Side): (target: TileEntityBase, propertyName: string) => void;
+        /** Adds method as container event in TileEntity */
         function ContainerEvent(side: Side): (target: TileEntityBase, propertyName: string) => void;
     }
 }
@@ -458,8 +461,82 @@ declare namespace BlockModeler {
     export function setInventoryModel(blockID: number, model: RenderMesh | ICRender.Model | BlockRenderer.Model, data?: number): void;
     export {};
 }
+declare class BlockBase {
+    stringID: string;
+    id: number;
+    variants: Array<Block.BlockVariation>;
+    constructor(stringID: string);
+    addVariant(name: string, texture: [string, number][], inCreative?: boolean): void;
+    create(blockType?: Block.SpecialType | string): void;
+    setDestroyTime(destroyTime: number): this;
+    setBlockMaterial(material: string, level: number): this;
+    setShape(x1: number, y1: number, z1: number, x2: number, y2: number, z2: number, data?: number): this;
+    registerTileEntity(prototype: TileEntity.TileEntityPrototype): void;
+}
 declare namespace BlockRegistry {
     function createBlock(nameID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType): void;
+    /**
+     * Sets destroy time for the block with specified id
+     */
+    function setDestroyTime(blockID: string | number, time: number): void;
+    /**
+     * Makes block inherit some properties of the vanilla block
+     */
+    function setBaseBlock(blockID: string | number, material: number): void;
+    /**
+     * Sets sound type of the block.
+     */
+    function setSoundType(blockID: string | number, sound: Block.Sound): void;
+    /**
+     * If true, sets block to be not transparent. Default is false
+     */
+    function setSolid(blockID: string | number, isSolid: boolean): void;
+    /**
+     * If true, all block faces are rendered, otherwise back faces are not
+     * rendered (for optimization purposes). Default is false
+     */
+    function setRenderAllFaces(blockID: string | number, renderAllFaces: boolean): void;
+    /**
+     * Sets render type of the block. Default is 0 (full block), use other
+     * values to change block's shape
+     */
+    function setRenderType(blockID: string | number, renderType: number): void;
+    /**
+     * Specifies the layer that is used to render the block. Default is 4
+     */
+    function setRenderLayer(blockID: string | number, renderLayer: number): void;
+    /**
+     * Specifues light level which block emits. Value from 0 to 15, default is 0 (no light)
+     */
+    function setLightLevel(blockID: string | number, lightLevel: number): void;
+    /**
+     * Specifies how the block passes light level. Default is 0 (transparent), use values
+     * from 1 to 15 to make the block opaque
+     */
+    function setLightOpacity(blockID: string | number, lightOpacity: number): void;
+    /**
+     * Specifies how block resists to the explosions. Default value is 3
+     */
+    function setExplosionResistance(blockID: string | number, resistance: number): void;
+    /**
+     * Sets block friction. Friction specifies how player walks on the block.
+     * The higher the friction is, the more difficult it is to change speed
+     * and direction. Default value is 0.6
+     */
+    function setFriction(blockID: string | number, friction: number): void;
+    /**
+     * If non-zero value is used, the shadows will be rendered on the block.
+     * Default is 0 (no shadows), allows float values from 0 to 1
+     */
+    function setTranslucency(blockID: string | number, translucency: number): void;
+    /**
+     * Sets block color when displayed on the vanilla maps
+     */
+    function setMapColor(blockID: string | number, color: number): void;
+    /**
+     * Makes block use biome color source when displayed on the vanilla maps.
+     */
+    function setBlockColorSource(blockID: string | number, color: Block.ColorSource): void;
     function createBlockWithRotation(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType, hasVertical?: boolean): void;
     function createStairs(stringID: string, defineData: Block.BlockVariation[], blockType: string | Block.SpecialType): void;
     function getBlockRotation(player: number, hasVertical?: boolean): number;
@@ -699,7 +776,7 @@ declare namespace ItemRegistry {
     export function isBlock(id: number): boolean;
     export function isItem(id: number): boolean;
     /**
-     * @returns whether item is item from the original game
+     * @returns whether item is an item from the original game
      */
     export function isVanilla(id: number): boolean;
     /**
@@ -875,9 +952,13 @@ declare abstract class TileEntityBase implements TileEntity {
     region: WorldRegion;
     private _runInit;
     created(): void;
+    /** @deprecated */
     init(): void;
+    /** @deprecated */
     load(): void;
+    /** @deprecated */
     unload(): void;
+    /** @deprecated */
     tick(): void;
     /**
      * Called when a TileEntity is created
@@ -899,8 +980,17 @@ declare abstract class TileEntityBase implements TileEntity {
      * Called every tick and should be used for all the updates of the TileEntity
      */
     onTick(): void;
+    /**
+     * Called when the client copy is created
+     */
     clientLoad(): void;
+    /**
+     * Called on destroying the client copy
+     */
     clientUnload(): void;
+    /**
+     * Called every tick on client thread
+     */
     clientTick(): void;
     onCheckerTick(isInitialized: boolean, isLoaded: boolean, wasLoaded: boolean): void;
     getScreenName(player: number, coords: Callback.ItemUseCoordinates): string;
@@ -917,13 +1007,14 @@ declare abstract class TileEntityBase implements TileEntity {
     preventClick(): void;
     onItemClick(id: number, count: number, data: number, coords: Callback.ItemUseCoordinates, player: number, extra: ItemExtraData): boolean;
     destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void;
+    /** @deprecated */
     redstone(params: {
         power: number;
         signal: number;
         onLoad: boolean;
     }): void;
     /**
-     * Occurs when redstone signal on TileEntity block was updated. Replaces "redstone" function
+     * Occurs when redstone signal on TileEntity block was updated
      * @param signal signal power (0-15)
      */
     onRedstoneUpdate(signal: number): void;

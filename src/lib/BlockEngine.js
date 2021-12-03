@@ -30,7 +30,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 LIBRARY({
     name: "BlockEngine",
-    version: 7,
+    version: 8,
     shared: true,
     api: "CoreEngine"
 });
@@ -67,11 +67,13 @@ var BlockEngine;
         function createField(target, field) {
             target[field] = __assign({}, target[field]);
         }
+        /** Client side method decorator for TileEntity */
         function ClientSide(target, propertyName) {
             createField(target, "client");
             target.client[propertyName] = target[propertyName];
         }
         Decorators.ClientSide = ClientSide;
+        /** Adds method as network event in TileEntity */
         function NetworkEvent(side) {
             return function (target, propertyName) {
                 if (side == Side.Client) {
@@ -87,6 +89,7 @@ var BlockEngine;
             };
         }
         Decorators.NetworkEvent = NetworkEvent;
+        /** Adds method as container event in TileEntity */
         function ContainerEvent(side) {
             return function (target, propertyName) {
                 if (side == Side.Client) {
@@ -973,13 +976,150 @@ var BlockModeler;
     }
     BlockModeler.setInventoryModel = setInventoryModel;
 })(BlockModeler || (BlockModeler = {}));
+var BlockBase = /** @class */ (function () {
+    function BlockBase(stringID) {
+        this.variants = [];
+        this.stringID = stringID;
+        this.id = IDRegistry.genBlockID(stringID);
+    }
+    BlockBase.prototype.addVariant = function (name, texture, inCreative) {
+        if (inCreative === void 0) { inCreative = false; }
+        this.variants.push({ name: name, texture: texture, inCreative: inCreative });
+    };
+    BlockBase.prototype.create = function (blockType) {
+        Block.createBlock(this.stringID, this.variants, blockType);
+    };
+    BlockBase.prototype.setDestroyTime = function (destroyTime) {
+        Block.setDestroyTime(this.stringID, destroyTime);
+        return this;
+    };
+    BlockBase.prototype.setBlockMaterial = function (material, level) {
+        Block.setBlockMaterial(this.stringID, material, level);
+        return this;
+    };
+    BlockBase.prototype.setShape = function (x1, y1, z1, x2, y2, z2, data) {
+        Block.setShape(this.id, x1, y1, z1, x2, y2, z2, data);
+        return this;
+    };
+    BlockBase.prototype.registerTileEntity = function (prototype) {
+        TileEntity.registerPrototype(this.id, prototype);
+    };
+    return BlockBase;
+}());
+/// <reference path="BlockBase.ts" />
 var BlockRegistry;
 (function (BlockRegistry) {
+    //@ts-ignore
+    var NativeBlock = com.zhekasmirnov.innercore.api.NativeBlock;
     function createBlock(nameID, defineData, blockType) {
         IDRegistry.genBlockID(nameID);
         Block.createBlock(nameID, defineData, blockType);
     }
     BlockRegistry.createBlock = createBlock;
+    /**
+     * Sets destroy time for the block with specified id
+     */
+    function setDestroyTime(blockID, time) {
+        Block.setDestroyTime(blockID, time);
+    }
+    BlockRegistry.setDestroyTime = setDestroyTime;
+    /**
+     * Makes block inherit some properties of the vanilla block
+     */
+    function setBaseBlock(blockID, material) {
+        NativeBlock.setMaterialBase(Block.getNumericId(blockID), material);
+    }
+    BlockRegistry.setBaseBlock = setBaseBlock;
+    /**
+     * Sets sound type of the block.
+     */
+    function setSoundType(blockID, sound) {
+        NativeBlock.setSoundType(Block.getNumericId(blockID), sound);
+    }
+    BlockRegistry.setSoundType = setSoundType;
+    /**
+     * If true, sets block to be not transparent. Default is false
+     */
+    function setSolid(blockID, isSolid) {
+        NativeBlock.setSolid(Block.getNumericId(blockID), isSolid);
+    }
+    BlockRegistry.setSolid = setSolid;
+    /**
+     * If true, all block faces are rendered, otherwise back faces are not
+     * rendered (for optimization purposes). Default is false
+     */
+    function setRenderAllFaces(blockID, renderAllFaces) {
+        NativeBlock.setRenderAllFaces(Block.getNumericId(blockID), renderAllFaces);
+    }
+    BlockRegistry.setRenderAllFaces = setRenderAllFaces;
+    /**
+     * Sets render type of the block. Default is 0 (full block), use other
+     * values to change block's shape
+     */
+    function setRenderType(blockID, renderType) {
+        NativeBlock.setRenderType(Block.getNumericId(blockID), renderType);
+    }
+    BlockRegistry.setRenderType = setRenderType;
+    /**
+     * Specifies the layer that is used to render the block. Default is 4
+     */
+    function setRenderLayer(blockID, renderLayer) {
+        NativeBlock.setRenderLayer(Block.getNumericId(blockID), renderLayer);
+    }
+    BlockRegistry.setRenderLayer = setRenderLayer;
+    /**
+     * Specifues light level which block emits. Value from 0 to 15, default is 0 (no light)
+     */
+    function setLightLevel(blockID, lightLevel) {
+        NativeBlock.setLightLevel(Block.getNumericId(blockID), lightLevel);
+    }
+    BlockRegistry.setLightLevel = setLightLevel;
+    /**
+     * Specifies how the block passes light level. Default is 0 (transparent), use values
+     * from 1 to 15 to make the block opaque
+     */
+    function setLightOpacity(blockID, lightOpacity) {
+        NativeBlock.setLightOpacity(Block.getNumericId(blockID), lightOpacity);
+    }
+    BlockRegistry.setLightOpacity = setLightOpacity;
+    /**
+     * Specifies how block resists to the explosions. Default value is 3
+     */
+    function setExplosionResistance(blockID, resistance) {
+        NativeBlock.setExplosionResistance(Block.getNumericId(blockID), resistance);
+    }
+    BlockRegistry.setExplosionResistance = setExplosionResistance;
+    /**
+     * Sets block friction. Friction specifies how player walks on the block.
+     * The higher the friction is, the more difficult it is to change speed
+     * and direction. Default value is 0.6
+     */
+    function setFriction(blockID, friction) {
+        NativeBlock.setFriction(Block.getNumericId(blockID), friction);
+    }
+    BlockRegistry.setFriction = setFriction;
+    /**
+     * If non-zero value is used, the shadows will be rendered on the block.
+     * Default is 0 (no shadows), allows float values from 0 to 1
+     */
+    function setTranslucency(blockID, translucency) {
+        NativeBlock.setTranslucency(Block.getNumericId(blockID), translucency);
+    }
+    BlockRegistry.setTranslucency = setTranslucency;
+    /**
+     * Sets block color when displayed on the vanilla maps
+     */
+    function setMapColor(blockID, color) {
+        NativeBlock.setMapColor(Block.getNumericId(blockID), color);
+    }
+    BlockRegistry.setMapColor = setMapColor;
+    /**
+     * Makes block use biome color source when displayed on the vanilla maps.
+     */
+    function setBlockColorSource(blockID, color) {
+        NativeBlock.setBlockColorSource(Block.getNumericId(blockID), color);
+    }
+    BlockRegistry.setBlockColorSource = setBlockColorSource;
     function createBlockWithRotation(stringID, defineData, blockType, hasVertical) {
         var numericID = IDRegistry.genBlockID(stringID);
         var variations = [];
@@ -1726,7 +1866,7 @@ var ItemRegistry;
     }
     ItemRegistry.isItem = isItem;
     /**
-     * @returns whether item is item from the original game
+     * @returns whether item is an item from the original game
      */
     function isVanilla(id) {
         return !IDRegistry.getNameByID(id);
@@ -2072,16 +2212,20 @@ var TileEntityBase = /** @class */ (function () {
     TileEntityBase.prototype.created = function () {
         this.onCreate();
     };
+    /** @deprecated */
     TileEntityBase.prototype.init = function () {
         this.region = new WorldRegion(this.blockSource);
         this.onInit();
     };
+    /** @deprecated */
     TileEntityBase.prototype.load = function () {
         this.onLoad();
     };
+    /** @deprecated */
     TileEntityBase.prototype.unload = function () {
         this.onUnload();
     };
+    /** @deprecated */
     TileEntityBase.prototype.tick = function () {
         this.onTick();
     };
@@ -2105,8 +2249,17 @@ var TileEntityBase = /** @class */ (function () {
      * Called every tick and should be used for all the updates of the TileEntity
      */
     TileEntityBase.prototype.onTick = function () { };
+    /**
+     * Called when the client copy is created
+     */
     TileEntityBase.prototype.clientLoad = function () { };
+    /**
+     * Called on destroying the client copy
+     */
     TileEntityBase.prototype.clientUnload = function () { };
+    /**
+     * Called every tick on client thread
+     */
     TileEntityBase.prototype.clientTick = function () { };
     TileEntityBase.prototype.onCheckerTick = function (isInitialized, isLoaded, wasLoaded) { };
     TileEntityBase.prototype.getScreenName = function (player, coords) {
@@ -2142,7 +2295,7 @@ var TileEntityBase = /** @class */ (function () {
             return false;
         }
         var screenName = this.getScreenName(player, coords);
-        if (screenName) {
+        if (screenName && this.getScreenByName("main")) {
             var client = Network.getClientForPlayer(player);
             if (client) {
                 this.container.openFor(client, screenName);
@@ -2152,11 +2305,12 @@ var TileEntityBase = /** @class */ (function () {
         return false;
     };
     TileEntityBase.prototype.destroyBlock = function (coords, player) { };
+    /** @deprecated */
     TileEntityBase.prototype.redstone = function (params) {
         this.onRedstoneUpdate(params.power);
     };
     /**
-     * Occurs when redstone signal on TileEntity block was updated. Replaces "redstone" function
+     * Occurs when redstone signal on TileEntity block was updated
      * @param signal signal power (0-15)
      */
     TileEntityBase.prototype.onRedstoneUpdate = function (signal) { };
