@@ -27,4 +27,4 @@ Recipes.addShaped({id: ItemID.sonic_screwdriver, count: 1, data: Item.getMaxDama
 	"a  ",
 	" x ",
 	"  b"
-], ['a', ItemID.gemGreenSapphire, 0, 'x', ItemID.ingotCopper, 0, 'b', ItemID.btBattery, 0], ChargeItemRegistry.transferEnergy);
+], ['a', ItemID.gemGreenSapphire, 0, 'x', ItemID.ingotCopper, 0, 'b', ItemID.btBattery, -1], ChargeItemRegistry.transferEnergy);
