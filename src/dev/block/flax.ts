@@ -8,9 +8,9 @@ BlockRegistry.createBlock("flax", [
 	{name: "Flax", texture: [["flax", 4]], inCreative: false},
 	{name: "Flax", texture: [["flax", 5]], inCreative: false},
 ], {
-	base: 59,
-	destroytime: 0,
-	rendertype: 6,
+	baseBlock: 59,
+	destroyTime: 0,
+	renderType: 6,
 	sound: "grass"
 });
 TileRenderer.setEmptyCollisionShape(BlockID.flax);

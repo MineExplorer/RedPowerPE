@@ -88,9 +88,9 @@ class BatBox extends BlulectricMachine {
 		if (this.data.energy > 0) {
 			const extra = new ItemExtraData().putInt("energy", this.data.energy);
 			const blockData = this.getEnergyLevel();
-			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, blockData, extra);
+			this.region.dropAtBlock(coords.x, coords.y, coords.z, this.blockID, 1, blockData, extra);
 		} else {
-			this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, this.blockID, 1, 0);
+			this.region.dropAtBlock(coords.x, coords.y, coords.z, this.blockID, 1, 0);
 		}
 	}
 

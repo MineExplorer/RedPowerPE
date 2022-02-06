@@ -1,49 +1,49 @@
-Block.createSpecialType({
-	base: 1,
-	destroytime: 2,
-	explosionres: 100,
-	renderlayer: 3,
+BlockRegistry.createBlockType("basalt_stairs", {
+	baseBlock: 1,
+	destroyTime: 2,
+	explosionResistance: 100,
+	renderLayer: 3,
 	translucency: 0,
 	sound: "stone"
-}, "basalt_stairs");
+});
 
 BlockRegistry.createStairs("basaltStairs", [
 	{name: "Basalt Stairs", texture: [["rp_basalt", 0]], inCreative: true}
 ], "basalt_stairs");
-ToolAPI.registerBlockMaterial(BlockID.basaltStairs, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltStairs, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltStairs", 1);
 
 BlockRegistry.createStairs("basaltCobbleStairs", [
 	{name: "Basalt Cobble Stairs", texture: [["rp_basalt_cobble", 0]], inCreative: true}
 ], "basalt_stairs");
-ToolAPI.registerBlockMaterial(BlockID.basaltCobbleStairs, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltCobbleStairs, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltCobbleStairs", 1);
 
 BlockRegistry.createStairs("basaltBrickStairs", [
 	{name: "Basalt Brick Stairs", texture: [["rp_basalt_brick", 0]], inCreative: true}
 ], "basalt_stairs");
-ToolAPI.registerBlockMaterial(BlockID.basaltBrickStairs, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltBrickStairs, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltBrickStairs", 1);
 
-Block.createSpecialType({
-	base: 1,
-	destroytime: 1.5,
-	explosionres: 30,
-	renderlayer: 3,
+BlockRegistry.createBlockType("marble_stairs", {
+	baseBlock: 1,
+	destroyTime: 1.5,
+	explosionResistance: 30,
+	renderLayer: 3,
 	translucency: 0,
 	sound: "stone"
-}, "marble_stairs");
+});
 
 BlockRegistry.createStairs("marbleStairs", [
 	{name: "Marble Stairs", texture: [["rp_marble", 0]], inCreative: true}
 ], "marble_stairs");
-ToolAPI.registerBlockMaterial(BlockID.marbleStairs, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.marbleStairs, "stone", 1);
 BlockRegistry.setDestroyLevel("marbleStairs", 1);
 
 BlockRegistry.createStairs("marbleBrickStairs", [
 	{name: "Marble Brick Stairs", texture: [["rp_marble_brick", 0]], inCreative: true}
 ], "marble_stairs");
-ToolAPI.registerBlockMaterial(BlockID.marbleBrickStairs, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.marbleBrickStairs, "stone", 1);
 BlockRegistry.setDestroyLevel("marbleBrickStairs", 1);
 
 Item.addCreativeGroup("rpStairs", Translation.translate("Stairs"), [

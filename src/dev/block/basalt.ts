@@ -1,18 +1,13 @@
-Block.createSpecialType({
-	base: 1,
-	solid: true,
-	destroytime: 2,
-	explosionres: 100,
-	lightopacity: 15,
-	renderlayer: 2,
-	translucency: 0,
-	sound: "stone"
-}, "basalt");
+BlockRegistry.createBlockType("basalt", {
+	extends: "stone",
+	destroyTime: 2,
+	explosionResistance: 100
+});
 
 BlockRegistry.createBlock("rp_basalt", [
 	{name: "Basalt", texture: [["rp_basalt", 0]], inCreative: true}
 ], "basalt");
-ToolAPI.registerBlockMaterial(BlockID.rp_basalt, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.rp_basalt, "stone", 1);
 BlockRegistry.registerDrop("rp_basalt", function(coords, blockID, blockData, level, enchant) {
   if (enchant.silk) {
     return [[BlockID.rp_basalt, 1, 0]];
@@ -23,20 +18,20 @@ BlockRegistry.registerDrop("rp_basalt", function(coords, blockID, blockData, lev
 BlockRegistry.createBlock("basaltCobble", [
 	{name: "Basalt Cobble", texture: [["rp_basalt_cobble", 0]], inCreative: true}
 ], "basalt");
-ToolAPI.registerBlockMaterial(BlockID.basaltCobble, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltCobble, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltCobble", 1);
 
 BlockRegistry.createBlock("basaltBrick", [
 	{name: "Basalt Brick", texture: [["rp_basalt_brick", 0]], inCreative: true},
 	{name: "Chiseled Basalt Brick", texture: [["rp_basalt_chiseled", 0]], inCreative: true}
 ], "basalt");
-ToolAPI.registerBlockMaterial(BlockID.basaltBrick, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltBrick, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltBrick", 1);
 
 BlockRegistry.createBlock("basaltPaver", [
 	{name: "Basalt Paver", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt");
-ToolAPI.registerBlockMaterial(BlockID.basaltPaver, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.basaltPaver, "stone", 1);
 BlockRegistry.registerDrop("basaltPaver", function(coords, blockID, blockData, level, enchant) {
   if (enchant.silk) {
     return [[blockID, 1, 0]];

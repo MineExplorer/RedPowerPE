@@ -38,10 +38,10 @@ BlockRegistry.createBlock("rp_lamp_inverted", [
 	{name: "Black Inverted Lamp", texture: [["rp_lamp_on", 15]], inCreative: true}
 ], {
 	solid: true,
-	destroytime: 2,
-	explosionres: 5,
-	lightlevel: 15,
-	renderlayer: 2
+	destroyTime: 2,
+	explosionResistance: 5,
+	lightLevel: 15,
+	renderLayer: 2
 });
 
 
@@ -108,7 +108,7 @@ class TileEntityLamp extends TileEntityBase {
 	destroyBlock(coords: Callback.ItemUseCoordinates, player: number): void {
 		const blockID = this.getBlockID(this.data.inverted);
 		const blockData = this.region.getBlockData(coords);
-		this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, blockID, 1, blockData);
+		this.region.dropAtBlock(coords.x, coords.y, coords.z, blockID, 1, blockData);
 	}
 }
 

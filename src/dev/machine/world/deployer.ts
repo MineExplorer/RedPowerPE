@@ -191,7 +191,7 @@ class Deployer extends RedstoneMachine {
             }
         }
         const coords = World.getRelativeCoords(this.x, this.y, this.z, this.getFacing());
-        this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, id, count, data);
+        this.region.dropAtBlock(coords.x, coords.y, coords.z, id, count, data);
     }
 
     invokeItemUseOn(coords: any, item: ItemContainerSlot, entity: number): void {

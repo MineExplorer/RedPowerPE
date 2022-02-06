@@ -37,7 +37,7 @@ class BlockBreaker extends RedstoneMachine {
 		for (let item of items) {
 			if (container) container.addItem(item);
 			if (item.count > 0) {
-				const ent = this.region.dropItem(coords.x + .5, coords.y + .5, coords.z + .5, item);
+				const ent = this.region.dropAtBlock(coords.x, coords.y, coords.z, item);
 				Entity.setVelocity(ent, dir.x / 5, dir.y / 5, dir.z / 5);
 			}
 		}

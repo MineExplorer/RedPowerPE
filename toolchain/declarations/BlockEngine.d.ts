@@ -269,11 +269,19 @@ declare class WorldRegion {
      * @param x X coord of the place where item will be dropped
      * @param y Y coord of the place where item will be dropped
      * @param z Z coord of the place where item will be dropped
-     * @param item object representing item stack
      * @returns drop entity id
      */
     dropItem(x: number, y: number, z: number, item: ItemInstance): number;
     dropItem(x: number, y: number, z: number, id: number, count: number, data: number, extra?: ItemExtraData): number;
+    /**
+     * Creates dropped item at the block center and returns entity id
+     * @param x X coord of the block where item will be dropped
+     * @param y Y coord of the block where item will be dropped
+     * @param z Z coord of the block where item will be dropped
+     * @returns drop entity id
+     */
+    dropAtBlock(x: number, y: number, z: number, item: ItemInstance): number;
+    dropAtBlock(x: number, y: number, z: number, id: number, count: number, data: number, extra?: ItemExtraData): number;
     /**
      * Spawns entity of given numeric type on coords
      */
@@ -538,7 +546,8 @@ interface BlockType {
  */
 interface BlockBehavior {
     getDrop?(coords: Callback.ItemUseCoordinates, block: Tile, diggingLevel: number, enchant: ToolAPI.EnchantData, item: ItemStack, region: BlockSource): ItemInstanceArray[];
-    onDestroy?(coords: Vector, block: Tile, region: BlockSource): void;
+    onDestroy?(coords: Vector, block: Tile, region: BlockSource, player: number): void;
+    onBreak?(coords: Vector, block: Tile, region: BlockSource): void;
     onPlace?(coords: Callback.ItemUseCoordinates, item: ItemStack, block: Tile, player: number, region: BlockSource): Vector | void;
     onNeighbourChange?(coords: Vector, block: Tile, changeCoords: Vector, region: BlockSource): void;
     onEntityInside?(coords: Vector, block: Tile, entity: number): void;
@@ -563,7 +572,7 @@ declare class BlockBase implements BlockBehavior {
     addVariation(name: string, texture: [string, number][], inCreative?: boolean): void;
     createBlock(): void;
     getDrop(coords: Vector, block: Tile, level: number, enchant: ToolAPI.EnchantData, item: ItemStack, region: BlockSource): ItemInstanceArray[];
-    onDestroy(coords: Vector, block: Tile, region: BlockSource): void;
+    onBreak(coords: Vector, block: Tile, region: BlockSource): void;
     setDestroyTime(destroyTime: number): void;
     setBlockMaterial(material: string, level?: number): void;
     /**
@@ -650,9 +659,23 @@ declare class BlockBase implements BlockBehavior {
     setRarity(rarity: number): void;
     registerTileEntity(prototype: TileEntity.TileEntityPrototype): void;
 }
+declare class BlockRotative extends BlockBase {
+    hasVerticalFacings: boolean;
+    constructor(stringID: string, blockType?: string | Block.SpecialType, hasVerticalFacings?: boolean);
+    addVariation(name: string, texture: [string, number][], inCreative?: boolean): void;
+    createBlock(): void;
+    onPlace(coords: Callback.ItemUseCoordinates, item: ItemStack, block: Tile, player: number, region: BlockSource): Vector;
+}
+declare class BlockStairs extends BlockBase {
+    constructor(stringID: string, defineData: Block.BlockVariation, blockType?: string | Block.SpecialType);
+    createItemModel(): void;
+    onPlace(coords: Callback.ItemUseCoordinates, item: ItemStack, block: Tile, player: number, region: BlockSource): Vector;
+}
 declare const NativeBlock: any;
 declare namespace BlockRegistry {
-    function createBlock(nameID: string, defineData: Block.BlockVariation[], blockType?: string | BlockType): void;
+    function createBlock(stringID: string, defineData: Block.BlockVariation[], blockType?: string | BlockType): void;
+    function createBlockWithRotation(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType, hasVerticalFacings?: boolean): void;
+    function createStairs(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType): void;
     function getBlockType(name: string): Nullable<BlockType>;
     function extendBlockType(type: BlockType): void;
     function createBlockType(name: string, type: BlockType, isNative?: boolean): void;
@@ -745,8 +768,6 @@ declare namespace BlockRegistry {
      * @param level block's digging level
      */
     function setBlockMaterial(blockID: string | number, material: string, level?: number): void;
-    function createBlockWithRotation(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType, hasVertical?: boolean): void;
-    function createStairs(stringID: string, defineData: Block.BlockVariation[], blockType: string | Block.SpecialType): void;
     function getBlockRotation(player: number, hasVertical?: boolean): number;
     function getPlacePosition(coords: Callback.ItemUseCoordinates, block: Tile, region: BlockSource): Vector;
     function setRotationFunction(id: string | number, hasVertical?: boolean, placeSound?: string): void;
@@ -901,14 +922,34 @@ declare abstract class ItemBase {
      * @param itemID item id to be used as repair material
      */
     addRepairItem(itemID: number): void;
+    /**
+    * Sets properties for the item from JSON-like object. Uses vanilla mechanics.
+    * @param id string or numeric item id
+    * @param props object containing properties
+    */
+    setProperties(props: object): void;
     setRarity(rarity: number): void;
     addDefaultToCreative(): void;
 }
 declare class ItemCommon extends ItemBase {
     constructor(stringID: string, name?: string, icon?: string | Item.TextureData, inCreative?: boolean);
 }
-declare class ItemFood extends ItemBase {
-    constructor(stringID: string, name?: string, icon?: string | Item.TextureData, food?: number, inCreative?: boolean);
+declare type FoodParams = {
+    food?: number;
+    useDuration?: number;
+    saturation?: "poor" | "low" | "normal" | "good" | "max" | "supernatural";
+    canAlwaysEat?: boolean;
+    isMeat?: boolean;
+    usingConvertsTo?: string;
+    effects?: {
+        name: string;
+        duration: number;
+        amplifier: number;
+        chance: number;
+    }[];
+};
+declare class ItemFood extends ItemCommon {
+    constructor(stringID: string, name: string, icon: string | Item.TextureData, params: FoodParams, inCreative?: boolean);
     onFoodEaten(item: ItemInstance, food: number, saturation: number, player: number): void;
 }
 declare class ItemThrowable extends ItemBase {
@@ -935,6 +976,7 @@ declare type ArmorMaterial = {
 declare type ArmorParams = {
     type: ArmorType;
     defence: number;
+    knockbackResistance?: number;
     texture: string;
     material?: string | ArmorMaterial;
 };
@@ -1075,6 +1117,16 @@ declare namespace ItemRegistry {
      * @returns item class instance
      */
     export function createItem(stringID: string, params: ItemDescription): ItemBase;
+    interface FoodDescription extends FoodParams {
+        name: string;
+        icon: string | Item.TextureData;
+        stack?: number;
+        inCreative?: boolean;
+        category?: number;
+        glint?: boolean;
+        rarity?: number;
+    }
+    export function createFood(stringID: string, params: FoodDescription): ItemFood;
     interface ArmorDescription extends ArmorParams {
         name: string;
         icon: string | Item.TextureData;

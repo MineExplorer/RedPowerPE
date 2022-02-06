@@ -36,7 +36,7 @@ class ToolSickle extends ItemTool {
 					if (plants.indexOf(block.id) != -1) {
 						region.destroyBlock(xx, y, zz, true);
 						if (Math.random() < 1/16 && (block.id == 31 && block.data == 0 || block.id == 175 && (block.data == 2 || block.data == 10))) {
-							region.dropItem(xx + .5, y + .5, zz + .5, ItemID.flaxSeeds, 1, 0);
+							region.dropAtBlock(xx, y, zz, ItemID.flaxSeeds, 1, 0);
 						}
 					}
 				}

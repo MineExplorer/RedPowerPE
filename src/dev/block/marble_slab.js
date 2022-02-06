@@ -14,13 +14,13 @@ BaseBlocks.createSlab("marbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: true},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: true},
 ], "stone_slab", BlockID.doubleMarbleSlab);
-ToolAPI.registerBlockMaterial(BlockID.marbleSlab, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.marbleSlab, "stone", 1);
 
 BaseBlocks.createDoubleSlab("doubleMarbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: false},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: false},
 ], "stone", BlockID.marbleSlab);
-ToolAPI.registerBlockMaterial(BlockID.doubleMarbleSlab, "stone", 1, true);
+BlockRegistry.setBlockMaterial(BlockID.doubleMarbleSlab, "stone", 1);
 
 Item.addCreativeGroup("rpSlabs", Translation.translate("Slabs"), [
 	BlockID.basaltSlab,
