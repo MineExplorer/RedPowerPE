@@ -1,29 +1,26 @@
-Block.createSpecialType({
-	base: 1,
-	destroytime: 2,
-	explosionres: 100,
-	renderlayer: 2,
+/// <reference path="type/BlockSlab.ts" />
+
+BlockRegistry.createBlockType("stone_slab", {
+	baseBlock: 1,
+	destroyTime: 1.5,
+	explosionResistance: 30,
+	renderLayer: 2,
 	translucency: 0,
 	sound: "stone"
-}, "basalt_slab");
+});
 
-IDRegistry.genBlockID("basaltSlab");
-IDRegistry.genBlockID("doubleBasaltSlab");
+BlockSlab.createBlocks("basaltSlab", "doubleBasaltSlab", [
+	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
+	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
+	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},
+	{name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
+], {
+	extends: "stone_slab",
+	destroyTime: 2,
+	explosionResistance: 100
+});
 
-BaseBlocks.createSlab("basaltSlab", [
-  {name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
-  {name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
-  {name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},
-  {name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
-], "basalt_slab", BlockID.doubleBasaltSlab);
 BlockRegistry.setBlockMaterial(BlockID.basaltSlab, "stone", 1);
-
-BaseBlocks.createDoubleSlab("doubleBasaltSlab", [
-	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: false},
-	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: false},
-	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: false},
-	{name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: false}
-], "basalt", BlockID.basaltSlab);
 BlockRegistry.setBlockMaterial(BlockID.doubleBasaltSlab, "stone", 1);
 
 Recipes.addShaped({id: BlockID.basaltSlab, count: 6, data: 0}, [

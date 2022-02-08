@@ -6,8 +6,8 @@ api/**
 block/flax.ts
 block/basalt.ts
 block/marble.ts
-block/basalt_slab.js
-block/marble_slab.js
+block/basalt_slab.ts
+block/marble_slab.ts
 block/stairs.ts
 block/ore.ts
 block/resource.ts

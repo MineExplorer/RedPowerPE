@@ -1,26 +1,9 @@
-Block.createSpecialType({
-	base: 1,
-	destroytime: 1.5,
-	explosionres: 30,
-	renderlayer: 2,
-	translucency: 0,
-	sound: "stone"
-}, "stone_slab");
+/// <reference path="type/BlockSlab.ts" />
 
-IDRegistry.genBlockID("marbleSlab");
-IDRegistry.genBlockID("doubleMarbleSlab");
-
-BaseBlocks.createSlab("marbleSlab", [
+BlockSlab.createBlocks("marbleSlab", "doubleMarbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: true},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: true},
-], "stone_slab", BlockID.doubleMarbleSlab);
-BlockRegistry.setBlockMaterial(BlockID.marbleSlab, "stone", 1);
-
-BaseBlocks.createDoubleSlab("doubleMarbleSlab", [
-	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: false},
-	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: false},
-], "stone", BlockID.marbleSlab);
-BlockRegistry.setBlockMaterial(BlockID.doubleMarbleSlab, "stone", 1);
+], "stone_slab");
 
 Item.addCreativeGroup("rpSlabs", Translation.translate("Slabs"), [
 	BlockID.basaltSlab,
