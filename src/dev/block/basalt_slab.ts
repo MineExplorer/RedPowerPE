@@ -9,16 +9,18 @@ BlockRegistry.createBlockType("stone_slab", {
 	sound: "stone"
 });
 
+BlockRegistry.createBlockType("basalt_slab", {
+	extends: "stone_slab",
+	destroyTime: 2,
+	explosionResistance: 100
+});
+
 BlockSlab.createBlocks("basaltSlab", "doubleBasaltSlab", [
 	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
 	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
 	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},
 	{name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
-], {
-	extends: "stone_slab",
-	destroyTime: 2,
-	explosionResistance: 100
-});
+], "basalt_slab");
 
 BlockRegistry.setBlockMaterial(BlockID.basaltSlab, "stone", 1);
 BlockRegistry.setBlockMaterial(BlockID.doubleBasaltSlab, "stone", 1);
