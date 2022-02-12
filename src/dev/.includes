@@ -3,7 +3,7 @@ translation.ts
 
 api/**
 
-block/flax.ts
+block/flax/**
 block/basalt.ts
 block/marble.ts
 block/basalt_slab.ts
