@@ -4,7 +4,7 @@ BlockRegistry.createBlockType("stone_slab", {
 	baseBlock: 1,
 	destroyTime: 1.5,
 	explosionResistance: 30,
-	renderLayer: 2,
+	renderLayer: 3,
 	translucency: 0,
 	sound: "stone"
 });
