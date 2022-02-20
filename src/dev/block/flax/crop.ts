@@ -89,12 +89,11 @@ class BlockFlax extends BlockBase {
 			if (Game.isItemSpendingAllowed(player)) {
 				Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
 			}
-			const particleID = BlockEngine.getMainGameVersion() == 11 ? Native.ParticleType.happyVillager : 37;
 			for (let i = 0; i < 16; i++) {
 				const px = coords.x + Math.random();
 				const pz = coords.z + Math.random();
 				const py = coords.y + Math.random();
-				Particles.addFarParticle(particleID, px, py, pz, 0, 0, 0);
+				Particles.addFarParticle(Native.ParticleType.happyVillager, px, py, pz, 0, 0, 0);
 			}
 		}
 	}
