@@ -1,6 +1,4 @@
-/// <reference path="type/BlockSlab.ts" />
-
-BlockSlab.createBlocks("marbleSlab", "doubleMarbleSlab", [
+BlockRegistry.createSlabs("marbleSlab", "doubleMarbleSlab", [
 	{name: "Marble Slab", texture: [["rp_marble", 0]], inCreative: true},
 	{name: "Marble Brick Slab", texture: [["rp_marble_brick", 0]], inCreative: true},
 ], "stone_slab");

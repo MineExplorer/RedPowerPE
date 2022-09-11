@@ -1,5 +1,3 @@
-/// <reference path="type/BlockSlab.ts" />
-
 BlockRegistry.createBlockType("stone_slab", {
 	baseBlock: 1,
 	destroyTime: 1.5,
@@ -15,7 +13,7 @@ BlockRegistry.createBlockType("basalt_slab", {
 	explosionResistance: 100
 });
 
-BlockSlab.createBlocks("basaltSlab", "doubleBasaltSlab", [
+BlockRegistry.createSlabs("basaltSlab", "doubleBasaltSlab", [
 	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
 	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
 	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},

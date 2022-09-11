@@ -79,6 +79,7 @@ declare class Vector3 implements Vector {
  */
 declare class WorldRegion {
     blockSource: BlockSource;
+    private isDeprecated;
     constructor(blockSource: BlockSource);
     /**
      * @returns interface to given dimension
@@ -118,23 +119,23 @@ declare class WorldRegion {
      * @param data - data of the block to set
      */
     setBlock(coords: Vector, state: BlockState): void;
-    setBlock(coords: Vector, id: number, data: number): void;
+    setBlock(coords: Vector, id: number, data?: number): void;
     setBlock(x: number, y: number, z: number, state: BlockState): void;
-    setBlock(x: number, y: number, z: number, id: number, data: number): void;
+    setBlock(x: number, y: number, z: number, id: number, data?: number): void;
     /**
-     * Sets extra block (for example, water inside another blocks), on given coords by given id and data.
-     * 1.16 only!
-     */
-    setExtraBlock(coords: Vector, state: BlockState): void;
-    setExtraBlock(coords: Vector, id: number, data: number): void;
-    setExtraBlock(x: number, y: number, z: number, id: number, data: number): void;
-    setExtraBlock(x: number, y: number, z: number, state: BlockState): void;
-    /**
-     * 1.16 only!
+     * Doesn't support Legacy version.
      * @returns [[BlockState]] object of the extra block on given coords
      */
     getExtraBlock(coords: Vector): BlockState;
     getExtraBlock(x: number, y: number, z: number): BlockState;
+    /**
+     * Sets extra block (for example, water inside another blocks) on given coords by given id and data.
+     * Doesn't support Legacy version.
+     */
+    setExtraBlock(coords: Vector, state: BlockState): void;
+    setExtraBlock(coords: Vector, id: number, data?: number): void;
+    setExtraBlock(x: number, y: number, z: number, id: number, data?: number): void;
+    setExtraBlock(x: number, y: number, z: number, state: BlockState): void;
     /**
      * Destroys block on coords producing appropriate drop and particles.
      * @param drop whether to provide drop for the block or not
@@ -144,7 +145,7 @@ declare class WorldRegion {
     destroyBlock(x: number, y: number, z: number, drop?: boolean, player?: number): void;
     /**
      * Destroys block on coords by entity using specified item.
-     * 1.16 only!
+     * Reverse compatible with Legacy version (doesn't support `item` argument).
      * @param x X coord of the block
      * @param y Y coord of the block
      * @param z Z coord of the block
@@ -156,19 +157,18 @@ declare class WorldRegion {
     breakBlock(x: number, y: number, z: number, allowDrop: boolean, entity: number, item: ItemInstance): void;
     /**
      * Same as breakBlock, but returns object containing drop and experince.
-     * Has reverse compatibility with 1.11 but it doesn't suppot experience and
-     * based on BlockRegistry.getBlockDrop.
+     * Reverse compatible with Legacy version (doesn't return experience).
      * @param x X coord of the block
      * @param y Y coord of the block
      * @param z Z coord of the block
      * @param entity Entity id or -1 id if entity is not specified
      * @param item Tool which broke block
      */
-    breakBlockForResult(coords: Vector, player: number, item: ItemInstance): {
+    breakBlockForResult(coords: Vector, entity: number, item: ItemInstance): {
         items: ItemInstance[];
         experience: number;
     };
-    breakBlockForResult(x: number, y: number, z: number, player: number, item: ItemInstance): {
+    breakBlockForResult(x: number, y: number, z: number, entity: number, item: ItemInstance): {
         items: ItemInstance[];
         experience: number;
     };
@@ -271,8 +271,10 @@ declare class WorldRegion {
      * @param z Z coord of the place where item will be dropped
      * @returns drop entity id
      */
+    dropItem(coords: Vector, item: ItemInstance): number;
+    dropItem(coords: Vector, id: number, count?: number, data?: number, extra?: ItemExtraData): number;
     dropItem(x: number, y: number, z: number, item: ItemInstance): number;
-    dropItem(x: number, y: number, z: number, id: number, count: number, data: number, extra?: ItemExtraData): number;
+    dropItem(x: number, y: number, z: number, id: number, count?: number, data?: number, extra?: ItemExtraData): number;
     /**
      * Creates dropped item at the block center and returns entity id
      * @param x X coord of the block where item will be dropped
@@ -280,6 +282,8 @@ declare class WorldRegion {
      * @param z Z coord of the block where item will be dropped
      * @returns drop entity id
      */
+    dropAtBlock(coords: Vector, item: ItemInstance): number;
+    dropAtBlock(coords: Vector, id: number, count: number, data: number, extra?: ItemExtraData): number;
     dropAtBlock(x: number, y: number, z: number, item: ItemInstance): number;
     dropAtBlock(x: number, y: number, z: number, id: number, count: number, data: number, extra?: ItemExtraData): number;
     /**
@@ -291,7 +295,8 @@ declare class WorldRegion {
      * Spawns experience orbs on coords
      * @param amount experience amount
      */
-    spawnExpOrbs(x: number, y: number, z: number, amount: number): void;
+    spawnExpOrbs(coords: Vector, amount: number): void;
+    spawnExpOrbs(x: any, y: number, z: number, amount: number): void;
     /**
      * @returns the list of entity IDs in given box,
      * that are equal to the given type, if blacklist value is false,
@@ -671,11 +676,24 @@ declare class BlockStairs extends BlockBase {
     createItemModel(): void;
     onPlace(coords: Callback.ItemUseCoordinates, item: ItemStack, block: Tile, player: number, region: BlockSource): Vector;
 }
+declare class BlockSlab extends BlockBase {
+    doubleSlabID: number;
+    setDoubleSlab(blockID: number): void;
+    createBlock(): void;
+    getDrop(coords: Vector, block: Tile, level: number): ItemInstanceArray[];
+    onPlace(coords: Callback.ItemUseCoordinates, item: ItemStack, block: Tile, player: number, blockSource: BlockSource): Vector | void;
+}
+declare class BlockDoubleSlab extends BlockBase {
+    slabID: number;
+    setSlab(blockID: number): void;
+    getDrop(coords: Vector, block: Tile, level: number): ItemInstanceArray[];
+}
 declare const NativeBlock: any;
 declare namespace BlockRegistry {
     function createBlock(stringID: string, defineData: Block.BlockVariation[], blockType?: string | BlockType): void;
     function createBlockWithRotation(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType, hasVerticalFacings?: boolean): void;
     function createStairs(stringID: string, defineData: Block.BlockVariation[], blockType?: string | Block.SpecialType): void;
+    function createSlabs(slabID: string, doubleSlabID: string, defineData: Block.BlockVariation[], blockType?: string | BlockType): void;
     function getBlockType(name: string): Nullable<BlockType>;
     function extendBlockType(type: BlockType): void;
     function createBlockType(name: string, type: BlockType, isNative?: boolean): void;
@@ -786,8 +804,23 @@ declare class ItemStack implements ItemInstance {
     constructor(item: ItemInstance);
     constructor(id: number, count: number, data?: number, extra?: ItemExtraData);
     getItemInstance(): Nullable<ItemBase>;
+    /**
+     * Creates a copy of current ItemStack object
+     * @returns a created copy of the ItemStack
+     */
+    copy(): ItemStack;
+    /**
+     * @returns maximum stack size for the item
+     */
     getMaxStack(): number;
+    /**
+     * @returns maximum damage value for the item
+     */
     getMaxDamage(): number;
+    /**
+     * @returns true if all stack values are empty, false otherwise
+     */
+    isEmpty(): boolean;
     /**
      * Decreases stack count by specified value.
      * @param count amount to decrease
@@ -1177,6 +1210,15 @@ declare namespace IDConverter {
 }
 declare abstract class TileEntityBase implements TileEntity {
     constructor();
+    __clientMethods: {
+        [key: string]: boolean;
+    };
+    __networkEvents: {
+        [key: string]: Side;
+    };
+    __containerEvents: {
+        [key: string]: Side;
+    };
     x: number;
     y: number;
     z: number;
@@ -1191,18 +1233,22 @@ declare abstract class TileEntityBase implements TileEntity {
     };
     defaultValues: {};
     client: {
-        load?: () => void;
-        unload?: () => void;
-        tick?: () => void;
-        events?: {
+        load: () => void;
+        unload: () => void;
+        tick: () => void;
+        events: {
             [packetName: string]: (packetData: any, packetExtra: any) => void;
         };
-        containerEvents?: {
-            [eventName: string]: (container: ItemContainer, window: UI.Window | UI.StandartWindow | UI.TabbedWindow | null, windowContent: UI.WindowContent | null, eventData: any) => void;
+        containerEvents: {
+            [eventName: string]: (container: ItemContainer, window: UI.IWindow | null, windowContent: UI.WindowContent | null, eventData: any) => void;
         };
     };
-    events: {};
-    containerEvents: {};
+    events: {
+        [packetName: string]: (packetData: any, packetExtra: any, connectedClient: NetworkClient) => void;
+    };
+    containerEvents: {
+        [eventName: string]: (container: ItemContainer, window: UI.IWindow | null, windowContent: UI.WindowContent | null, eventData: any) => void;
+    };
     container: ItemContainer;
     liquidStorage: LiquidRegistry.Storage;
     blockSource: BlockSource;
@@ -1332,31 +1378,121 @@ declare namespace LiquidItemRegistry {
     export {};
 }
 declare namespace BlockEngine {
+    /**
+     * Class to store and manipulate liquids in TileEntity.
+     */
     class LiquidTank {
+        /** Parent TileEntity instance */
         tileEntity: TileEntity;
+        /** Liquid tank name */
         readonly name: string;
+        /** Max liquid amount. */
         limit: number;
+        /** Set of valid liquids */
         liquids: object;
+        /** Liquid data stored in TileEntity data object. */
         data: {
             liquid: string;
             amount: number;
         };
+        /**
+         * Creates new instance of LiquidTank and binds it to TileEntity.
+         * @param tileEntity TileEntity instance
+         * @param name liquid tank name
+         * @param limit max liquid amount
+         * @param liquids types of valid liquids
+         */
         constructor(tileEntity: TileEntity, name: string, limit: number, liquids?: string[]);
+        /**
+         * Binds liquid tank to TileEntity.
+         * @param tileEntity TileEntity instance
+         */
         setParent(tileEntity: TileEntity): void;
+        /**
+         * Gets type of liquid stored in tank.
+         * @returns liquid type
+         */
         getLiquidStored(): string;
+        /**
+         * Gets max amount of liquid in tank.
+         * @returns amount of liquid
+         */
         getLimit(): number;
+        /**
+         * @param liquid liquid type
+         * @returns true if liquid can be stored in tank, false otherwise.
+         */
         isValidLiquid(liquid: string): boolean;
+        /**
+         * Sets liquids that can be stored in tank.
+         * @param liquids arrays of liquid types
+         */
         setValidLiquids(liquids: string[]): void;
+        /**
+         * Gets amount of liquid in tank. If `liquid` parameter is set,
+         * returns amount of the specified liquid.
+         * @param liquid liquid type
+         * @returns amount of liquid
+         */
         getAmount(liquid?: string): number;
+        /**
+         * Sets liquid to tank.
+         * @param liquid liquid type
+         * @param amount amount of liquid
+         */
         setAmount(liquid: string, amount: number): void;
+        /**
+         * Gets amount of liquid divided by max amount.
+         * @returns scalar value from 0 to 1
+         */
         getRelativeAmount(): number;
+        /**
+         * Adds liquid to tank.
+         * @param liquid liquid type
+         * @param amount amount of liquid to add
+         * @returns amount of liquid that wasn't added
+         */
         addLiquid(liquid: string, amount: number): number;
+        /**
+         * Gets liquid from tank.
+         * @param amount max amount of liquid to get
+         * @returns amount of got liquid
+         */
         getLiquid(amount: number): number;
+        /**
+         * Gets liquid from tank.
+         * @param liquid liquid type
+         * @param amount max amount of liquid to get
+         * @returns amount of got liquid
+         */
         getLiquid(liquid: string, amount: number): number;
+        /**
+         * @returns true if tank is full, false otherwise
+         */
         isFull(): boolean;
+        /**
+         * @returns true if tank is empty, false otherwise
+         */
         isEmpty(): boolean;
+        /**
+         * Tries to fill item with liquid from tank.
+         * @param inputSlot slot for empty item
+         * @param outputSlot slot for full item
+         * @returns true if liquid was added, false otherwise.
+         */
         addLiquidToItem(inputSlot: ItemContainerSlot, outputSlot: ItemContainerSlot): boolean;
+        /**
+         * Tries to fill tank with liquid from item.
+         * @param inputSlot slot for full item
+         * @param outputSlot slot for empty item
+         * @returns true if liquid was extracted, false otherwise.
+         */
         getLiquidFromItem(inputSlot: ItemContainerSlot, outputSlot: ItemContainerSlot): boolean;
+        /**
+         * Updates UI bar of liquid. Uses LiquidStorage method for legacy container
+         * and container event from TileEntityBase for multiplayer container.
+         * @param scale name of liquid bar
+         */
         updateUiScale(scale: string): void;
     }
 }
