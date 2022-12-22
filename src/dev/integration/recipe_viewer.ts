@@ -6,7 +6,7 @@ ModAPI.addAPICallback("RecipeViewer", function(api: typeof RecipeViewer) {
 	RecipeViewer.Core.addListByData(ItemID.lumar, 16, "item");
 	RecipeViewer.Core.addListByData(ItemID.canvasBag, 16, "item");
 
-	class SmelterRecipeType extends api.RecipeType {
+	class SmelterRecipeType extends RecipeViewer.RecipeType {
 		constructor() {
 			super(Translation.translate("Smelter"), BlockID.rp_smelter, {
 				drawing: [
@@ -35,5 +35,5 @@ ModAPI.addAPICallback("RecipeViewer", function(api: typeof RecipeViewer) {
 		}
 	}
 
-	api.RecipeTypeRegistry.register("rp_smelter", new SmelterRecipeType());
+	RecipeViewer.RecipeTypeRegistry.register("rp_smelter", new SmelterRecipeType());
 });
