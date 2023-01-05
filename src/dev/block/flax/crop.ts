@@ -33,43 +33,38 @@ class BlockFlax extends BlockBase {
 
 	checkFarmland(x: number, y: number, z: number, region: BlockSource) {
 		const block = region.getBlock(x, y, z);
-		if (block.id == 60) {
-			if (block.data < 7) {
-				return 0.25;
+		if (block.id == 60) { // farmland
+			if (block.data == 0) { // wet
+				return 0.75;
 			}
-			return 0.75;
+			return 0.25; // dry
 		}
 		return 0;
 	}
 
 	onRandomTick(x: number, y: number, z: number, block: Tile, region: BlockSource): void {
 		if (block.data < 5) {
-			const blockBelow = region.getBlock(x, y-1, z)
+			const blockBelow = region.getBlock(x, y - 1, z)
 			if (blockBelow.id != 60) {
 				region.destroyBlock(x, y, z, true);
 			}
 			else if (block.data < 4 && region.getLightLevel(x, y, z) >= 9) {
-				let points = (blockBelow.data < 7) ? 2 : 4;
-				points += this.checkFarmland(x-1, y, z-1, region);
-				points += this.checkFarmland(x-1, y, z, region);
-				points += this.checkFarmland(x-1, y, z+1, region);
-				points += this.checkFarmland(x, y, z-1, region);
-				points += this.checkFarmland(x, y, z+1, region);
-				points += this.checkFarmland(x+1, y, z-1, region);
-				points += this.checkFarmland(x+1, y, z, region);
-				points += this.checkFarmland(x+1, y, z+1, region);
-				const chance = 1/(Math.floor(50/points) + 1);
+				let points = (blockBelow.data > 0) ? 2 : 4;
+				points += this.checkFarmland(x - 1, y - 1, z - 1, region);
+				points += this.checkFarmland(x - 1, y - 1, z, region);
+				points += this.checkFarmland(x - 1, y - 1, z + 1, region);
+				points += this.checkFarmland(x, y - 1, z - 1, region);
+				points += this.checkFarmland(x, y - 1, z + 1, region);
+				points += this.checkFarmland(x + 1, y - 1, z - 1, region);
+				points += this.checkFarmland(x + 1, y - 1, z, region);
+				points += this.checkFarmland(x + 1, y - 1, z + 1, region);
+
+				const chance = 1/(Math.floor(50/points) + 1); // from 1/26 to 1/6
 				if (Math.random() < chance) {
-					if (block.data < 3) {
-						region.setBlock(x, y, z, block.id, block.data + 1);
-					}
-					else if (region.getBlockId(x, y+1, z) == 0) {
-						region.setBlock(x, y, z, block.id, 4);
-						region.setBlock(x, y+1, z, block.id, 5);
-					}
+					this.grow(region, x, y, z, block);
 				}
 			}
-		} else if (region.getBlockId(x, y-1, z) != block.id) {
+		} else if (region.getBlockId(x, y - 1, z) != block.id) {
 			region.destroyBlock(x, y, z, true);
 		}
 	}
@@ -79,13 +74,7 @@ class BlockFlax extends BlockBase {
 		const boneMeal = IDConverter.getIDData("bone_meal");
 		if (block.data < 4 && item.id == boneMeal.id && item.data == boneMeal.data) {
 			block.data += randomInt(2, 3);
-			if (block.data < 4) {
-				region.setBlock(coords.x, coords.y, coords.z, block.id, block.data);
-			}
-			else if (region.getBlockId(coords.x, coords.y + 1, coords.z) == 0) {
-				region.setBlock(coords.x, coords.y, coords.z, block.id, 4);
-				region.setBlock(coords.x, coords.y + 1, coords.z, block.id, 5);
-			}
+			this.grow(region, coords.x, coords.y, coords.z, block);
 			if (Game.isItemSpendingAllowed(player)) {
 				Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
 			}
@@ -95,6 +84,16 @@ class BlockFlax extends BlockBase {
 				const py = coords.y + Math.random();
 				Particles.addFarParticle(Native.ParticleType.happyVillager, px, py, pz, 0, 0, 0);
 			}
+		}
+	}
+
+	grow(region: BlockSource, x: number, y: number, z: number, block: Tile): void {
+		if (block.data < 4) {
+			region.setBlock(x, y, z, block.id, block.data);
+		}
+		else if (region.getBlockId(x, y + 1, z) == 0) {
+			region.setBlock(x, y, z, block.id, 4);
+			region.setBlock(x, y + 1, z, block.id, 5);
 		}
 	}
 }
