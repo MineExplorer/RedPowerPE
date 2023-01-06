@@ -60,8 +60,9 @@ class BlockFlax extends BlockBase {
 				points += this.checkFarmland(x + 1, y - 1, z + 1, region);
 
 				const chance = 1/(Math.floor(50/points) + 1); // from 1/26 to 1/6
+				//Debug.m(`Random tick on ${x}, ${y}, ${z}, points=${points}, chance=${chance}`);
 				if (Math.random() < chance) {
-					this.grow(region, x, y, z, block);
+					this.setStage(region, x, y, z, block.data + 1);
 				}
 			}
 		} else if (region.getBlockId(x, y - 1, z) != block.id) {
@@ -73,8 +74,7 @@ class BlockFlax extends BlockBase {
 		const region = BlockSource.getDefaultForActor(player);
 		const boneMeal = IDConverter.getIDData("bone_meal");
 		if (block.data < 4 && item.id == boneMeal.id && item.data == boneMeal.data) {
-			block.data += randomInt(2, 3);
-			this.grow(region, coords.x, coords.y, coords.z, block);
+			this.setStage(region, coords.x, coords.y, coords.z, block.data + randomInt(2, 3));
 			if (Game.isItemSpendingAllowed(player)) {
 				Entity.setCarriedItem(player, item.id, item.count - 1, item.data);
 			}
@@ -87,13 +87,13 @@ class BlockFlax extends BlockBase {
 		}
 	}
 
-	grow(region: BlockSource, x: number, y: number, z: number, block: Tile): void {
-		if (block.data < 4) {
-			region.setBlock(x, y, z, block.id, block.data);
+	setStage(region: BlockSource, x: number, y: number, z: number, stage: number): void {
+		if (stage < 4) {
+			region.setBlock(x, y, z, this.id, stage);
 		}
 		else if (region.getBlockId(x, y + 1, z) == 0) {
-			region.setBlock(x, y, z, block.id, 4);
-			region.setBlock(x, y + 1, z, block.id, 5);
+			region.setBlock(x, y, z, this.id, 4);
+			region.setBlock(x, y + 1, z, this.id, 5);
 		}
 	}
 }
