@@ -10,7 +10,7 @@ Recipes.addShaped({id: BlockID.rp_block_breaker, count: 1, data: 0}, [
 	"cxc",
 	"c#c",
 	"crc"
-], ['#', VanillaBlockID.piston, 0, 'c', VanillaBlockID.cobblestone, 0, 'r', VanillaItemID.redstone, 0, 'x', VanillaItemID.iron_pickaxe, 0]);
+], ['#', VanillaBlockID.piston, -1, 'c', VanillaBlockID.cobblestone, -1, 'r', VanillaItemID.redstone, -1, 'x', VanillaItemID.iron_pickaxe, 0]);
 
 class BlockBreaker extends RedstoneMachine {
 	getScreenName(): string {

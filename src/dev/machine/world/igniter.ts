@@ -10,7 +10,7 @@ Recipes.addShaped({id: BlockID.rp_igniter, count: 1, data: 0}, [
 	"nxn",
 	"c#c",
 	"crc"
-], ['#', VanillaBlockID.piston, 0, 'c', VanillaBlockID.cobblestone, 0, 'n', VanillaBlockID.netherrack, 0, 'r', VanillaItemID.redstone, 0, 'x', VanillaItemID.flint_and_steel, 0]);
+], ['#', VanillaBlockID.piston, -1, 'c', VanillaBlockID.cobblestone, -1, 'n', VanillaBlockID.netherrack, -1, 'r', VanillaItemID.redstone, -1, 'x', VanillaItemID.flint_and_steel, 0]);
 
 class Igniter extends RedstoneMachine {
 	getScreenName(): string {
