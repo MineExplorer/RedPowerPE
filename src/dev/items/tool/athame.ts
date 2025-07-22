@@ -5,16 +5,7 @@ ItemRegistry.createTool("athame", {name: "Athame", icon: "athame", material: {le
   }
 });
 
-VanillaRecipe.addShapedRecipe("athame", {
-  pattern: [
-    "X",
-    "#"
-  ],
-  key: {
-    "X": { item: "item:ingotSilver" },
-    "#": { item: "stick" }
-  },
-  result: {
-    item: "item:athame"
-  }
-}, true);
+Recipes.addShaped({id: ItemID.athame, count: 1, data: 0}, [
+  "X",
+  "#"
+], ['X', ItemID.ingotSilver, 0, '#', VanillaItemID.stick, 0]);

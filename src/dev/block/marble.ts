@@ -10,20 +10,10 @@ BlockRegistry.createBlock("marbleBrick", [
 BlockRegistry.setBlockMaterial(BlockID.marbleBrick, "stone", 1);
 BlockRegistry.setDestroyLevel("marbleBrick", 1);
 
-VanillaRecipe.addShapedRecipe("marble_brick", {
-  pattern: [
+Recipes.addShaped({id: BlockID.marbleBrick, count: 4, data: 0}, [
     "XX",
     "XX"
-  ],
-  key: {
-    "X": { item: "block:rp_marble" }
-  },
-  result: {
-    item: "block:marbleBrick",
-    data: 0,
-    count: 4
-  }
-}, true);
+], ['X', BlockID.rp_marble, 0]);
 
 VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick", {
   ingredients: [

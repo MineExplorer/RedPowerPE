@@ -11,29 +11,6 @@ Callback.addCallback("PreLoaded", function() {
 
 	addRecipeWithCraftingTool({id: ItemID.fineCopperWire, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.diamondDrawplate);
 	addRecipeWithCraftingTool({id: ItemID.fineIronWire, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.diamondDrawplate);
-
-	VanillaRecipe.addShapelessRecipe("fine_copper_wire", {
-		ingredients: [
-		  { item: "item:ingotCopper" },
-		  { item: "item:diamondDrawplate" }
-		],
-		result: [
-		  { item: "item:fineCopperWire" },
-		  { item: "item:diamondDrawplate" }
-		]
-	});
-
-	VanillaRecipe.addShapelessRecipe("fine_iron_wire", {
-		ingredients: [
-		  { item: "iron_ingot" },
-		  { item: "item:diamondDrawplate" }
-		],
-		result: [
-		  { item: "item:fineIronWire" },
-		  { item: "item:diamondDrawplate" }
-		]
-	});
-
 	Recipes.addShaped({id: ItemID.copperCoil, count: 1, data: 0}, [
 		"cxc",
 		"x#x",

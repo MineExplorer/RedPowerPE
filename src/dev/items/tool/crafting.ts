@@ -22,17 +22,6 @@ Callback.addCallback("PreLoaded", function() {
 	], ['#', ItemID.fineIronWire, 0, 'p', 5, -1, 's', 280, 0]);
 
 	addRecipeWithCraftingTool({id: VanillaItemID.string, count: 4, data: 0}, [{id: 35, data: -1}], ItemID.woolCard);
-
-	VanillaRecipe.addShapelessRecipe("string_from_wool", {
-		ingredients: [
-		  { item: "wool" },
-		  { item: "item:woolCard" }
-		],
-		result: [
-		  { item: "string", count: 4 },
-		  { item: "item:woolCard" }
-		]
-	});
 });
 
 function addRecipeWithCraftingTool(result, ingredients, toolID) {
