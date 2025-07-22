@@ -74,7 +74,7 @@ BlockRegistry.registerDrop("oreSapphire", function(coords, blockID, blockData, l
 }, 3);
 
 BlockRegistry.createBlock("oreGreenSapphire", [
-	{name: "Sapphire Ore", texture: [["ore_green_sapphire", 0]], inCreative: true}
+	{name: "Green Sapphire Ore", texture: [["ore_green_sapphire", 0]], inCreative: true}
 ], "ore");
 BlockRegistry.setBlockMaterial(BlockID.oreGreenSapphire, "stone", 3);
 BlockRegistry.registerDrop("oreGreenSapphire", function(coords, blockID, blockData, level, enchant) {

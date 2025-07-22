@@ -17,7 +17,7 @@ Item.addCreativeGroup("ingot", Translation.translate("Ingots"), [
 ]);
 
 ItemRegistry.createItem("nikolite", {name: "Nikolite", icon: "nikolite"});
-ChargeItemRegistry.registerFlashItem(ItemID.nikolite, "Bt", 1000, 0);
+ChargeItemRegistry.registerFlashItem(ItemID.nikolite, "Eu", 1000, 0);
 
 ItemRegistry.createItem("gemRuby", {name: "Ruby", icon: "ruby"});
 ItemRegistry.createItem("gemSapphire", {name: "Sapphire", icon: "sapphire"});

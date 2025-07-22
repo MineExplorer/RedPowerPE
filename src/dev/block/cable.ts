@@ -1,8 +1,8 @@
-Block.createSpecialType({
-	destroytime: 0.05,
-	explosionres: 0.5,
-	renderlayer: 3,
-}, "cable");
+BlockRegistry.createBlockType("cable",{
+	destroyTime: 0.05,
+	explosionResistance: 0.5,
+	renderLayer: 3,
+});
 
 BlockRegistry.createBlock("blueWire", [
 	{name: "Blue Alloy Wire", texture: [["blue_wire", 0]], inCreative: true}

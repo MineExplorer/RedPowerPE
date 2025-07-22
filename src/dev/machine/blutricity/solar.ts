@@ -20,8 +20,8 @@ class SolarPanel extends BlulectricMachine {
 		canSeeSky: false
 	}
 
-	canReceiveEnergy(): boolean {
-		return false;
+	isConductor(type: string): boolean {
+		return true;
 	}
 
 	onInit(): void {

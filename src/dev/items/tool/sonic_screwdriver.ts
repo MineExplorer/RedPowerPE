@@ -6,7 +6,7 @@ implements IScrewdriver {
         super("sonic_screwdriver", "Sonic Screwdriver", "sonic_screwdriver", false);
         this.setMaxStack(1);
         this.setCategory(ItemCategory.EQUIPMENT);
-        ChargeItemRegistry.registerItem(this.id, "Bt", 16000, 100, 0, true);
+        ChargeItemRegistry.registerItem(this.id, "Eu", 16000, 100, 0, true);
         MachineRegistry.registerScrewdriver(this.id, this);
     }
 

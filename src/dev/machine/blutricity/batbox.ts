@@ -48,16 +48,16 @@ class BatBox extends BlulectricMachine {
 
 	onInit(): void {
 		StorageInterface.setSlotValidatePolicy(this.container, "slot1", (_, id) => {
-			return ChargeItemRegistry.isValidItem(id, "Bt", 0);
+			return ChargeItemRegistry.isValidItem(id, "Eu", 0);
 		});
 		StorageInterface.setSlotValidatePolicy(this.container, "slot2", (_, id) => {
-			return ChargeItemRegistry.isValidStorage(id, "Bt", 0)
+			return ChargeItemRegistry.isValidStorage(id, "Eu", 0)
 		});
 	}
 
 	onTick(): void {
-		this.chargeSlot("slot2");
-		this.dischargeSlot("slot1");
+		this.chargeSlot("slot1");
+		this.dischargeSlot("slot2");
 
 		const energyLevel = this.getEnergyLevel();
 		if (!this.remove && energyLevel != this.region.getBlockData(this)) {

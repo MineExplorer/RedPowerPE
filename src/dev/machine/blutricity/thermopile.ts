@@ -26,8 +26,8 @@ class Thermopile extends BlulectricMachine {
 
 	onInit(): void {}
 
-	canReceiveEnergy(): boolean {
-		return false;
+	isConductor(type: string): boolean {
+		return true;
 	}
 
 	getHeatValue(id: number): number {
