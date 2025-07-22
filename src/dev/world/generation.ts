@@ -21,8 +21,8 @@ namespace WorldDecorator {
 	}
 
     function genMarble(x: number, y: number, z: number, random: java.util.Random) {
-        GenerationUtils.generateOre(x, y, z, BlockID.rp_marble, 0, 72, false, random.nextInt());
-        GenerationUtils.generateOre(x + random.nextInt(6), y, z + random.nextInt(6), BlockID.rp_marble, 0, 64, false, random.nextInt());
+        GenerationUtils.generateOre(x, y, z, BlockID.rp_marble, 0, 72, false);
+        GenerationUtils.generateOre(x + random.nextInt(6), y, z + random.nextInt(6), BlockID.rp_marble, 0, 64, false);
     }
 
     function genBasalt(x: number, y: number, z: number, random: java.util.Random) {
@@ -56,54 +56,54 @@ namespace WorldDecorator {
         if (oreConfig.oreGenCopper) {
             for (let i = 0; i < 12; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 10, 70);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 10, false);
             }
         }
 
         if (oreConfig.oreGenTin) {
             for (let i = 0; i < 10; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 64);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 9, false);
             }
         }
 
         if (oreConfig.oreGenSilver) {
             for (let i = 0; i < 4; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 32);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSilver, 0, 9, false);
             }
         }
 
         if (oreConfig.oreGenTungsten) {
             const coords = randomCoords(random, chunkX, chunkZ, 1, 16);
-            GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5, false, random.nextInt());
+            GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 5, false);
         }
 
         if (oreConfig.oreGenNikolite) {
             for (let i = 0; i < 8; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 20);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreNikolite, 0, 8, false);
             }
         }
 
         if (oreConfig.oreGenRuby) {
             for (let i = 0; i < 6; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 48);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 6, false);
             }
         }
 
         if (oreConfig.oreGenSapphire) {
             for (let i = 0; i < 6; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 48);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSapphire, 0, 6, false);
             }
         }
 
         if (oreConfig.oreGenGreenSapphire) {
             for (let i = 0; i < 6; i++) {
                 const coords = randomCoords(random, chunkX, chunkZ, 1, 48);
-                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false, random.nextInt());
+                GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGreenSapphire, 0, 6, false);
             }
         }
 

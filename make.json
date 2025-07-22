@@ -3,7 +3,7 @@
 		"info": {
 			"name": "RedPower",
 			"author": "Mine Explorer",
-			"version": "prerelease 5.4",
+			"version": "prerelease 5.4.1",
 			"description": "Pocket version of RedPower 2 for PC",
 			"icon": "src/icon.png"
 		},
@@ -22,7 +22,7 @@
 		],
 		"excludeFromRelease": [],
 		"modFolder": "RedPower",
-		"pushTo": "storage/emulated/0/games/horizon/packs/Inner_Core/innercore/mods/",
+		"pushTo": "sdcard/games/horizon/packs/Inner_Core__ARM64_/innercore/mods/",
 		"ndkPath": null
 	},
 	"resources": [

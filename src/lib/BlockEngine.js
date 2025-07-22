@@ -32,7 +32,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 LIBRARY({
     name: "BlockEngine",
-    version: 10,
+    version: 12,
     shared: true,
     api: "CoreEngine"
 });
@@ -55,20 +55,40 @@ var BlockEngine;
     BlockEngine.getMainGameVersion = getMainGameVersion;
     /**
      * Sends packet with message which will be translated by the client.
-     * @param client receiver client
-     * @param texts array of strings which will be translated and combined in one message.
+     * @deprecated Use sendMessage instead.
      */
     function sendUnlocalizedMessage(client) {
         var texts = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             texts[_i - 1] = arguments[_i];
         }
-        client.send("blockengine.clientMessage", { texts: texts });
+        client.send("blockengine.clientMessageOld", { texts: texts });
     }
     BlockEngine.sendUnlocalizedMessage = sendUnlocalizedMessage;
+    function sendMessage(client, text) {
+        var params = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            params[_i - 2] = arguments[_i];
+        }
+        if (text[0] == '§' && text.length == 2 && params.length > 0) {
+            var message = params.shift();
+            client.send("blockengine.clientMessage", { msg: message, color: text, params: params });
+        }
+        else {
+            client.send("blockengine.clientMessage", { msg: text, params: params });
+        }
+    }
+    BlockEngine.sendMessage = sendMessage;
 })(BlockEngine || (BlockEngine = {}));
-Network.addClientPacket("blockengine.clientMessage", function (data) {
+Network.addClientPacket("blockengine.clientMessageOld", function (data) {
     var message = data.texts.map(Translation.translate).join("");
+    Game.message(message);
+});
+Network.addClientPacket("blockengine.clientMessage", function (data) {
+    var message = (data.color || "") + Translation.translate(data.msg);
+    data.params.forEach(function (substr) {
+        message = message.replace("%s", Translation.translate(substr));
+    });
     Game.message(message);
 });
 var BlockEngine;
@@ -575,12 +595,11 @@ var WorldRegion = /** @class */ (function () {
         var pos = x;
         return this.blockSource.canSeeSky(pos.x, pos.y, pos.z);
     };
-    WorldRegion.prototype.getGrassColor = function (x, y, z) {
-        if (typeof x === "number") {
-            return this.blockSource.getGrassColor(x, y, z);
-        }
-        var pos = x;
-        return this.blockSource.getGrassColor(pos.x, pos.y, pos.z);
+    /**
+     * @returns grass color on coords
+     */
+    WorldRegion.prototype.getGrassColor = function (x, z) {
+        return this.blockSource.getGrassColor(x, z);
     };
     WorldRegion.prototype.dropItem = function (x, y, z, id, count, data, extra) {
         if (typeof x == "object") {
@@ -628,8 +647,8 @@ var WorldRegion = /** @class */ (function () {
         if (this.isDeprecated && (type == Native.EntityType.PLAYER) != blacklist) {
             var players = Network.getConnectedPlayers();
             var dimension = this.getDimension();
-            for (var _i = 0, players_1 = players; _i < players_1.length; _i++) {
-                var ent = players_1[_i];
+            for (var _i = 0, _a = players; _i < _a.length; _i++) {
+                var ent = _a[_i];
                 if (Entity.getDimension(ent) != dimension)
                     continue;
                 var c = Entity.getPosition(ent);
@@ -674,8 +693,8 @@ var WorldRegion = /** @class */ (function () {
     WorldRegion.prototype.sendPacketInRadius = function (coords, radius, packetName, data) {
         var dimension = this.getDimension();
         var clientsList = Network.getConnectedClients();
-        for (var _i = 0, clientsList_1 = clientsList; _i < clientsList_1.length; _i++) {
-            var client = clientsList_1[_i];
+        for (var _i = 0, _a = clientsList; _i < _a.length; _i++) {
+            var client = _a[_i];
             var player = client.getPlayerUid();
             var entPos = Entity.getPosition(player);
             if (Entity.getDimension(player) == dimension && Entity.getDistanceBetweenCoords(entPos, coords) <= radius) {
@@ -951,6 +970,37 @@ var EntityCustomData;
     });
 })(EntityCustomData || (EntityCustomData = {}));
 /**
+ * API to store temporary data about the block.
+ */
+var VirtualBlockData;
+(function (VirtualBlockData) {
+    var cacheMap = {};
+    function getKey(dimension, x, y, z) {
+        return "".concat(dimension, "/").concat(x, ",").concat(y, ",").concat(z);
+    }
+    function getBlockEntry(dimension, x, y, z) {
+        return cacheMap[getKey(dimension, x, y, z)] || null;
+    }
+    VirtualBlockData.getBlockEntry = getBlockEntry;
+    function addBlockEntry(entry, dimension, x, y, z) {
+        cacheMap[getKey(dimension, x, y, z)] = entry;
+    }
+    VirtualBlockData.addBlockEntry = addBlockEntry;
+    function removeBlockEntry(dimension, x, y, z) {
+        delete cacheMap[getKey(dimension, x, y, z)];
+    }
+    VirtualBlockData.removeBlockEntry = removeBlockEntry;
+    Callback.addCallback("LevelLeft", function () {
+        cacheMap = {};
+    });
+    Callback.addCallback("BreakBlock", function (blockSource, coords) {
+        if (Game.isActionPrevented()) {
+            return;
+        }
+        removeBlockEntry(blockSource.getDimension(), coords.x, coords.y, coords.z);
+    }, -1);
+})(VirtualBlockData || (VirtualBlockData = {}));
+/**
  * Module for creating block models.
  */
 var BlockModeler;
@@ -1075,6 +1125,8 @@ var BlockBase = /** @class */ (function () {
         this.isDefined = false;
         /** Block mining level */
         this.miningLevel = 0;
+        /** Redstone properties */
+        this.redstone = { receiver: false, connectToWires: false };
         this.stringID = stringID;
         this.id = IDRegistry.genBlockID(stringID);
         if (typeof blockType == "object") {
@@ -1085,14 +1137,11 @@ var BlockBase = /** @class */ (function () {
         }
         this.blockType = blockType;
     }
-    /**
-     * Adds variation for the block.
-     * @param name item name
-     * @param texture block texture
-     * @param inCreative true if should be added to creative inventory
-     */
     BlockBase.prototype.addVariation = function (name, texture, inCreative) {
         if (inCreative === void 0) { inCreative = false; }
+        if (!Array.isArray(texture[0])) {
+            texture = [texture];
+        }
         this.variations.push({ name: name, texture: texture, inCreative: inCreative });
     };
     /**
@@ -1107,7 +1156,8 @@ var BlockBase = /** @class */ (function () {
         var duplicatedInstance = BlockRegistry.getInstanceOf(this.id);
         if (duplicatedInstance) {
             var variations = duplicatedInstance.variations;
-            for (var i = 0; i < Math.min(this.variations.length, variations.length); i++) {
+            var checkedVariationsLength = Math.min(this.variations.length, variations.length);
+            for (var i = 0; i < checkedVariationsLength; i++) {
                 if (variations[i].inCreative) {
                     this.variations[i].inCreative = false;
                     Logger.Log("Skipped duplicated adding to creative for block ".concat(this.stringID, ":").concat(i), "BlockEngine");
@@ -1120,8 +1170,15 @@ var BlockBase = /** @class */ (function () {
             var box = this.shapes[data];
             Block.setShape(this.id, box[0], box[1], box[2], box[3], box[4], box[5], parseInt(data));
         }
+        if (this.redstone.receiver) {
+            Block.setupAsRedstoneReceiver(this.id, this.redstone.connectToWires);
+        }
         if (this.category)
             Item.setCategory(this.id, this.category);
+    };
+    BlockBase.prototype.setupAsRedstoneReceiver = function (connectToWires) {
+        this.redstone.receiver = true;
+        this.redstone.connectToWires = connectToWires;
     };
     BlockBase.prototype.getDrop = function (coords, block, level, enchant, item, region) {
         if (level >= this.miningLevel) {
@@ -1160,15 +1217,17 @@ var BlockBase = /** @class */ (function () {
         this.miningLevel = level;
         BlockRegistry.setBlockMaterial(this.id, material, level);
     };
-    /**
-     * Sets block box shape.
-     * @params x1, y1, z1 position of block lower corner (0, 0, 0 for solid block)
-     * @params x2, y2, z2 position of block upper conner (1, 1, 1 for solid block)
-     * @param data sets shape for one block variation if specified and for all variations otherwise
-     */
     BlockBase.prototype.setShape = function (x1, y1, z1, x2, y2, z2, data) {
         if (data === void 0) { data = -1; }
-        this.shapes[data] = [x1, y1, z1, x2, y2, z2];
+        if (typeof (x1) == "object") {
+            var pos1 = x1;
+            var pos2 = y1;
+            data = z1;
+            this.shapes[data] = [pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z];
+        }
+        else {
+            this.shapes[data] = [x1, y1, z1, x2, y2, z2];
+        }
     };
     /**
      * Sets the block type of another block, which allows to inherit some of its properties.
@@ -2096,6 +2155,13 @@ var BlockRegistry;
         destroyTime: 0.5,
         explosionResistance: 2.5,
         sound: "gravel"
+    });
+    Callback.addCallback("RedstoneSignal", function (coords, params, onLoad, blockSource) {
+        var blockId = blockSource.getBlockId(coords.x, coords.y, coords.z);
+        var instance = getInstanceOf(blockId);
+        if (instance && 'onRedstoneUpdate' in instance) {
+            instance.onRedstoneUpdate(coords, params, blockSource);
+        }
     });
 })(BlockRegistry || (BlockRegistry = {}));
 /// <reference path="./BlockItemBehavior.ts" />
@@ -3188,6 +3254,8 @@ var TileEntityBase = /** @class */ (function () {
     TileEntityBase.prototype.tick = function () {
         this.onTick();
     };
+    /** @deprecated */
+    TileEntityBase.prototype.click = function () { };
     /**
      * Called when a TileEntity is created
      */
@@ -3225,6 +3293,10 @@ var TileEntityBase = /** @class */ (function () {
         return "main";
     };
     TileEntityBase.prototype.getScreenByName = function (screenName, container) {
+        return null;
+    };
+    /** @deprecated */
+    TileEntityBase.prototype.getGuiScreen = function () {
         return null;
     };
     /**
@@ -3629,3 +3701,4 @@ EXPORT("ItemRegistry", ItemRegistry);
 EXPORT("LiquidItemRegistry", LiquidItemRegistry);
 EXPORT("EntityCustomData", EntityCustomData);
 EXPORT("IDConverter", IDConverter);
+EXPORT("VirtualBlockData", VirtualBlockData);
