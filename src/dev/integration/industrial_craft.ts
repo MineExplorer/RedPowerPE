@@ -1,4 +1,3 @@
-// Smelter recipes
 ModAPI.addAPICallback("ICore", function(api) {
 	SmelterRecipes.addRecipe({id: ItemID.ingotBronze, count: 2}, [{id: ItemID.bronzeSword, count: 1}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotBronze, count: 1}, [{id: ItemID.bronzeShovel, count: 1}]);

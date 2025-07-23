@@ -11,6 +11,15 @@ namespace SmelterRecipes {
 		recipeData.push({input: input as ItemInstance[], result: result as ItemInstance});
 	}
 
+	export function removeRecipe(inputItems: ItemInstance[]): Nullable<ItemInstance> {
+		const recipe = getRecipe(inputItems);
+		if (recipe) {
+			recipeData.splice(recipeData.indexOf(recipe), 1);
+			return recipe.result;
+		}
+		return null;
+	}
+
 	export function getInput(container: ItemContainer): ItemInstance[] {
 		const inputItems: ItemInstance[] = [];
 		for (let i = 1; i <= 4; i++) {
