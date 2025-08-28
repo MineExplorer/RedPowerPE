@@ -5,9 +5,9 @@ namespace WorldDecorator {
 		oreGenSilver: __config__.getBool("ore_gen.silver"),
 		oreGenTungsten: __config__.getBool("ore_gen.tungsten"),
 		oreGenNikolite: __config__.getBool("ore_gen.nikolite"),
-		oreGenRuby: __config__.getBool("ore_gen.gems"),
-		oreGenSapphire: __config__.getBool("ore_gen.gems"),
-		oreGenGreenSapphire: __config__.getBool("ore_gen.gems"),
+		oreGenRuby: __config__.getBool("ore_gen.ruby"),
+		oreGenSapphire: __config__.getBool("ore_gen.sapphire"),
+		oreGenGreenSapphire: __config__.getBool("ore_gen.green_sapphire"),
 	}
 
     export const genMarbleChance = __config__.getInteger("world_gen.marble");

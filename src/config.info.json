@@ -1,0 +1,84 @@
+{
+   "properties": {
+        "enabled": {
+            "name": {
+                "en": "Enable mod",
+                "ru": "Включить мод"
+            }
+        },
+        "world_gen": {
+            "name": {
+                "en": "World generation",
+                "ru": "Генерация мира"
+            },
+            "collapsible": true
+        },
+        "world_gen.marble": {
+            "name": {
+                "en": "Marble chance per chunk",
+                "ru": "Шанс мрамора в чанке"
+            }
+        },
+        "world_gen.basalt": {
+            "name": {
+                "en": "Basalt chance per chunk",
+                "ru": "Шанс базальта в чанке"
+            }
+        },
+        "ore_gen": {
+            "name": {
+                "en": "Ore generation",
+                "ru": "Генерация руд"
+            },
+            "collapsible": true
+        },
+        "ore_gen.copper": {
+            "name": {
+                "en": "Copper",
+                "ru": "Медь"
+            }
+        },
+        "ore_gen.tin": {
+            "name": {
+                "en": "Tin",
+                "ru": "Олово"
+            }
+        },
+        "ore_gen.silver": {
+            "name": {
+                "en": "Silver",
+                "ru": "Серебро"
+            }
+        },
+        "ore_gen.tungsten": {
+            "name": {
+                "en": "Tungsten",
+                "ru": "Вольфрам"
+            }
+        },
+        "ore_gen.nikolite": {
+            "name": {
+                "en": "Nikolite",
+                "ru": "Николит"
+            }
+        },
+        "ore_gen.ruby": {
+            "name": {
+                "en": "Ruby",
+                "ru": "Рубин"
+            }
+        },
+        "ore_gen.sapphire": {
+            "name": {
+                "en": "Sapphire",
+                "ru": "Сапфир"
+            }
+        },
+        "ore_gen.green_sapphire": {
+            "name": {
+                "en": "Green Sapphire",
+                "ru": "Зелёный сапфир"
+            }
+        }
+   }
+}
