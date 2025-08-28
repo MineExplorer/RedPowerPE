@@ -33,4 +33,9 @@ Callback.addCallback("PreLoaded", function() {
 	Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
 	Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
 	Recipes.addFurnace(BlockID.oreSilver, ItemID.ingotSilver, 0);
+
+	Recipes.addFurnace(BlockID.oreNikolite, ItemID.nikolite, 0);
+	Recipes.addFurnace(BlockID.oreRuby, ItemID.gemRuby, 0);
+	Recipes.addFurnace(BlockID.oreSapphire, ItemID.gemSapphire, 0);
+	Recipes.addFurnace(BlockID.oreGreenSapphire, ItemID.gemGreenSapphire, 0);
 });

@@ -58,7 +58,7 @@ Item.addCreativeGroup("blockResource", Translation.translate("Mineral Blocks"), 
 	BlockID.blockGreenSapphire
 ]);
 
-Callback.addCallback("PostLoaded", function() {
+Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
 		"xxx",
 		"xxx",
@@ -101,24 +101,15 @@ Callback.addCallback("PostLoaded", function() {
 		"xxx"
 	], ['x', ItemID.gemRuby, 0]);
 
-	function addResourceUnpackRecipe(recipeName: string, blockID: string, itemID: string, count: number): void {
-		VanillaRecipe.addCraftingRecipe(recipeName, {
-			type: "shapeless",
-			ingredients: [
-			  { item: "block:" + blockID }
-			],
-			result: {
-			  item: "item:" + itemID,
-			  count: 9
-			}
-		}, true);
+	function addResourceUnpackRecipe(blockID: string, itemID: string, count: number): void {
+		Recipes.addShapeless({id: ItemID[itemID], count: count, data: 0}, [{id: BlockID[blockID], data: 0}]);
 	}
 
-	addResourceUnpackRecipe("ingot_copper", "blockCopper", "ingotCopper", 9);
-	addResourceUnpackRecipe("ingot_tin", "blockTin", "ingotTin", 9);
-	addResourceUnpackRecipe("ingot_silver", "blockSilver", "ingotSilver", 9);
-	addResourceUnpackRecipe("nikolite", "blockNikolite", "nikolite", 9);
-	addResourceUnpackRecipe("gem_ruby", "blockRuby", "gemRuby", 9);
-	addResourceUnpackRecipe("gem_sapphire", "blockSapphire", "gemSapphire", 9);
-	addResourceUnpackRecipe("gem_green_sapphire", "blockGreenSapphire", "gemGreenSapphire", 9);
+	addResourceUnpackRecipe("blockCopper", "ingotCopper", 9);
+	addResourceUnpackRecipe("blockTin", "ingotTin", 9);
+	addResourceUnpackRecipe("blockSilver", "ingotSilver", 9);
+	addResourceUnpackRecipe("blockNikolite", "nikolite", 9);
+	addResourceUnpackRecipe("blockRuby", "gemRuby", 9);
+	addResourceUnpackRecipe("blockSapphire", "gemSapphire", 9);
+	addResourceUnpackRecipe("blockGreenSapphire", "gemGreenSapphire", 9);
 });
