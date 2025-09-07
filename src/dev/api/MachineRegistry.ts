@@ -12,11 +12,15 @@ namespace MachineRegistry {
 		TileEntity.registerPrototype(id, Prototype);
 	}
 
-	export function registerMachine(id: number, Prototype: TileEntity.TileEntityPrototype): void {
+	export function registerMachine(id: number, Prototype: TileEntity.TileEntityPrototype, allowEu?: boolean): void {
 		registerPrototype(id, Prototype);
 		// wire connection
 		ICRender.getGroup("bt-wire").add(id, -1);
 		EnergyTileRegistry.addEnergyTypeForId(id, BT);
+		if (allowEu) {
+			ICRender.getGroup("ic-wire").add(id, -1);
+			EnergyTileRegistry.addEnergyTypeForId(id, EU);
+		}
 	}
 
 	export function updateGuiHeader(gui: any, text: string): void {

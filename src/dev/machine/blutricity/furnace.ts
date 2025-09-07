@@ -73,7 +73,7 @@ class BTFurnace extends ProcessingMachine {
 	}
 }
 
-MachineRegistry.registerMachine(BlockID.bt_furnace, new BTFurnace());
+MachineRegistry.registerMachine(BlockID.bt_furnace, new BTFurnace(), true);
 
 StorageInterface.createInterface(BlockID.bt_furnace, {
 	slots: {

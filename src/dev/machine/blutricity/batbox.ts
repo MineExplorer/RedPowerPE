@@ -102,7 +102,7 @@ class BatBox extends BlulectricMachine {
 	}
 }
 
-MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox());
+MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox(), true);
 
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
 	const {x, y, z} = coords.relative;

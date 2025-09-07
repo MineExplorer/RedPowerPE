@@ -14,7 +14,6 @@ Callback.addCallback("PreLoaded", function() {
 });
 
 namespace TransformerRender {
-	ICRender.getGroup("ic-wire").add(BlockID.bt_transformer, -1);
 	const modelBoxes: any = [
 		[0, 0, 0, 1, 1/8, 1],
 		[1/8, 1/8, 1/16, 7/8, 7/8, 15/16],
@@ -67,6 +66,4 @@ class BTTransformer extends BlulectricMachine {
 	}
 }
 
-MachineRegistry.registerMachine(BlockID.bt_transformer, new BTTransformer());
-
-EnergyTileRegistry.addEnergyTypeForId(BlockID.bt_transformer, EU);
+MachineRegistry.registerMachine(BlockID.bt_transformer, new BTTransformer(), true);

@@ -75,7 +75,7 @@ class BTSmelter extends ProcessingMachine {
 	}
 }
 
-MachineRegistry.registerMachine(BlockID.bt_smelter, new BTSmelter());
+MachineRegistry.registerMachine(BlockID.bt_smelter, new BTSmelter(), true);
 
 StorageInterface.createInterface(BlockID.bt_smelter, {
 	slots: {
