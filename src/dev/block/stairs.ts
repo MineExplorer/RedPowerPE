@@ -76,7 +76,19 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_cobble_stairs", {
 	}
 });
 
-VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_stairs", {
+VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_stairs_from_basalt", {
+	ingredients: [
+	  {
+		item: "block:rp_basalt",
+		data: 0
+	  }
+	],
+	result: {
+	  item: "block:basaltBrickStairs"
+	}
+});
+
+VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_stairs_from_basalt_bricks", {
 	ingredients: [
 	  {
 		item: "block:basaltBrick",
@@ -88,7 +100,16 @@ VanillaRecipe.addStonecutterRecipe("stonecutter_basalt_brick_stairs", {
 	}
 });
 
-VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick_stairs", {
+VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick_stairs_from_marble", {
+	ingredients: [
+	  { item: "block:rp_marble" }
+	],
+	result: {
+	  item: "block:marbleBrickStairs"
+	}
+});
+
+VanillaRecipe.addStonecutterRecipe("stonecutter_marble_brick_stairs_from_marble_bricks", {
 	ingredients: [
 	  { item: "block:marbleBrick" }
 	],
