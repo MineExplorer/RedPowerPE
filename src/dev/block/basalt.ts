@@ -29,7 +29,7 @@ BlockRegistry.setBlockMaterial(BlockID.basaltBrick, "stone", 1);
 BlockRegistry.setDestroyLevel("basaltBrick", 1);
 
 BlockRegistry.createBlock("basaltPaver", [
-	{name: "Basalt Paver", texture: [["rp_basalt_paver", 0]], inCreative: true}
+	{name: "Polished Basalt", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt");
 BlockRegistry.setBlockMaterial(BlockID.basaltPaver, "stone", 1);
 BlockRegistry.registerDrop("basaltPaver", function(coords, blockID, blockData, level, enchant) {

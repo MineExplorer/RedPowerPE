@@ -17,7 +17,7 @@ BlockRegistry.createSlabs("basaltSlab", "doubleBasaltSlab", [
 	{name: "Basalt Slab", texture: [["rp_basalt", 0]], inCreative: true},
 	{name: "Basalt Cobble Slab", texture: [["rp_basalt_cobble", 0]], inCreative: true},
 	{name: "Basalt Brick Slab", texture: [["rp_basalt_brick", 0]], inCreative: true},
-	{name: "Basalt Paver Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
+	{name: "Polished Basalt Slab", texture: [["rp_basalt_paver", 0]], inCreative: true}
 ], "basalt_slab");
 
 BlockRegistry.setBlockMaterial(BlockID.basaltSlab, "stone", 1);
