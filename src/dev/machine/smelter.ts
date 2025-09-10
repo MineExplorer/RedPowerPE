@@ -27,8 +27,9 @@ Callback.addCallback("PreLoaded", function() {
 	SmelterRecipes.addRecipe({id: ItemID.waferBlue, count: 1}, [{id: ItemID.waferSilicon, count: 1}, {id: ItemID.nikolite, count: 4}]);
 	SmelterRecipes.addRecipe({id: ItemID.ingotCopper, count: 1}, [{id: ItemID.fineCopperWire, count: 1}]);
 	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: ItemID.fineIronWire, count: 1}]);
-	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: ItemID.rp_screwdriver, count: 1}]);
-	SmelterRecipes.addRecipe({id: ItemID.ingotSilver, count: 1}, [{id: ItemID.athame, count: 1}]);
+	// mod tools
+	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: ItemID.rp_screwdriver, count: 1, data: 0}]);
+	SmelterRecipes.addRecipe({id: ItemID.ingotSilver, count: 1}, [{id: ItemID.athame, count: 1, data: 0}]);
 	// iron tools
 	SmelterRecipes.addRecipe({id: 265, count: 1}, [{id: 256, count: 1, data: 0}]);
 	SmelterRecipes.addRecipe({id: 265, count: 3}, [{id: 257, count: 1, data: 0}]);

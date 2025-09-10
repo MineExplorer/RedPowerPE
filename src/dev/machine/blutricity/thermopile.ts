@@ -49,7 +49,6 @@ class Thermopile extends BlulectricMachine {
 			this.calculateHeat(this.x, this.y, this.z - 1);
 			this.calculateHeat(this.x, this.y, this.z + 1);
 			this.data.output = Math.min(this.cold, this.heat) / 4;
-			//Debug.m(this.data.output);
 		}
 		src.add(this.data.output);
 	}

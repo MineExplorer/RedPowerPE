@@ -4,6 +4,10 @@ namespace SmelterRecipes {
 	export const recipeData: RecipeFormat[] = [];
 
 	export function addRecipe(result: {id: number, count: number, data?: number}, input: {id: number, count: number, data?: number}[]): void {
+		if (!result.id || input.some(item => !item.id)) {
+			Logger.Log("Failed to add Smelter recipe: invalid ingredient id", "WARNING");
+			return;
+		};
 		result.data ??= 0;
 		for (let item of input) {
 			item.data ??= -1;
