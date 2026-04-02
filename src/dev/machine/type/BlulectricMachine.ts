@@ -13,6 +13,11 @@ implements EnergyTile {
 		return 0;
 	}
 
+	/** @deprecated use getEnergyCapacity instead */
+	getEnergyStorage(): number {
+		return this.getEnergyCapacity();
+	}
+
 	isGenerator(): boolean {
 		return false;
 	}
