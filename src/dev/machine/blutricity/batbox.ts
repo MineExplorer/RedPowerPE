@@ -43,7 +43,11 @@ class BatBox extends BlulectricMachine {
 	}
 
 	getEnergyLevel(): number {
-		return Math.floor(this.data.energy / this.getEnergyStorage() * 8);
+		return Math.floor(this.data.energy / this.getEnergyCapacity() * 8);
+	}
+
+	canEmitEnergy(side: number, type: string): boolean {
+		return side < 2;
 	}
 
 	onInit(): void {
@@ -63,7 +67,7 @@ class BatBox extends BlulectricMachine {
 		if (!this.remove && energyLevel != this.region.getBlockData(this)) {
 			this.region.setBlock(this, this.blockID, energyLevel);
 		}
-		const energyStorage = this.getEnergyStorage();
+		const energyStorage = this.getEnergyCapacity();
 		if (this.data.energy == energyStorage) {
 			this.container.sendEvent("setBatteryIcon", "on");
 		}
@@ -75,7 +79,7 @@ class BatBox extends BlulectricMachine {
 		this.container.sendChanges();
 	}
 
-	getEnergyStorage(): number {
+	getEnergyCapacity(): number {
 		return 64000;
 	}
 
@@ -107,11 +111,11 @@ MachineRegistry.registerMachine(BlockID.rp_batbox, new BatBox(), true);
 Block.registerPlaceFunction("rp_batbox", function(coords, item, block, player, region) {
 	const {x, y, z} = coords.relative;
 	region.setBlock(x, y, z, item.id, item.data);
-	const tile = World.addTileEntity(x, y, z, region);
+	const tile = World.addTileEntity(x, y, z, region) as BatBox;
 	if (item.extra) {
 		tile.data.energy = item.extra.getInt("energy");
 	}
 	else {
-		tile.data.energy = tile.getEnergyStorage() / 8 * item.data;
+		tile.data.energy = tile.getEnergyCapacity() / 8 * item.data;
 	}
 });

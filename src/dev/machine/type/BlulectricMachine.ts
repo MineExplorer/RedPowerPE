@@ -9,8 +9,12 @@ implements EnergyTile {
 		energy: 0
 	}
 
-	getEnergyStorage(): number {
+	getEnergyCapacity(): number {
 		return 0;
+	}
+
+	isGenerator(): boolean {
+		return false;
 	}
 
 	isConductor(type: string): boolean {
@@ -21,12 +25,20 @@ implements EnergyTile {
 		return true;
 	}
 
-	canExtractEnergy(side: number, type: string): boolean {
-		return true;
+	canEmitEnergy(side: number, type: string): boolean {
+		return false;
+	}
+
+	getFreeEnergyAmount(): number {
+		const storage = this.getEnergyCapacity();
+		if (storage > this.data.energy) {
+			return Math.floor(storage - this.data.energy);
+		}
+		return 0;
 	}
 
 	energyReceive(type: string, amount: number, voltage: number): number {
-		const add = Math.min(amount, this.getEnergyStorage() - this.data.energy);
+		const add = Math.min(amount, this.getEnergyCapacity() - this.data.energy);
 		this.data.energy += add;
 		return add;
 	}
@@ -38,7 +50,7 @@ implements EnergyTile {
 	}
 
 	dischargeSlot(slotName: string) {
-		const amount = this.getEnergyStorage() - this.data.energy;
+		const amount = this.getEnergyCapacity() - this.data.energy;
 		this.data.energy += ChargeItemRegistry.getEnergyFromSlot(this.container.getSlot(slotName), "Eu", amount, 0);
 	}
 }

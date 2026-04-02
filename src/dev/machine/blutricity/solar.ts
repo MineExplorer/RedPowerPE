@@ -20,18 +20,29 @@ class SolarPanel extends BlulectricMachine {
 		canSeeSky: false
 	}
 
-	isConductor(type: string): boolean {
+	isGenerator(): boolean {
 		return true;
+	}
+
+	canReceiveEnergy(side: number, type: string): boolean {
+		return false;
+	}
+
+	canEmitEnergy(side: number, type: string): boolean {
+		return side != EBlockSide.UP;
 	}
 
 	onInit(): void {
 		this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
 	}
 
-	energyTick(type: string, src: EnergyTileNode): void {
+	onTick(): void {
 		if (World.getThreadTime() % 100 == 0) {
 			this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
 		}
+	}
+
+	energyTick(type: string, src: EnergyTileNode): void {
 		if (this.data.canSeeSky && this.region.getLightLevel(this.x, this.y + 1, this.z) == 15) {
 			src.add(2);
 		}

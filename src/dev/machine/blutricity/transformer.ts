@@ -33,11 +33,11 @@ class BTTransformer extends BlulectricMachine {
 		return this.data.electric_mode == (type == "Bt");
 	}
 
-	canExtractEnergy(side: number, type: string): boolean {
+	canEmitEnergy(side: number, type: string): boolean {
 		return this.data.electric_mode != (type == "Bt");
 	}
 
-	getEnergyStorage(): number {
+	getEnergyCapacity(): number {
 		return 128;
 	}
 

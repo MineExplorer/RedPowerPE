@@ -24,7 +24,17 @@ class Thermopile extends BlulectricMachine {
 		output: 0
 	}
 
-	onInit(): void {}
+	onInit(): void {
+		this.energyNode.defaultTransferMode = TransferMode.Full;
+	}
+
+	canReceiveEnergy(side: number, type: string): boolean {
+		return side < 2;
+	}
+
+	canEmitEnergy(side: number, type: string): boolean {
+		return true;
+	}
 
 	isConductor(type: string): boolean {
 		return true;
@@ -40,7 +50,7 @@ class Thermopile extends BlulectricMachine {
 		else this.heat += heat;
 	}
 
-	energyTick(type: string, src: EnergyTileNode) {
+	onTick(): void {
 		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
 			this.heat = 0;
@@ -50,6 +60,9 @@ class Thermopile extends BlulectricMachine {
 			this.calculateHeat(this.x, this.y, this.z + 1);
 			this.data.output = Math.min(this.cold, this.heat) / 4;
 		}
+	}
+
+	energyTick(type: string, src: EnergyTileNode) {
 		src.add(this.data.output);
 	}
 

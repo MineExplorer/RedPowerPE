@@ -6,11 +6,11 @@ class ProcessingMachine extends BlulectricMachine {
 		progress: 0
 	}
 
-	canExtractEnergy(): boolean {
+	canEmitEnergy(): boolean {
 		return false;
 	}
 
-	getEnergyStorage(): number {
+	getEnergyCapacity(): number {
 		return 2000;
 	}
 

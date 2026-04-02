@@ -1,4 +1,4 @@
-ModAPI.registerAPI("RedCore", {
+const RedCore = {
 	Machine: MachineRegistry,
 	SmelterRecipes: SmelterRecipes,
 	World: WorldDecorator,
@@ -6,6 +6,8 @@ ModAPI.registerAPI("RedCore", {
 	requireGlobal: function(command: string) {
 		return eval(command);
 	}
-});
+}
+
+ModAPI.registerAPI("RedCore", RedCore);
 
 Logger.Log("RedCore API shared.", "API");

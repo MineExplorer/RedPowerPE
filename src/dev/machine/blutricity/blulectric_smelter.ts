@@ -70,7 +70,7 @@ class BTSmelter extends ProcessingMachine {
 		this.setActive(newActive);
 
 		this.container.setScale("progressScale", this.data.progress / 100);
-		this.container.setScale("btScale", this.data.energy / this.getEnergyStorage());
+		this.container.setScale("btScale", this.data.energy / this.getEnergyCapacity());
 		this.container.sendChanges();
 	}
 }
