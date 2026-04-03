@@ -37,7 +37,21 @@ const guiBatBox = MachineRegistry.createInventoryWindow("Battery Box", {
 	}
 });
 
+const enum BatBoxSideMode {
+	Input = 1,
+	Output = 2
+}
+
 class BatBox extends BlulectricMachine {
+	defaultValues = {
+		energy: 0,
+		sideConfig: {}
+	}
+
+	getSideMode(side: number): BatBoxSideMode {
+		return this.data.sideConfig[side] || (side < 2 ? BatBoxSideMode.Output : BatBoxSideMode.Input);
+	}
+
 	getScreenByName() {
 		return guiBatBox;
 	}
@@ -46,8 +60,28 @@ class BatBox extends BlulectricMachine {
 		return Math.floor(this.data.energy / this.getEnergyCapacity() * 8);
 	}
 
+	canReceiveEnergy(side: number, type: string): boolean {
+		return this.getSideMode(side) == BatBoxSideMode.Input;
+	}
+
 	canEmitEnergy(side: number, type: string): boolean {
-		return side < 2;
+		return this.getSideMode(side) == BatBoxSideMode.Output;
+	}
+
+	onItemUse(coords: Callback.ItemUseCoordinates, item: ItemStack, player: number): boolean {
+		const screwdriver = MachineRegistry.getScrewdriverData(item.id);
+		if (!screwdriver?.canBeUsed(item)) {
+			return false;
+		}
+		const newSideMode = this.getSideMode(coords.side) == BatBoxSideMode.Input
+			? BatBoxSideMode.Output
+			: BatBoxSideMode.Input;
+		this.data.sideConfig[coords.side] = newSideMode;
+		const client = Network.getClientForPlayer(player);
+		BlockEngine.sendMessage(client, `Side mode: ${newSideMode == BatBoxSideMode.Input ? "Input" : "Output"}`);
+		screwdriver.useItem(item, player);
+		this.rebuildGrid();
+		return true;
 	}
 
 	onInit(): void {
@@ -57,6 +91,7 @@ class BatBox extends BlulectricMachine {
 		StorageInterface.setSlotValidatePolicy(this.container, "slot2", (_, id) => {
 			return ChargeItemRegistry.isValidStorage(id, "Eu", 0)
 		});
+		this.data.sideConfig ??= {};
 	}
 
 	onTick(): void {
@@ -96,6 +131,11 @@ class BatBox extends BlulectricMachine {
 		} else {
 			this.region.dropAtBlock(coords.x, coords.y, coords.z, this.blockID, 1, 0);
 		}
+	}
+
+	rebuildGrid(): void {
+		this.energyNode.resetConnections();
+		EnergyGridBuilder.buildGridForTile(this);
 	}
 
 	@BlockEngine.Decorators.ContainerEvent(Side.Client)
