@@ -8,10 +8,10 @@ Block.setBlockShape(BlockID.rp_solar, {x: 0, y: 0, z: 0}, {x: 1, y: 0.25, z: 1},
 
 Callback.addCallback("PreLoaded", function() {
 	Recipes.addShaped({id: BlockID.rp_solar, count: 1, data: 0}, [
-		"ooo",
+		"ioi",
 		"oxo",
-		"ooo"
-	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0]);
+		"ioi"
+	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0, 'i', 265, -1]);
 });
 
 class SolarPanel extends BlulectricMachine {
