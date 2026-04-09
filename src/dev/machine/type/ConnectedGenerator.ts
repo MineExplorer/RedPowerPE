@@ -5,16 +5,16 @@ abstract class ConnectedGenerator extends BlulectricMachine {
 	host: ConnectedGenerator = null;
 	connectedTiles: ConnectedGenerator[] = null;
 
-	isGenerator(): boolean {
-		return false;
-	}
-
 	isConductor(type: string): boolean {
 		return true;
 	}
 
 	canReceiveEnergy(side: number, type: string, node: EnergyGrid | EnergyTileNode): boolean {
 		return node.kind == "tile" && node.tileEntity.blockID == this.blockID;
+	}
+
+    canEmitEnergy(side: number, type: string, node: EnergyNode): boolean {
+		return true;
 	}
 
 	onInit(): void {

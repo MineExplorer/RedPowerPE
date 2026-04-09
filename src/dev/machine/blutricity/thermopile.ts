@@ -1,4 +1,4 @@
-/// <reference path="../type/BlulectricMachine.ts" />
+/// <reference path="../type/ConnectedGenerator.ts" />
 
 BlockRegistry.createBlockWithRotation("rp_thermopile", [
 	{name: "Thermopile", texture: [["rp_thermopile", 0], ["rp_thermopile", 0], ["rp_thermopile_side", 0], ["rp_thermopile_side", 1], ["rp_thermopile_side", 0], ["rp_thermopile_side", 0]], inCreative: true}
@@ -15,29 +15,13 @@ Callback.addCallback("PreLoaded", function() {
 
 const blockHeatValues = {0: -0.25, 8: -1.5, 9: -1.5, 10: 2, 11: 2, 79: -2, 174: -2};
 
-class Thermopile extends BlulectricMachine {
+class Thermopile extends ConnectedGenerator {
 	cold: number;
 	heat: number;
 
 	defaultValues = {
 		energy: 0,
 		output: 0
-	}
-
-	onInit(): void {
-		this.energyNode.defaultTransferMode = TransferMode.Full;
-	}
-
-	canReceiveEnergy(side: number, type: string): boolean {
-		return side < 2;
-	}
-
-	canEmitEnergy(side: number, type: string): boolean {
-		return true;
-	}
-
-	isConductor(type: string): boolean {
-		return true;
 	}
 
 	getHeatValue(id: number): number {
@@ -51,6 +35,7 @@ class Thermopile extends BlulectricMachine {
 	}
 
 	onTick(): void {
+		super.onTick();
 		if (World.getThreadTime() % 20 == 0) {
 			this.cold = 0;
 			this.heat = 0;
@@ -63,7 +48,8 @@ class Thermopile extends BlulectricMachine {
 	}
 
 	energyTick(type: string, src: EnergyTileNode) {
-		src.add(this.data.output);
+		this.data.energy = this.data.output;
+		super.energyTick(type, src);
 	}
 
 	onItemUse() {
