@@ -1,6 +1,6 @@
 /// <reference path="./MachineBase.ts" />
 
-class BlulectricMachine extends MachineBase
+abstract class BlulectricMachine extends MachineBase
 implements EnergyTile {
 	energyNode: EnergyTileNode;
 	data: this["defaultValues"];
@@ -26,11 +26,11 @@ implements EnergyTile {
 		return false;
 	}
 
-	canReceiveEnergy(side: number, type: string): boolean {
+	canReceiveEnergy(side: number, type: string, node: EnergyNode): boolean {
 		return true;
 	}
 
-	canEmitEnergy(side: number, type: string): boolean {
+	canEmitEnergy(side: number, type: string, node: EnergyNode): boolean {
 		return false;
 	}
 

@@ -1,4 +1,4 @@
-/// <reference path="../type/BlulectricMachine.ts" />
+/// <reference path="../type/ConnectedGenerator.ts" />
 
 BlockRegistry.createBlock("rp_solar", [
 	{name: "Solar Panel", texture: [["rp_machine_bottom", 0], ["rp_solar", 0], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1], ["rp_solar", 1]], inCreative: true}
@@ -14,18 +14,14 @@ Callback.addCallback("PreLoaded", function() {
 	], ['x', ItemID.ingotBlue, 0, 'o', ItemID.waferBlue, 0, 'i', 265, -1]);
 });
 
-class SolarPanel extends BlulectricMachine {
+class SolarPanel extends ConnectedGenerator {
 	defaultValues = {
 		energy: 0,
 		canSeeSky: false
 	}
 
-	isGenerator(): boolean {
-		return true;
-	}
-
-	canReceiveEnergy(side: number, type: string): boolean {
-		return false;
+	canReceiveEnergy(side: number, type: string, node: EnergyGrid | EnergyTileNode): boolean {
+		return side != EBlockSide.UP && super.canReceiveEnergy(side, type, node);
 	}
 
 	canEmitEnergy(side: number, type: string): boolean {
@@ -33,10 +29,12 @@ class SolarPanel extends BlulectricMachine {
 	}
 
 	onInit(): void {
+		super.onInit();
 		this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
 	}
 
 	onTick(): void {
+		super.onTick();
 		if (World.getThreadTime() % 100 == 0) {
 			this.data.canSeeSky = this.region.canSeeSky(this.x, this.y + 1, this.z);
 		}
@@ -44,8 +42,9 @@ class SolarPanel extends BlulectricMachine {
 
 	energyTick(type: string, src: EnergyTileNode): void {
 		if (this.data.canSeeSky && this.region.getLightLevel(this.x, this.y + 1, this.z) == 15) {
-			src.add(2);
+			this.data.energy = 2;
 		}
+		super.energyTick(type, src);
 	}
 
 	onItemUse(): boolean {

@@ -1,4 +1,4 @@
-class MachineBase extends TileEntityBase {
+abstract class MachineBase extends TileEntityBase {
 	getFacing(): number {
 		return this.blockSource.getBlockData(this.x, this.y, this.z);
 	}

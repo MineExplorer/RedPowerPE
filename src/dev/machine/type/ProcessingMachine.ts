@@ -1,6 +1,6 @@
 /// <reference path="./BlulectricMachine.ts" />
 
-class ProcessingMachine extends BlulectricMachine {
+abstract class ProcessingMachine extends BlulectricMachine {
 	defaultValues = {
 		energy: 0,
 		progress: 0

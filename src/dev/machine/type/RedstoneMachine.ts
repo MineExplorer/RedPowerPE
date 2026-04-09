@@ -1,4 +1,4 @@
-class RedstoneMachine extends TileEntityBase {
+abstract class RedstoneMachine extends TileEntityBase {
     defaultValues = {
         activated: false
     }
