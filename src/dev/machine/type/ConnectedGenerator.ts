@@ -67,7 +67,7 @@ abstract class ConnectedGenerator extends BlulectricMachine {
 	findHostRecursive(visited: TileEntity[]): ConnectedGenerator {
 		visited.push(this);
 		let host: ConnectedGenerator = null;
-		for (let side = 2; side < 6; side++) {
+		for (let side = 0; side < 6; side++) {
 			const relative = World.getRelativeCoords(this.x, this.y, this.z, side);
 			const tile = this.region.getTileEntity(relative.x, relative.y, relative.z);
 			if (tile && tile.blockID == this.blockID && !visited.includes(tile)) {
