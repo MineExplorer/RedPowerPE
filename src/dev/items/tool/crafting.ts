@@ -1,4 +1,4 @@
-ItemRegistry.createItem("handsawDiamond", {name: "Diamond Handsaw", icon: "handsaw_diamond", stack: 1, maxDamage: 1562, category: ItemCategory.EQUIPMENT});
+ItemRegistry.createItem("handsawDiamond", {name: "Diamond Handsaw", icon: "rp_handsaw_diamond", stack: 1, maxDamage: 1562, category: ItemCategory.EQUIPMENT});
 ItemRegistry.createItem("diamondDrawplate", {name: "Diamond Drawplate", icon: "diamond_drawplate", stack: 1, category: ItemCategory.EQUIPMENT});
 ItemRegistry.createItem("woolCard", {name: "Wool Card", icon: "wool_card", stack: 1, category: ItemCategory.EQUIPMENT});
 

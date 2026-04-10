@@ -1,10 +1,10 @@
-ItemRegistry.createItem("siliconBoule", {name: "Silicon Boule", icon: "silicon_boule"});
-ItemRegistry.createItem("waferSilicon", {name: "Silicon Wafer", icon: "wafer_silicon"});
-ItemRegistry.createItem("waferRed", {name: "Red-Doped Wafer", icon: "wafer_red"});
-ItemRegistry.createItem("waferBlue", {name: "Blue-Doped Wafer", icon: "wafer_blue"});
-ItemRegistry.createItem("fineCopperWire", {name: "Fine Copper Wire", icon: "fine_copper_wire"});
-ItemRegistry.createItem("fineIronWire", {name: "Fine Iron Wire", icon: "fine_iron_wire"});
-ItemRegistry.createItem("copperCoil", {name: "Copper Coil", icon: "copper_coil"});
+ItemRegistry.createItem("siliconBoule", {name: "Silicon Boule", icon: "rp_silicon_boule"});
+ItemRegistry.createItem("waferSilicon", {name: "Silicon Wafer", icon: "rp_wafer_silicon"});
+ItemRegistry.createItem("waferRed", {name: "Red-Doped Wafer", icon: "rp_wafer_red"});
+ItemRegistry.createItem("waferBlue", {name: "Blue-Doped Wafer", icon: "rp_wafer_blue"});
+ItemRegistry.createItem("fineCopperWire", {name: "Fine Copper Wire", icon: "rp_fine_copper_wire"});
+ItemRegistry.createItem("fineIronWire", {name: "Fine Iron Wire", icon: "rp_fine_iron_wire"});
+ItemRegistry.createItem("copperCoil", {name: "Copper Coil", icon: "rp_copper_coil"});
 
 Callback.addCallback("PreLoaded", function() {
 	addRecipeWithCraftingTool({id: ItemID.waferSilicon, count: 16, data: 0}, [{id: ItemID.siliconBoule, data: 0}], ItemID.handsawDiamond);

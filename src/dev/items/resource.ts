@@ -1,5 +1,5 @@
-ItemRegistry.createItem("ingotRed", {name: "Red Alloy Ingot", icon: "ingot_red"});
-ItemRegistry.createItem("ingotBlue", {name: "Blue Alloy Ingot", icon: "ingot_blue"});
+ItemRegistry.createItem("ingotRed", {name: "Red Alloy Ingot", icon: "ingot_red_alloy"});
+ItemRegistry.createItem("ingotBlue", {name: "Blue Alloy Ingot", icon: "ingot_blue_alloy"});
 ItemRegistry.createItem("ingotBronze", {name: "Bronze Ingot", icon: "ingot_bronze"});
 ItemRegistry.createItem("ingotTin", {name: "Tin Ingot", icon: "ingot_tin"});
 ItemRegistry.createItem("ingotCopper", {name: "Copper Ingot", icon: "ingot_copper"});

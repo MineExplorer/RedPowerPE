@@ -1,4 +1,4 @@
-ItemRegistry.createItem("canvas", {name: "Canvas", icon: "canvas"});
+ItemRegistry.createItem("canvas", {name: "Canvas", icon: "rp_canvas"});
 
 ItemRegistry.createItem("canvasBag", {name: "Canvas Bag", icon: "canvas_bag", stack: 1, category: ItemCategory.EQUIPMENT});
 Item.registerIconOverrideFunction(ItemID.canvasBag, function(item, name) {
