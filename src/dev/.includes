@@ -16,6 +16,7 @@ block/resource.ts
 block/lamp.ts
 block/cable.ts
 
+machine/project_table.ts
 machine/smelter.ts
 machine/blutricity/solar.ts
 machine/blutricity/thermopile.ts

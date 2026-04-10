@@ -14,6 +14,7 @@ abstract class MachineBase extends TileEntityBase {
 		this.networkData.putInt("blockId", this.blockID);
 		this.networkData.putInt("facing", this.getFacing());
 		this.networkData.sendChanges();
+		delete this.liquidStorage;
 	}
 
 	clientLoad(): void {

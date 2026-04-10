@@ -84,6 +84,7 @@ Translation.addTranslation("Block Breaker", {ru: "Разрушитель бло�
 Translation.addTranslation("Deployer", {ru: "Установщик"});
 Translation.addTranslation("Igniter", {ru: "Воспламенитель"});
 
+Translation.addTranslation("Project Table", {ru: "Проектный стол"});
 Translation.addTranslation("Smelter", {ru: "Плавильная печь"});
 Translation.addTranslation("Blulectric Smelter", {ru: "Блутрическая плавильная печь"});
 Translation.addTranslation("Blulectric Furnace", {ru: "Блутрическая печь"});
