@@ -13,21 +13,21 @@ Callback.addCallback("PreLoaded", function() {
 
 const guiProjectTable = MachineRegistry.createInventoryWindow("Project Table", {
     elements: {
-        "progressArrow": { type: "button", x: 565, y: 104, bitmap: "arrow_bar_background", scale: GUI_SCALE, clicker: {
+        "progressArrow": { type: "button", x: 665, y: 104, bitmap: "arrow_bar_background", scale: GUI_SCALE, clicker: {
             onClick: () => {
                 RecipeViewer?.RecipeTypeRegistry.openRecipePage("workbench");
             }
         }},
-        "slotInput0": { type: "slot", x: 370, y: 40 },
-        "slotInput1": { type: "slot", x: 430, y: 40 },
-        "slotInput2": { type: "slot", x: 490, y: 40 },
-        "slotInput3": { type: "slot", x: 370, y: 100 },
-        "slotInput4": { type: "slot", x: 430, y: 100 },
-        "slotInput5": { type: "slot", x: 490, y: 100 },
-        "slotInput6": { type: "slot", x: 370, y: 160 },
-        "slotInput7": { type: "slot", x: 430, y: 160 },
-        "slotInput8": { type: "slot", x: 490, y: 160 },
-        "slotResult": { type: "slot", x: 650, y: 100, visual: true, clicker: {
+        "slotInput0": { type: "slot", x: 460, y: 40 },
+        "slotInput1": { type: "slot", x: 520, y: 40 },
+        "slotInput2": { type: "slot", x: 580, y: 40 },
+        "slotInput3": { type: "slot", x: 460, y: 100 },
+        "slotInput4": { type: "slot", x: 520, y: 100 },
+        "slotInput5": { type: "slot", x: 580, y: 100 },
+        "slotInput6": { type: "slot", x: 460, y: 160 },
+        "slotInput7": { type: "slot", x: 520, y: 160 },
+        "slotInput8": { type: "slot", x: 580, y: 160 },
+        "slotResult": { type: "slot", x: 760, y: 100, visual: true, clicker: {
             onClick: function(_, container: ItemContainer) {
                 container.sendEvent("craft", {allAtOnce: false});
             },
@@ -35,7 +35,7 @@ const guiProjectTable = MachineRegistry.createInventoryWindow("Project Table", {
                 container.sendEvent("craft", {allAtOnce: true});
             }
         }},
-        "buttonClear": {type: "button", x: 555, y: 40, bitmap: "icpe.clear_button", bitmap2: "icpe.clear_button_touched", scale: GUI_SCALE, clicker: {
+        "buttonClear": {type: "button", x: 645, y: 40, bitmap: "project_table_clear_button", bitmap2: "project_table_clear_button_touched", scale: GUI_SCALE, clicker: {
             onClick: function(_, container: ItemContainer) {
                 container.sendEvent("clearGrid", {});
             }
@@ -71,10 +71,6 @@ class ProjectTable extends TileEntityBase {
     }
 
     onInit(): void {
-        delete this.liquidStorage;
-    }
-
-    setupContainer(): void {
         StorageInterface.setGlobalValidatePolicy(this.container, (name, id, amount, data) => {
             if (name.match(/slotInput[0-8]/)) {
                 this.data.recipeChecked = false;
@@ -88,6 +84,8 @@ class ProjectTable extends TileEntityBase {
             return amount;
         });
         this.container.setWorkbenchFieldPrefix("slotInput");
+
+        delete this.liquidStorage;
     }
 
     onTick(): void {
