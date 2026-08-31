@@ -113,3 +113,6 @@ Recipes.addShaped({id: ItemID.greenSapphireSickle, count: 1, data: 0}, [
 	"  a",
 	"ba "
 ], ['a', ItemID.gemGreenSapphire, 0, 'b', 280, 0]);
+
+Recipes.addFurnace(ItemID.sickleIron, VanillaItemID.iron_nugget, 0);
+Recipes.addFurnace(ItemID.sickleGold, VanillaItemID.gold_nugget, 0);
