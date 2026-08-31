@@ -91,7 +91,7 @@ class Deployer extends RedstoneMachine {
         super.activate();
         const side = this.getFacing();
         const coords = World.getRelativeCoords(this.x, this.y, this.z, side);
-        const ent = this.region.spawnEntity(this.x, this.y, this.z, EEntityType.ARROW);
+        const ent = this.region.spawnEntity(this.x + .5, this.y + .5, this.z + .5, EEntityType.ARROW);
         const angle = Entity.getLookAt(ent, coords.x, coords.y, coords.z);
         Entity.setLookAngle(ent, angle.yaw, angle.pitch);
         for (let i = 0; i < 9; i++) {
